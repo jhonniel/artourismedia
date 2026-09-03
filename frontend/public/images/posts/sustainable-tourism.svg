@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="Sustainable tourism in the Philippines">
+  <defs>
+    <linearGradient id="post-sky" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fde68a"/>
+      <stop offset="100%" stop-color="#fb923c"/>
+    </linearGradient>
+    <linearGradient id="post-sea" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#078C95"/>
+      <stop offset="100%" stop-color="#22d3ee"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#post-sky)"/>
+  <ellipse cx="400" cy="430" rx="460" ry="120" fill="url(#post-sea)"/>
+  <path d="M0 420 Q200 380 420 410 T800 390 L800 600 L0 600 Z" fill="#fcd34d"/>
+</svg>

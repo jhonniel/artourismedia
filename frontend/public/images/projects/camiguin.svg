@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="Camiguin Tourism Master Plan">
+  <defs>
+    <linearGradient id="camiguin-sky" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#7dd3fc"/>
+      <stop offset="100%" stop-color="#bae6fd"/>
+    </linearGradient>
+    <linearGradient id="camiguin-sea" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#078C95"/>
+      <stop offset="100%" stop-color="#0e7490"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#camiguin-sky)"/>
+  <path d="M120 380 L280 220 L420 300 L560 180 L720 340 L720 600 L80 600 Z" fill="#166534" opacity="0.85"/>
+  <ellipse cx="400" cy="470" rx="420" ry="110" fill="url(#camiguin-sea)"/>
+  <circle cx="650" cy="100" r="48" fill="#fef08a"/>
+</svg>

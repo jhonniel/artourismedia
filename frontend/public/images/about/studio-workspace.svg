@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="Creative workspace">
+  <defs>
+    <linearGradient id="wall" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f8fafc"/>
+      <stop offset="100%" stop-color="#e2e8f0"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#078C95"/>
+      <stop offset="100%" stop-color="#6366f1"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#wall)"/>
+  <rect x="80" y="120" width="640" height="360" rx="24" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+  <rect x="120" y="160" width="280" height="180" rx="16" fill="url(#accent)" opacity="0.15"/>
+  <rect x="440" y="160" width="240" height="24" rx="8" fill="#94a3b8" opacity="0.35"/>
+  <rect x="440" y="210" width="200" height="16" rx="6" fill="#94a3b8" opacity="0.25"/>
+  <rect x="440" y="245" width="220" height="16" rx="6" fill="#94a3b8" opacity="0.25"/>
+  <rect x="120" y="380" width="120" height="40" rx="12" fill="#078C95" opacity="0.85"/>
+  <circle cx="620" cy="400" r="48" fill="#f97316" opacity="0.2"/>
+  <rect x="0" y="520" width="800" height="80" fill="#1e293b" opacity="0.08"/>
+</svg>

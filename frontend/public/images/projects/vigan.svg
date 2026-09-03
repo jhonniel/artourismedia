@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="Vigan heritage destination">
+  <defs>
+    <linearGradient id="sky" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fdba74"/>
+      <stop offset="100%" stop-color="#fef3c7"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#sky)"/>
+  <rect y="380" width="800" height="220" fill="#78716c"/>
+  <rect x="120" y="220" width="560" height="180" rx="8" fill="#b45309"/>
+  <rect x="150" y="250" width="80" height="120" fill="#fef3c7"/>
+  <rect x="260" y="250" width="80" height="120" fill="#fef3c7"/>
+  <rect x="370" y="250" width="80" height="120" fill="#fef3c7"/>
+  <rect x="480" y="250" width="80" height="120" fill="#fef3c7"/>
+  <rect x="590" y="250" width="60" height="120" fill="#fef3c7"/>
+  <polygon points="400,160 520,220 280,220" fill="#92400e"/>
+  <rect x="350" y="300" width="100" height="70" fill="#78350f"/>
+</svg>

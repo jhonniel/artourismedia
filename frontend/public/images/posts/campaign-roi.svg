@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="Campaign ROI analytics">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#334155"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#bg)"/>
+  <rect x="80" y="80" width="640" height="440" rx="20" fill="#0f172a"/>
+  <rect x="140" y="380" width="60" height="80" rx="6" fill="#078C95"/>
+  <rect x="230" y="320" width="60" height="140" rx="6" fill="#22d3ee"/>
+  <rect x="320" y="260" width="60" height="200" rx="6" fill="#078C95"/>
+  <rect x="410" y="200" width="60" height="260" rx="6" fill="#f97316"/>
+  <rect x="500" y="150" width="60" height="310" rx="6" fill="#22d3ee"/>
+  <rect x="590" y="100" width="60" height="360" rx="6" fill="#4ade80"/>
+  <polyline points="140,200 230,240 320,180 410,220 500,160 590,120" fill="none" stroke="#fef08a" stroke-width="4"/>
+</svg>

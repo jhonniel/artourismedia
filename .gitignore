@@ -1,0 +1,40 @@
+# Dependencies
+node_modules/
+vendor/
+
+# Environment
+.env
+.env.local
+.env.*.local
+.env.docker
+
+# Build output
+frontend/dist/
+admin/dist/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Laravel
+backend/storage/*.key
+backend/.phpunit.result.cache
+backend/database/*.sqlite
+
+# Logs
+*.log
+npm-debug.log*
+
+# Cache
+.phpunit.cache
+
+# Playwright
+test-results/
+playwright-report/
+blob-report/

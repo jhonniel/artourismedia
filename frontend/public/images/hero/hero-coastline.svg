@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="Tropical destination coastline">
+  <defs>
+    <linearGradient id="sky" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#7dd3fc"/>
+      <stop offset="100%" stop-color="#bae6fd"/>
+    </linearGradient>
+    <linearGradient id="sea" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#078C95"/>
+      <stop offset="100%" stop-color="#0e7490"/>
+    </linearGradient>
+    <linearGradient id="sand" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#fde68a"/>
+      <stop offset="100%" stop-color="#fcd34d"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#sky)"/>
+  <circle cx="620" cy="110" r="52" fill="#fef08a" opacity="0.95"/>
+  <ellipse cx="400" cy="430" rx="480" ry="120" fill="url(#sea)"/>
+  <path d="M0 420 Q200 380 400 410 T800 390 L800 600 L0 600 Z" fill="url(#sand)"/>
+  <path d="M0 430 Q250 400 500 425 T800 405 L800 600 L0 600 Z" fill="#fbbf24" opacity="0.35"/>
+  <ellipse cx="180" cy="470" rx="90" ry="18" fill="#0f766e" opacity="0.25"/>
+  <ellipse cx="620" cy="455" rx="120" ry="22" fill="#0f766e" opacity="0.2"/>
+</svg>

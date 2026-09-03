@@ -1,0 +1,20 @@
+{
+  "name": "destination-studio",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "setup": "node scripts/setup-local.mjs",
+    "dev": "node scripts/start-local.mjs",
+    "build": "node scripts/build-production.mjs",
+    "build:production": "node scripts/build-production.mjs",
+    "start": "node scripts/start-production.mjs",
+    "e2e": "playwright test --config e2e/playwright.config.ts",
+    "e2e:ui": "playwright test --config e2e/playwright.config.ts --ui",
+    "e2e:prepare": "node scripts/e2e-prepare-backend.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.51.0",
+    "@types/node": "^24.13.3",
+    "typescript": "~6.0.2"
+  }
+}

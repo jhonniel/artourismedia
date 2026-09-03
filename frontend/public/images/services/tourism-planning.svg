@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="Tourism planning and development">
+  <rect width="800" height="600" fill="#EEF3F6"/>
+  <rect x="120" y="80" width="560" height="440" rx="24" fill="#fff" stroke="#078C95" stroke-width="4"/>
+  <rect x="180" y="150" width="220" height="16" rx="8" fill="#078C95" opacity="0.25"/>
+  <rect x="180" y="190" width="320" height="12" rx="6" fill="#0B2447" opacity="0.15"/>
+  <rect x="180" y="230" width="280" height="12" rx="6" fill="#0B2447" opacity="0.15"/>
+  <circle cx="560" cy="320" r="90" fill="#078C95" opacity="0.15"/>
+  <path d="M520 320 L550 350 L610 280" stroke="#078C95" stroke-width="16" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

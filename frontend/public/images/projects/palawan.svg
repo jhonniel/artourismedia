@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="Palawan island destination">
+  <defs>
+    <linearGradient id="sky" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="100%" stop-color="#bae6fd"/>
+    </linearGradient>
+    <linearGradient id="water" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0e7490"/>
+      <stop offset="100%" stop-color="#0891b2"/>
+    </linearGradient>
+    <linearGradient id="island" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4ade80"/>
+      <stop offset="100%" stop-color="#15803d"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#sky)"/>
+  <rect y="320" width="800" height="280" fill="url(#water)"/>
+  <ellipse cx="400" cy="360" rx="220" ry="90" fill="url(#island)"/>
+  <ellipse cx="320" cy="330" rx="80" ry="40" fill="#166534" opacity="0.5"/>
+  <ellipse cx="480" cy="340" rx="60" ry="30" fill="#166534" opacity="0.4"/>
+  <circle cx="650" cy="100" r="45" fill="#fef08a"/>
+</svg>
