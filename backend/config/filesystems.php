@@ -13,7 +13,7 @@ $spacesDisk = [
     'use_path_style_endpoint' => $spaces['use_path_style_endpoint'],
     'root' => $spaces['root'] !== '' ? $spaces['root'] : null,
     'visibility' => 'public',
-    'throw' => false,
+    'throw' => env('FILESYSTEM_THROW', true),
     'report' => false,
 ];
 

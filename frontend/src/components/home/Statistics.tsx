@@ -9,7 +9,9 @@ interface StatisticsProps {
   statistics: Statistic[]
 }
 
-const STAT_BG = '/images/projects/camiguin.png'
+import { assetUrl } from '@/lib/assets'
+
+const STAT_BG = assetUrl('/images/projects/camiguin.png')
 
 export function Statistics({ section, statistics }: StatisticsProps) {
   const sorted = [...statistics].sort((a, b) => a.sort_order - b.sort_order)

@@ -42,6 +42,8 @@ for (const app of ['frontend', 'admin']) {
   const buildEnv = {
     ...process.env,
     VITE_API_URL: apiUrl,
+    VITE_ASSETS_BASE_URL: process.env.VITE_ASSETS_BASE_URL
+      ?? 'https://infosoft.sgp1.digitaloceanspaces.com/tingog/reports/static',
     NODE_ENV: 'production',
   }
 

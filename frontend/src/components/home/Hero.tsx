@@ -14,22 +14,6 @@ import {
 import { cn, parseContent } from '@/lib/utils'
 import type { HeroContent, HomepageSection } from '@/types'
 
-const MOCKUP_HERO_PATTERNS = [
-  'hero-mockup-reference',
-  'hero-landing-reference',
-]
-
-const HERO_ASSETS = {
-  beach: '/images/hero/hero-beach.png',
-  composite: '/images/hero/hero-composite.png',
-  cover: '/images/hero/hero-person-cover.png',
-  cutout: '/images/hero/hero-person-cutout.png',
-}
-
-function isMockupHeroImage(url: string): boolean {
-  return MOCKUP_HERO_PATTERNS.some((pattern) => url.includes(pattern))
-}
-
 interface HeroProps {
   section: HomepageSection
 }
@@ -81,22 +65,6 @@ function HeroHeadline({
     <h1 className="hero-headline font-display text-4xl font-bold leading-[0.92] text-balance sm:text-5xl text-navy">
       {content.headline}
     </h1>
-  )
-}
-
-function MockupHeroImage({ src, alt }: { src: string; alt: string }) {
-  return (
-    <section className="relative -mt-3 sm:-mt-4 md:-mt-6">
-      <FadeIn>
-        <img
-          src={src}
-          alt={alt}
-          loading="eager"
-          decoding="async"
-          className="block h-auto w-full max-w-[100vw]"
-        />
-      </FadeIn>
-    </section>
   )
 }
 
@@ -156,7 +124,7 @@ function HeroLinkButton({
 
 function LandingHero({ content }: { content: HeroContent }) {
   return (
-    <section className="hero-offset relative w-full overflow-x-clip bg-cream">
+    <section className="hero-offset relative w-full overflow-x-clip bg-white">
       {/* Mobile — image fades into overlapping text */}
       <div className="lg:hidden bg-white">
         <div className="hero-mobile-stack relative">
@@ -281,21 +249,6 @@ function HeroContentBlock({
 
 export function Hero({ section }: HeroProps) {
   const content = parseContent<HeroContent>(section.content)
-  const heroImage = content.image_url ?? HERO_ASSETS.beach
-  const isMockupHero = isMockupHeroImage(heroImage)
-  const imageAlt = content.image_alt ?? 'Art Boncato Tourism Consultancy'
-
-  if (isMockupHero) {
-    return (
-      <>
-        <div className="sr-only">
-          <HeroHeadline content={content} />
-          {content.subheadline && <p>{content.subheadline}</p>}
-        </div>
-        <MockupHeroImage src={heroImage} alt={imageAlt} />
-      </>
-    )
-  }
 
   return (
     <LandingHero content={content} />

@@ -3,12 +3,17 @@
 namespace App\Services;
 
 use App\Models\Media;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use RuntimeException;
 
 class MediaService extends CrudService
 {
+    /** CMS uploads always go to DigitalOcean Spaces — never local disk. */
+    private const DISK = 'spaces';
+
     public function __construct(ActivityLogService $activityLog)
     {
         parent::__construct(new Media, $activityLog, 'media');
@@ -16,14 +21,19 @@ class MediaService extends CrudService
 
     protected function mediaDisk(): \Illuminate\Contracts\Filesystem\Filesystem
     {
-        return Storage::disk(config('filesystems.default'));
+        return Storage::disk(self::DISK);
     }
 
     public function upload(UploadedFile $file, ?int $userId = null, ?string $altText = null): Media
     {
         $disk = $this->mediaDisk();
         $filename = Str::uuid().'.'.$file->getClientOriginalExtension();
-        $path = $file->storeAs('media', $filename, config('filesystems.default'));
+        $path = $file->storeAs('media', $filename, self::DISK);
+
+        if ($path === false || ! $disk->exists($path)) {
+            throw new RuntimeException('Failed to upload media to DigitalOcean Spaces.');
+        }
+
         $url = $disk->url($path);
 
         $imageSize = @getimagesize($file->getRealPath());
@@ -43,6 +53,24 @@ class MediaService extends CrudService
         ]);
 
         return $media;
+    }
+
+    public function delete(Model $record): void
+    {
+        if ($record instanceof Media) {
+            $this->deleteStoredFiles($record);
+        }
+
+        parent::delete($record);
+    }
+
+    protected function deleteStoredFiles(Media $media): void
+    {
+        $disk = $this->mediaDisk();
+        $disk->delete([
+            'media/'.$media->filename,
+            'media/thumb_'.$media->filename,
+        ]);
     }
 
     protected function generateThumbnail(UploadedFile $file, string $filename): ?string
@@ -84,7 +112,10 @@ class MediaService extends CrudService
 
         $disk = $this->mediaDisk();
         $thumbPath = 'media/thumb_'.$filename;
-        $disk->put($thumbPath, $jpegData, ['visibility' => 'public']);
+
+        if (! $disk->put($thumbPath, $jpegData, ['visibility' => 'public'])) {
+            return null;
+        }
 
         return $disk->url($thumbPath);
     }

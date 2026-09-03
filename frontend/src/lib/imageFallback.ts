@@ -1,11 +1,13 @@
+import { assetUrl } from '@/lib/assets'
+
 const CATEGORY_FALLBACKS: Record<string, string> = {
-  hero: '/images/hero/hero-beach.png',
-  about: '/images/about/studio-workspace.svg',
-  brand: '/images/brand/logo.svg',
-  projects: '/images/projects/camiguin.svg',
-  posts: '/images/posts/sustainable-tourism.svg',
-  services: '/images/services/tourism-planning.svg',
-  team: '/images/team/placeholder.svg',
+  hero: assetUrl('/images/hero/hero-slideshow-01-pamulak.jpg'),
+  about: assetUrl('/images/about/studio-workspace.svg'),
+  brand: assetUrl('/images/brand/logo.svg'),
+  projects: assetUrl('/images/projects/camiguin.svg'),
+  posts: assetUrl('/images/posts/sustainable-tourism.svg'),
+  services: assetUrl('/images/services/tourism-planning.svg'),
+  team: assetUrl('/images/team/maria-santos.png'),
 }
 
 function extensionAlternatives(src: string): string[] {
@@ -36,7 +38,8 @@ function categoryFallback(src: string): string | undefined {
 export function buildImageFallbackChain(src?: string | null): string[] {
   if (!src) return []
 
-  const chain = [src, ...extensionAlternatives(src)]
+  const resolved = assetUrl(src)
+  const chain = [resolved, ...extensionAlternatives(resolved)]
   const category = categoryFallback(src)
 
   if (category) {

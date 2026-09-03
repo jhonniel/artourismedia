@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
+import { assetUrl } from '@/lib/assets'
 import { cn } from '@/lib/utils'
 
-/** Tourism showcase photos — crossfades on the landing hero. */
-export const HERO_SLIDESHOW_IMAGES = [
+/** Tourism showcase photos — crossfades on the landing hero (hosted on Spaces). */
+const HERO_SLIDESHOW_PATHS = [
   '/images/hero/hero-slideshow-01-pamulak.jpg',
   '/images/hero/hero-slideshow-03-mountain-valley.jpg',
   '/images/hero/hero-slideshow-04-sunken-cemetery.jpg',
@@ -11,6 +12,8 @@ export const HERO_SLIDESHOW_IMAGES = [
   '/images/hero/hero-slideshow-07-grand-mosque.jpg',
   '/images/hero/hero-slideshow-08-cold-spring.jpg',
 ] as const
+
+export const HERO_SLIDESHOW_IMAGES = HERO_SLIDESHOW_PATHS.map(assetUrl)
 
 const FADE_MS = 2200
 const HOLD_MS = 4800

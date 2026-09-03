@@ -5,12 +5,12 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT_DIR"
 
 COMPOSE_FILE="docker-compose.prod.yml"
-ENV_FILE=".env.docker"
+ENV_FILE="backend/.env"
 PROFILE="${DOCKER_PROFILE:-bundled-db}"
 
 if [[ ! -f "$ENV_FILE" ]]; then
-  echo "Missing $ENV_FILE — copy .env.docker.example and edit it first:"
-  echo "  cp .env.docker.example .env.docker"
+  echo "Missing $ENV_FILE — copy backend/.env.production and edit it first:"
+  echo "  cp backend/.env.production backend/.env"
   exit 1
 fi
 

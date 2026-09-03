@@ -9,7 +9,7 @@ services:
     environment:
       POSTGRES_DB: ${DB_DATABASE:-destination_studio}
       POSTGRES_USER: ${DB_USERNAME:-destination_user}
-      POSTGRES_PASSWORD: ${DB_PASSWORD:?Set DB_PASSWORD in .env.docker}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?Set DB_PASSWORD in backend/.env}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
@@ -44,7 +44,7 @@ services:
       target: app
     restart: unless-stopped
     env_file:
-      - .env.docker
+      - backend/.env
     environment:
       DB_HOST: ${DB_HOST:-postgres}
       REDIS_HOST: redis
@@ -81,7 +81,7 @@ services:
       target: app
     restart: unless-stopped
     env_file:
-      - .env.docker
+      - backend/.env
     environment:
       DB_HOST: ${DB_HOST:-postgres}
       REDIS_HOST: redis
@@ -104,7 +104,7 @@ services:
       target: app
     restart: unless-stopped
     env_file:
-      - .env.docker
+      - backend/.env
     environment:
       DB_HOST: ${DB_HOST:-postgres}
       REDIS_HOST: redis

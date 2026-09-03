@@ -38,7 +38,7 @@ export function copyBuildsToPublic() {
   }
 
   for (const entry of fs.readdirSync(frontendDist)) {
-    if (preserved.has(entry)) {
+    if (preserved.has(entry) || entry === 'images') {
       continue
     }
 

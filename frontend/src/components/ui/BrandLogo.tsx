@@ -1,3 +1,5 @@
+import { assetUrl } from '@/lib/assets'
+
 interface BrandLogoProps {
   logoUrl?: string
   siteName?: string
@@ -6,9 +8,9 @@ interface BrandLogoProps {
 }
 
 const VARIANT_SRC: Record<string, string> = {
-  header: '/images/brand/logo-header-v2.png',
-  footer: '/images/brand/logo-mark-white.png',
-  mark: '/images/brand/logo-mark.png',
+  header: assetUrl('/images/brand/logo-header-v2.png'),
+  footer: assetUrl('/images/brand/logo-mark-white.png'),
+  mark: assetUrl('/images/brand/logo-mark.png'),
 }
 
 export function BrandLogo({
@@ -17,7 +19,7 @@ export function BrandLogo({
   className = 'h-9 w-auto md:h-10',
   variant = 'header',
 }: BrandLogoProps) {
-  const src = logoUrl ?? VARIANT_SRC[variant]
+  const src = logoUrl ? assetUrl(logoUrl) : VARIANT_SRC[variant]
 
   return (
     <img

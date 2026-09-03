@@ -39,8 +39,8 @@
   --site-band-inset: max(0px, calc((100vw - var(--site-max-width)) / 2));
   --hero-text-width: calc(var(--site-band-width) * 0.45);
 
-  /* Synced with Header.tsx vertical padding + logo height */
-  --header-height: 4.5rem;
+  /* Synced with Header.tsx vertical padding + logo height (measured in browser) */
+  --header-height: 4.75rem;
 }
 
 @media (min-width: 640px) {
@@ -52,28 +52,28 @@
 
 @media (min-width: 768px) {
   :root {
-    --header-height: 6rem;
+    --header-height: 5.25rem;
   }
 }
 
 @media (min-width: 1024px) {
   :root {
     --site-gutter: 2rem;
-    --header-height: 6.5rem;
+    --header-height: 6rem;
   }
 }
 
 @media (min-width: 1280px) {
   :root {
     --site-gutter: 2.5rem;
-    --header-height: 7rem;
+    --header-height: 6.5625rem;
   }
 }
 
 @media (min-width: 1536px) {
   :root {
     --site-gutter: 3rem;
-    --header-height: 7.5rem;
+    --header-height: 6.75rem;
   }
 }
 

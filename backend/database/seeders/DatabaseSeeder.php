@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\HomepageSection;
+use App\Support\Assets;
 use App\Models\NavigationItem;
 use App\Models\NewsletterSubscriber;
 use App\Models\Page;
@@ -76,7 +77,7 @@ class DatabaseSeeder extends Seeder
             ['key' => 'site_name', 'value' => 'Art!', 'type' => 'string', 'group' => 'general'],
             ['key' => 'site_tagline', 'value' => 'Boncato Tourism Consultancy', 'type' => 'string', 'group' => 'general'],
             ['key' => 'tagline', 'value' => 'Boncato Tourism Consultancy', 'type' => 'string', 'group' => 'general'],
-            ['key' => 'contact_email', 'value' => 'hello@artboncato.com', 'type' => 'string', 'group' => 'contact'],
+            ['key' => 'contact_email', 'value' => 'hello@artourismedia.com', 'type' => 'string', 'group' => 'contact'],
             ['key' => 'contact_phone', 'value' => '+63 917 123 4567', 'type' => 'string', 'group' => 'contact'],
             ['key' => 'contact_address', 'value' => 'Philippines', 'type' => 'string', 'group' => 'contact'],
             ['key' => 'footer_text', 'value' => '© Art! Boncato Tourism Consultancy. Creating destinations people remember.', 'type' => 'string', 'group' => 'general'],
@@ -85,7 +86,7 @@ class DatabaseSeeder extends Seeder
             ['key' => 'footer_description', 'value' => 'We partner with governments, communities, and investors to design tourism experiences that leave lasting impressions.', 'type' => 'string', 'group' => 'footer'],
             ['key' => 'footer_tagline', 'value' => 'Creating destinations people remember.', 'type' => 'string', 'group' => 'footer'],
             ['key' => 'footer_copyright', 'value' => '© Art! Boncato Tourism Consultancy. All rights reserved.', 'type' => 'string', 'group' => 'footer'],
-            ['key' => 'footer_email', 'value' => 'hello@artboncato.com', 'type' => 'string', 'group' => 'footer'],
+            ['key' => 'footer_email', 'value' => 'hello@artourismedia.com', 'type' => 'string', 'group' => 'footer'],
             ['key' => 'footer_phone', 'value' => '+63 917 123 4567', 'type' => 'string', 'group' => 'footer'],
             ['key' => 'footer_address', 'value' => 'Philippines', 'type' => 'string', 'group' => 'footer'],
             ['key' => 'primary_color', 'value' => '#078C95', 'type' => 'string', 'group' => 'branding'],
@@ -94,8 +95,8 @@ class DatabaseSeeder extends Seeder
             ['key' => 'google_analytics_id', 'value' => '', 'type' => 'string', 'group' => 'branding'],
             ['key' => 'default_seo_title', 'value' => 'Art! Boncato | Tourism Consultancy', 'type' => 'string', 'group' => 'branding'],
             ['key' => 'default_seo_description', 'value' => 'Art Boncato Tourism Consultancy helps governments and communities shape inspiring destinations people remember.', 'type' => 'string', 'group' => 'branding'],
-            ['key' => 'logo_url', 'value' => '/images/brand/logo-header-v2.png', 'type' => 'string', 'group' => 'branding'],
-            ['key' => 'favicon_url', 'value' => '/favicon.png', 'type' => 'string', 'group' => 'branding'],
+            ['key' => 'logo_url', 'value' => Assets::url('/images/brand/logo-header-v2.png'), 'type' => 'string', 'group' => 'branding'],
+            ['key' => 'favicon_url', 'value' => Assets::url('/favicon.svg'), 'type' => 'string', 'group' => 'branding'],
         ];
 
         foreach ($settings as $setting) {
@@ -145,7 +146,7 @@ class DatabaseSeeder extends Seeder
                     'cta_url' => '/contact',
                     'secondary_cta_text' => 'Explore Our Work',
                     'secondary_cta_url' => '/projects',
-                    'image_url' => '/images/hero/hero-beach.png',
+                    'image_url' => Assets::url('/images/hero/hero-slideshow-01-pamulak.jpg'),
                     'image_alt' => 'Art Boncato Tourism Consultancy',
                 ],
                 'sort_order' => 1,
@@ -166,7 +167,7 @@ class DatabaseSeeder extends Seeder
                     'body' => '<p>For over 30 years, Art Boncato has led tourism strategy, destination development, and national campaigns—partnering with governments, organizations, and communities to shape places that inspire and endure.</p>',
                     'cta_text' => 'More About Art',
                     'cta_url' => '/about',
-                    'image_url' => '/images/about/about-professional-chair.jpg',
+                    'image_url' => Assets::url('/images/about/about-professional-chair.jpg'),
                     'image_alt' => 'Art Boncato professional portrait in office',
                 ],
                 'sort_order' => 3,
@@ -273,7 +274,7 @@ class DatabaseSeeder extends Seeder
                 'content' => '<p>We are guided by the Visitor, Industry, Community and Environment (VICE) framework, from the research process right through to every practical action on the ground.</p><h3>Projects and Experience:</h3><ul><li>Camiguin Tourism Development Plan 2025-2028</li><li>Mts. Timpoong- Hibok-Hibok National Monument (MTHNM) Ecotourism and Management Plan 2022</li><li>Island Garden City of Samal (IGACOS) Tourism Plans Review 2022</li><li>Camiguin Pivot and Transformation : A Tourism Recovery Plan 2021-2023</li><li>Mantigue Island Tourism Management Plan 2021</li><li>Implementing the Siargao Tourism Master Plan (STMP): Action Plan Recommendations 2021</li></ul>',
                 'category' => 'Planning',
                 'icon' => 'tourism-planning',
-                'image_url' => '/images/services/tourism-planning.svg',
+                'image_url' => Assets::url('/images/services/tourism-planning.svg'),
                 'sort_order' => 1,
             ],
             [
@@ -283,7 +284,7 @@ class DatabaseSeeder extends Seeder
                 'content' => '<p>We underline the significance of stakeholder buy-in as an essential step in the process.</p><h3>Projects and Experience:</h3><ul><li>Isle Be There Marketing Plan 2024, 2025, 2026</li><li>Camiguin Isle Be There Branding 2024</li><li>Clean Camiguin Marketing Plan 2021, 2022, 2023</li><li>Clean Camiguin Branding 2021</li></ul>',
                 'category' => 'Marketing',
                 'icon' => 'destination-branding',
-                'image_url' => '/images/services/tourism-planning.svg',
+                'image_url' => Assets::url('/images/services/tourism-planning.svg'),
                 'sort_order' => 2,
             ],
             [
@@ -293,7 +294,7 @@ class DatabaseSeeder extends Seeder
                 'content' => '<p>This main service also includes consulting and actual facility management and specialist manufacturing for exhibits.</p><h3>Projects and Experience:</h3><ul><li>Camiguin International Convention Center (conceptual stage)</li><li>ASEAN Tourism Forum (ATF) and ASEAN Summit Opening Ceremonies 2026 at The Mactan Expo (coordination team member for Megaworld Hotels and Resorts)</li><li>World Trade Center Metro Manila (senior leadership) 2022-2024</li><li>Iloilo MICE Situation Report and Marketing Plan (for the Department of Tourism) 2019</li><li>50th Asian Development Bank Summit 2018 (official Philippine government lead organizer with the ADB)</li><li>Kadayawan Festival 2016 (Co-chairman of Mayor Sara Duterte-Carpio)</li><li>ASEAN Tourism Forum (ATF) 2006 (Co-Chairman of Mayor Rodrigo R. Duterte, Davao Organizing Committee)</li><li>Conventions and Events Organizers, Inc. 1995-2001 (organized at least 70 local and regional MICE projects as lone Mindanao Professional Convention Organizer accredited by the Philippine Convention and Visitors Corporation now named Tourism Promotions Board)</li></ul>',
                 'category' => 'MICE',
                 'icon' => 'mice-events',
-                'image_url' => '/images/services/tourism-planning.svg',
+                'image_url' => Assets::url('/images/services/tourism-planning.svg'),
                 'sort_order' => 3,
             ],
             [
@@ -303,7 +304,7 @@ class DatabaseSeeder extends Seeder
                 'content' => '<p>This is accomplished by creating and utilizing tools that deal with problems affecting a skilled workforce in the hospitality sector.</p><h3>Projects and Experience</h3><ul><li>Camiguin Roundtable on Sustainable Island Destination Governance (September 2026)</li><li>Camiguin Tourism Training Institute (conceptual stage)</li></ul>',
                 'category' => 'Learning',
                 'icon' => 'learning-leadership',
-                'image_url' => '/images/services/tourism-planning.svg',
+                'image_url' => Assets::url('/images/services/tourism-planning.svg'),
                 'sort_order' => 4,
             ],
             [
@@ -313,7 +314,7 @@ class DatabaseSeeder extends Seeder
                 'content' => '<p>Make Mindanao your next greenfield. Let us help you in this.</p><h3>Projects and Experience</h3><ul><li>Mindanao Tourism Situation Report ( for crafting haha)</li><li>Mindanao Roadtrip with Art videos</li><li>Mindanao Fun 101 magazine digital file</li></ul>',
                 'category' => 'Regional',
                 'icon' => 'mindanao-connect',
-                'image_url' => '/images/services/tourism-planning.svg',
+                'image_url' => Assets::url('/images/services/tourism-planning.svg'),
                 'sort_order' => 5,
             ],
         ];
@@ -352,7 +353,7 @@ class DatabaseSeeder extends Seeder
                 'title' => 'Camiguin Tourism Master Plan',
                 'excerpt' => 'A comprehensive master plan guiding sustainable growth for Camiguin\'s island destination.',
                 'content' => '<p>Art Boncato led stakeholder workshops and produced a 10-year tourism master plan balancing conservation, community livelihoods, and visitor growth for Camiguin Island.</p>',
-                'cover_image_url' => '/images/projects/camiguin.png',
+                'cover_image_url' => Assets::url('/images/projects/camiguin.png'),
                 'category_label' => 'Strategy & Planning',
                 'is_featured' => true,
                 'is_published' => true,
@@ -368,7 +369,7 @@ class DatabaseSeeder extends Seeder
                 'title' => 'Destination Branding for Provincial Tourism',
                 'excerpt' => 'A unified brand platform and campaign toolkit for a provincial tourism office.',
                 'content' => '<p>We developed a distinctive destination identity, visual system, and launch campaign that increased off-peak visitation across the province\'s key corridors.</p>',
-                'cover_image_url' => '/images/projects/provincial-branding.png',
+                'cover_image_url' => Assets::url('/images/projects/provincial-branding.png'),
                 'category_label' => 'Branding & Marketing',
                 'is_featured' => true,
                 'is_published' => true,
@@ -384,7 +385,7 @@ class DatabaseSeeder extends Seeder
                 'title' => 'International Promotion Campaign',
                 'excerpt' => 'A multi-market campaign bringing Philippine destinations to global audiences.',
                 'content' => '<p>From content production to trade engagement, we delivered an integrated international promotion program that expanded reach across key source markets.</p>',
-                'cover_image_url' => '/images/projects/international-campaign.png',
+                'cover_image_url' => Assets::url('/images/projects/international-campaign.png'),
                 'category_label' => 'Media & Promotion',
                 'is_featured' => true,
                 'is_published' => true,
@@ -431,7 +432,7 @@ class DatabaseSeeder extends Seeder
                 'title' => 'The Future of Sustainable Tourism in the Philippines',
                 'excerpt' => 'How provinces and cities can grow visitation responsibly while protecting culture, communities, and natural assets.',
                 'content' => '<p>Sustainable tourism is no longer optional—it is the foundation for long-term destination health. We explore practical frameworks LGUs and DMOs can adopt today.</p>',
-                'featured_image_url' => '/images/posts/sustainable-tourism.png',
+                'featured_image_url' => Assets::url('/images/posts/sustainable-tourism.png'),
                 'status' => 'published',
                 'is_featured' => true,
                 'reading_time' => 6,
@@ -453,7 +454,7 @@ class DatabaseSeeder extends Seeder
                 'title' => 'Building Destination Brands That Last',
                 'excerpt' => 'In a crowded tourism market, the destinations that win are the ones with a narrative visitors can feel—not just see.',
                 'content' => '<p>Story-led destination branding creates emotional connection before the first booking. We explore how to craft authentic narratives rooted in local culture and community pride.</p>',
-                'featured_image_url' => '/images/posts/destination-brands.png',
+                'featured_image_url' => Assets::url('/images/posts/destination-brands.png'),
                 'status' => 'published',
                 'is_featured' => true,
                 'reading_time' => 7,
@@ -469,7 +470,7 @@ class DatabaseSeeder extends Seeder
                 'title' => 'The Power of Storytelling in Tourism',
                 'excerpt' => 'Why compelling media and authentic stories are essential tools for destination marketers in the digital age.',
                 'content' => '<p>From drone footage to community voices, we outline how tourism boards can use media production to create emotional connection and drive visitation.</p>',
-                'featured_image_url' => '/images/posts/storytelling-tourism.png',
+                'featured_image_url' => Assets::url('/images/posts/storytelling-tourism.png'),
                 'status' => 'published',
                 'is_featured' => true,
                 'reading_time' => 5,
@@ -530,19 +531,19 @@ class DatabaseSeeder extends Seeder
                             'name' => 'Maria Santos',
                             'role' => 'Managing Director',
                             'bio' => 'Twenty-five years leading destination master plans across Luzon, Visayas, and Mindanao.',
-                            'avatar_url' => '/images/team/maria-santos.png',
+                            'avatar_url' => Assets::url('/images/team/maria-santos.png'),
                         ],
                         [
                             'name' => 'James Rivera',
                             'role' => 'Head of Strategy',
                             'bio' => 'Former tourism board advisor specializing in visitor experience and stakeholder engagement.',
-                            'avatar_url' => '/images/team/james-rivera.png',
+                            'avatar_url' => Assets::url('/images/team/james-rivera.png'),
                         ],
                         [
                             'name' => 'Elena Cruz',
                             'role' => 'Creative Director',
                             'bio' => 'Award-winning brand strategist for heritage cities and coastal destination campaigns.',
-                            'avatar_url' => '/images/team/elena-cruz.png',
+                            'avatar_url' => Assets::url('/images/team/elena-cruz.png'),
                         ],
                     ],
                 ],
