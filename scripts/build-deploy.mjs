@@ -24,6 +24,7 @@ const backendExcludeDirs = new Set([
 const backendExcludeFiles = new Set([
   '.env',
   '.env.local',
+  '.env.production',
 ])
 
 function shouldSkip(relPath) {

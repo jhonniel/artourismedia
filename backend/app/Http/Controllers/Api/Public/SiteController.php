@@ -15,7 +15,9 @@ class SiteController extends Controller
 
     public function show(): JsonResponse
     {
-        $data = Cache::remember('api.site', 300, fn () => new SiteResource($this->siteService->getPublicSiteData()));
+        $data = Cache::remember('api.site', 300, fn () => (new SiteResource(
+            $this->siteService->getPublicSiteData()
+        ))->resolve());
 
         return ApiResponse::success($data);
     }

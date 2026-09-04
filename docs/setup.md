@@ -104,26 +104,13 @@ Login at http://localhost:5174 with admin credentials.
 
 ## Production Deployment
 
-### Backend
-
-1. Set `APP_ENV=production`, `APP_DEBUG=false`
-2. Configure PostgreSQL connection
-3. Run `php artisan migrate --force`
-4. Run `php artisan config:cache && php artisan route:cache`
-5. Configure web server (Nginx/Apache) pointing to `public/`
-6. Set up queue worker if using async jobs
-7. Configure file storage (S3/DO Spaces for media)
-
-### Frontends
-
-Build static assets and serve via CDN or Nginx:
+Use the deploy zip — see **`dist/README.txt`** at the repo root.
 
 ```bash
-cd frontend && npm run build   # output: frontend/dist/
-cd admin && npm run build      # output: admin/dist/
+npm run build:deploy
 ```
 
-Set `VITE_API_URL` to your production API URL before building.
+On the server: unzip → `cp .env.production.example .env` → `bash scripts/server-after-unzip.sh`
 
 ## Troubleshooting
 

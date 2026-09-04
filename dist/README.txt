@@ -1,101 +1,86 @@
-SERVER DEPLOY — https://artourismedia.com
-(No Docker — backend/.env only)
-=========================================
+================================================================================
+  DEPLOY — artourismedia.com
+================================================================================
 
-WHAT TO UPLOAD
---------------
-
-  web-deploy.zip     FULL dynamic app (use this for first deploy)
-                     Laravel API + website + admin (no bundled images)
-
-  static-web.zip     UI-only update (optional, after first deploy)
-
-
-DATABASE (PostgreSQL on server)
--------------------------------
-
-  Production uses PostgreSQL — NOT SQLite.
-
-  In .env (copy from .env.production):
-
-    DB_CONNECTION=pgsql
-    DB_HOST=127.0.0.1
-    DB_PORT=5432
-    DB_DATABASE=destination_studio
-    DB_USERNAME=destination_user
-    DB_PASSWORD=your_password
-
-  Requires PHP extension: pdo_pgsql
-  Check: php -m | grep pgsql
+  PC                          SERVER
+  ---                         ------
+  npm run build:deploy   →    upload dist/web-deploy.zip
+                              unzip to /var/www/artourismedia.com
+                              cp .env.production.example .env
+                              SEED=1 bash scripts/server-after-unzip.sh
+                              Nginx root → .../public
 
 
-IMAGES (DigitalOcean Spaces)
-----------------------------
+AFTER UNZIP — FOLDER LOOKS LIKE THIS
+------------------------------------
 
-  Site images are NOT in the zip. They are served from Spaces:
-
-    https://infosoft.sgp1.digitaloceanspaces.com/tingog/reports/static/
-
-  Set in .env:
-    ASSETS_BASE_URL=https://infosoft.sgp1.digitaloceanspaces.com/tingog/reports/static
-    DIGITALOCEAN_SPACES_KEY / SECRET (admin uploads + static assets)
-
-  To upload or refresh static images from your PC:
-
-    npm run assets:upload
+  /var/www/artourismedia.com/
+    app/ routes/ artisan ...     ← Laravel (API)
+    .env.production.example      ← copy to .env
+    scripts/server-after-unzip.sh
+    public/                      ← NGINX POINTS HERE
+      index.html                 ← website
+      index.php                  ← /api/*
+      admin/index.html           ← admin panel
 
 
-FIRST-TIME SETUP (on server)
-----------------------------
+FIRST DEPLOY
+------------
 
-  unzip web-deploy.zip -d /var/www/art-website/backend
-  cd /var/www/art-website/backend
-
-  cp .env.production .env
+  cd /var/www/artourismedia.com
+  unzip -o /path/to/web-deploy.zip
+  cp .env.production.example .env
   nano .env
-    # Set: APP_KEY, DB_PASSWORD, ADMIN_PASSWORD, DIGITALOCEAN_SPACES_KEY/SECRET
+    # APP_KEY, DB_PASSWORD, ADMIN_PASSWORD, DIGITALOCEAN_SPACES_KEY/SECRET
 
+  SEED=1 bash scripts/server-after-unzip.sh
+
+  Nginx: root /var/www/artourismedia.com/public;
+  Template: deploy/nginx/single-domain.conf
+
+
+UPDATES (site already live)
+---------------------------
+
+  cd /var/www/artourismedia.com
+  unzip -o /path/to/web-deploy.zip
   composer install --no-dev --optimize-autoloader
-  php artisan key:generate          # only if APP_KEY is empty
   php artisan migrate --force
-  php artisan db:seed --force         # first deploy only
-  php artisan storage:link
+  php artisan cache:clear
   php artisan config:cache
-  php artisan route:cache
-
-  # Nginx root: /var/www/art-website/backend/public
-  # See deploy/nginx/single-domain.conf
 
 
-URLS
-----
+TROUBLESHOOTING
+---------------
 
-  https://artourismedia.com/         Website (loads data from API)
-  https://artourismedia.com/admin/   Admin
-  https://artourismedia.com/api/     Laravel API (dynamic)
+  /api/* returns 404 "File not found"?
+    → Laravel is not wired up. Check BOTH:
 
-  Admin: admin@artourismedia.com / ADMIN_PASSWORD in .env
+    1) index.php must exist on the server:
+         ls -la /var/www/artourismedia.com/public/index.php
+
+       If missing, you uploaded UI-only (static-web.zip) or unzipped wrong.
+       Fix: upload web-deploy.zip and unzip the FULL app (app/, routes/, public/index.php).
+
+    2) Nginx root must be the public/ folder:
+         root /var/www/artourismedia.com/public;
+
+       Test: curl -I https://artourismedia.com/index.php
+       (should NOT say "File not found")
+
+    3) Reload nginx after config change:
+         sudo nginx -t && sudo systemctl reload nginx
+
+  Blank landing page?     php artisan cache:clear
+  API 500 permission?     sudo chown -R www-data:www-data .
+  Check all:              php artisan deploy:check
+  Test API:               curl https://artourismedia.com/api/health
 
 
-WHY TWO ZIP FILES?
-------------------
+IMAGES
+------
 
-  web-deploy.zip   Dynamic — includes Laravel (PHP) so /api/ works (~3 MB, no images)
-  static-web.zip   Static UI only — use when you change design/code
-                   but API is already on the server
+  Not in zip — served from DigitalOcean Spaces.
+  Upload from PC: npm run assets:upload
 
-
-HOW TO UPDATE
--------------
-
-  Content          → /admin/ (no redeploy)
-  UI only          → upload static-web.zip → extract to public/
-  API + UI         → upload new web-deploy.zip
-  New site images  → npm run assets:upload (from dev machine)
-
-
-Build on your PC:
-
-  npm run build:deploy
-
-See also: README.md and DEPLOY.md in the repo root.
+================================================================================

@@ -15,9 +15,9 @@ class HomepageController extends Controller
 
     public function index(): JsonResponse
     {
-        $data = Cache::remember('api.homepage', 300, fn () => new HomepageResource(
+        $data = Cache::remember('api.homepage', 300, fn () => (new HomepageResource(
             $this->homepageSectionService->getPublicHomepageData()
-        ));
+        ))->resolve());
 
         return ApiResponse::success($data);
     }
