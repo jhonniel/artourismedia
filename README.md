@@ -201,13 +201,21 @@ Build deploy packages on your PC (no Docker required):
 npm run build:deploy
 ```
 
-Output in `dist/`:
+Output in `dist/` (tracked in git for server deploy):
 
 | File | Size | Use |
 |------|------|-----|
 | **`web-deploy.zip`** | ~3 MB | Full app — Laravel API + website + admin (no images) |
 | **`static-web.zip`** | ~3 MB | UI-only update when API is already on the server |
 | **`README.txt`** | — | Server setup checklist |
+
+After code changes, rebuild and commit updated zips:
+
+```bash
+npm run build:deploy
+git add dist/
+git commit -m "Update deploy packages"
+```
 
 ### Server setup (PostgreSQL + Nginx)
 

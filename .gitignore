@@ -7,9 +7,12 @@ vendor/
 .env.local
 .env.*.local
 
-# Build output
+# Build output (app bundles — do not commit)
 frontend/dist/
 admin/dist/
+
+# Deploy packages — committed to git for server uploads
+# dist/web-deploy.zip, dist/static-web.zip, dist/README.txt
 
 # IDE
 .idea/
