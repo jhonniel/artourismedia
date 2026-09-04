@@ -11,6 +11,24 @@ WHAT TO UPLOAD
   static-web.zip     UI-only update (optional, after first deploy)
 
 
+DATABASE (PostgreSQL on server)
+-------------------------------
+
+  Production uses PostgreSQL — NOT SQLite.
+
+  In .env (copy from .env.production):
+
+    DB_CONNECTION=pgsql
+    DB_HOST=127.0.0.1
+    DB_PORT=5432
+    DB_DATABASE=destination_studio
+    DB_USERNAME=destination_user
+    DB_PASSWORD=your_password
+
+  Requires PHP extension: pdo_pgsql
+  Check: php -m | grep pgsql
+
+
 IMAGES (DigitalOcean Spaces)
 ----------------------------
 
@@ -62,7 +80,7 @@ URLS
 WHY TWO ZIP FILES?
 ------------------
 
-  web-deploy.zip   Dynamic — includes Laravel (PHP) so /api/ works (~2 MB, no images)
+  web-deploy.zip   Dynamic — includes Laravel (PHP) so /api/ works (~3 MB, no images)
   static-web.zip   Static UI only — use when you change design/code
                    but API is already on the server
 
@@ -79,3 +97,5 @@ HOW TO UPDATE
 Build on your PC:
 
   npm run build:deploy
+
+See also: README.md and DEPLOY.md in the repo root.

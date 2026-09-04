@@ -1,25 +1,50 @@
-# Destination Studio CMS
+# Art Boncato Tourism Consultancy — CMS
 
 A production-quality tourism consultancy CMS with a premium editorial public website, Vue admin dashboard, and Laravel REST API.
+
+**Live site:** https://artourismedia.com
 
 ## Architecture
 
 ```
 React Public Website (frontend/)  ──REST──►  Laravel API (backend/)  ◄──REST──  Vue Admin (admin/)
                                                     │
-                                                    ▼
-                                              PostgreSQL / SQLite
+                    ┌───────────────────────────────┼───────────────────────────────┐
+                    ▼                               ▼                               ▼
+            PostgreSQL (server)          DigitalOcean Spaces (images)          Redis (optional)
+            SQLite (local dev)
 ```
 
-| App | Stack | Port |
-|-----|-------|------|
+| App | Stack | Port (local) |
+|-----|-------|--------------|
 | **Public site** | React 19, TypeScript, Vite, Tailwind CSS v4, TanStack Query | `5173` |
 | **Admin dashboard** | Vue 3, TypeScript, Vite, Pinia, TipTap | `5174` |
-| **API** | Laravel 13, Sanctum, PostgreSQL/SQLite | `8000` |
+| **API** | Laravel 13, Sanctum, PostgreSQL (prod) / SQLite (dev) | `8000` |
 
-## Quick Start
+## Quick Start (local)
 
-### 1. Backend
+```bash
+npm install
+npm run setup   # first time only — creates backend/.env with SQLite
+npm run dev     # site + admin + API
+```
+
+- Website: http://localhost:5173/
+- Admin: http://localhost:5173/admin/
+- API health: http://localhost:8000/api/health
+
+**Default admin credentials** (from seeder):
+- Email: `admin@destinationstudio.test`
+- Password: `password`
+
+For local images from Spaces, copy `frontend/.env.example` → `frontend/.env` (includes `VITE_ASSETS_BASE_URL`).
+
+### Manual setup (per app)
+
+<details>
+<summary>Backend, frontend, and admin separately</summary>
+
+**Backend**
 
 ```bash
 cd backend
@@ -31,15 +56,7 @@ php artisan storage:link
 php artisan serve
 ```
 
-**Default admin credentials** (from seeder):
-- Email: `admin@destinationstudio.test`
-- Password: `password`
-
-**Demo role accounts** (from seeder):
-- Editor: `editor@destinationstudio.test` / `password`
-- Author: `author@destinationstudio.test` / `password`
-
-### 2. Public Website
+**Public website**
 
 ```bash
 cd frontend
@@ -48,9 +65,7 @@ npm install
 npm run dev
 ```
 
-Open http://localhost:5173
-
-### 3. Admin Dashboard
+**Admin dashboard**
 
 ```bash
 cd admin
@@ -59,15 +74,53 @@ npm install
 npm run dev
 ```
 
-Open http://localhost:5174
+</details>
 
 ## Environment Variables
 
-See `.env.example` in each app:
+| App | Key vars |
+|-----|----------|
+| **backend** | `DB_*`, `ASSETS_BASE_URL`, `DIGITALOCEAN_SPACES_*`, `ADMIN_EMAIL`, `ADMIN_PASSWORD`, `FRONTEND_URL`, `ADMIN_URL` |
+| **frontend** | `VITE_API_URL`, `VITE_ASSETS_BASE_URL` |
+| **admin** | `VITE_API_URL`, `VITE_ADMIN_BASE` |
 
-- **backend**: `DB_*`, `ADMIN_EMAIL`, `ADMIN_PASSWORD`, `FRONTEND_URL`, `ADMIN_URL`, `MAIL_*`
-- **frontend**: `VITE_API_URL=http://localhost:8000/api`
-- **admin**: `VITE_API_URL=http://localhost:8000/api`
+### Database
+
+| Environment | Driver | Notes |
+|-------------|--------|-------|
+| **Local dev** | SQLite | Default via `npm run setup` — no Postgres install needed |
+| **Production (server)** | **PostgreSQL** | Set in `backend/.env.production` → copy to `.env` on server |
+
+Production example:
+
+```env
+DB_CONNECTION=pgsql
+DB_HOST=127.0.0.1
+DB_PORT=5432
+DB_DATABASE=destination_studio
+DB_USERNAME=destination_user
+DB_PASSWORD=your_password
+```
+
+Requires PHP **`pdo_pgsql`** on the server.
+
+### Static images (DigitalOcean Spaces)
+
+Site images (hero slideshow, logos, seed assets) are **not bundled** in deploy zips. They are served from Spaces:
+
+```env
+ASSETS_BASE_URL=https://infosoft.sgp1.digitaloceanspaces.com/tingog/reports/static
+DIGITALOCEAN_SPACES_KEY=...
+DIGITALOCEAN_SPACES_SECRET=...
+```
+
+Upload or refresh static assets from your dev machine:
+
+```bash
+npm run assets:upload
+```
+
+Admin media uploads also go to Spaces (not local disk).
 
 ## Features
 
@@ -140,46 +193,65 @@ Use `npm run e2e:ui` for the interactive runner. If servers are already running 
 - [Single-Domain Deployment (one server, one domain)](docs/deployment-single-domain.md)
 - [Docker Production Deployment (DigitalOcean)](docs/deployment-docker.md)
 
-## Production Build
+## Production Build & Deploy
 
-Unified build (default — website + admin + API on one domain):
+Build deploy packages on your PC (no Docker required):
+
+```bash
+npm run build:deploy
+```
+
+Output in `dist/`:
+
+| File | Size | Use |
+|------|------|-----|
+| **`web-deploy.zip`** | ~3 MB | Full app — Laravel API + website + admin (no images) |
+| **`static-web.zip`** | ~3 MB | UI-only update when API is already on the server |
+| **`README.txt`** | — | Server setup checklist |
+
+### Server setup (PostgreSQL + Nginx)
+
+1. Upload and unzip `web-deploy.zip` on the server (e.g. `/var/www/art-website/backend`).
+2. Copy env and fill in secrets:
+
+```bash
+cd /var/www/art-website/backend
+cp .env.production .env
+nano .env
+```
+
+Set at minimum: `APP_KEY`, `DB_*` (PostgreSQL), `ADMIN_PASSWORD`, `DIGITALOCEAN_SPACES_KEY/SECRET`, `ASSETS_BASE_URL`.
+
+3. Install and migrate:
+
+```bash
+composer install --no-dev --optimize-autoloader
+php artisan key:generate          # if APP_KEY is empty
+php artisan migrate --force
+php artisan db:seed --force       # first deploy only
+php artisan storage:link
+php artisan config:cache
+php artisan route:cache
+```
+
+4. Point Nginx document root to `backend/public` (see `deploy/nginx/single-domain.conf`).
+
+**URLs:** https://artourismedia.com/ · `/admin/` · `/api/`
+
+See also **[DEPLOY.md](DEPLOY.md)** and **`dist/README.txt`** for the full checklist.
+
+### Local production test
+
+```bash
+npm run build
+npm run start   # http://localhost:8000
+```
+
+Unified build (website + admin into `backend/public/`):
 
 ```bash
 npm run build
 ```
-
-Output lands in `backend/public/` — deploy that folder with Laravel.
-
-Legacy multi-subdomain build:
-
-```bash
-SINGLE_DOMAIN=0 VITE_API_URL=https://api.example.com/api npm run build
-```
-
-### Staging stack (Docker)
-
-Run PostgreSQL, Redis, and Mailpit locally to mirror production infrastructure:
-
-```bash
-docker compose up -d
-cp backend/.env.staging.example backend/.env
-cd backend && composer install && php artisan key:generate && php artisan migrate --seed
-```
-
-Mailpit inbox: `http://localhost:8025`
-
-### Production stack (Docker)
-
-Full production deploy with Nginx, PHP-FPM, Redis, queue worker, and PostgreSQL:
-
-```bash
-cp .env.docker.example .env.docker
-# edit .env.docker — set domain, DB password, admin password
-chmod +x scripts/docker-prod.sh
-./scripts/docker-prod.sh up
-```
-
-See [Docker Production Deployment](docs/deployment-docker.md) for DigitalOcean setup (Droplet + Managed PostgreSQL or bundled Postgres).
 
 ## Changelog (high level)
 
@@ -198,29 +270,8 @@ See [Docker Production Deployment](docs/deployment-docker.md) for DigitalOcean s
 | 9 | Playwright E2E smoke tests, GitHub Actions CI pipeline |
 | 10 | Production deployment toolkit: Docker staging, build script, nginx templates, security headers |
 | 11 | One-command local dev: `npm run setup` + `npm run dev` |
-
-## Quick Start (local)
-
-```bash
-npm install
-npm run setup   # first time only
-npm run dev     # one address: site + admin + API
-```
-
-- Website: http://localhost:5173/
-- Admin panel: http://localhost:5173/admin/
-- API health: http://localhost:8000/api/health
-
-## Production (unified — one domain, one deploy)
-
-```bash
-npm run build   # builds site + admin into backend/public/
-npm run start   # optional local test on http://localhost:8000
-```
-
-Deploy the `backend/` folder to your server. Nginx root: `backend/public`.  
-See **[DEPLOY.md](DEPLOY.md)** for full instructions (Docker or Nginx + PHP).
+| 12 | Spaces-hosted static assets, slim deploy zips (`build:deploy`), mockup cleanup |
 
 ## License
 
-Proprietary — Destination Studio CMS
+Proprietary — Art Boncato Tourism Consultancy
