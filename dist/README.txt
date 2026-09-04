@@ -2,6 +2,15 @@
   DEPLOY — artourismedia.com
 ================================================================================
 
+WHICH ZIP? (read this first)
+----------------------------
+
+  web-deploy.zip   ← USE THIS (website + admin + API)
+  static-web.zip   ← DO NOT use for first deploy (UI only, no API)
+
+  You only deploy ONE zip — never both.
+
+
   PC                          SERVER
   ---                         ------
   npm run build:deploy   →    upload dist/web-deploy.zip
