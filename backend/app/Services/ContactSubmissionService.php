@@ -19,16 +19,28 @@ class ContactSubmissionService extends CrudService
     {
         $submission = ContactSubmission::create(array_merge($data, [
             'status' => 'new',
+            'subject' => $data['subject'] ?? 'Schedule a Consultation',
         ]));
 
-        $adminEmail = SiteSetting::query()->where('key', 'contact_email')->value('value');
+        $adminEmail = $this->adminNotificationEmail();
         if ($adminEmail) {
-            Mail::to($adminEmail)->queue(new ContactSubmissionReceived($submission));
+            Mail::to($adminEmail)->send(new ContactSubmissionReceived($submission));
         }
 
-        Mail::to($submission->email)->queue(new ContactSubmissionConfirmation($submission));
+        Mail::to($submission->email)->send(new ContactSubmissionConfirmation($submission));
 
         return $submission;
+    }
+
+    protected function adminNotificationEmail(): ?string
+    {
+        $fromSettings = SiteSetting::query()
+            ->whereIn('key', ['contact_email', 'footer_email'])
+            ->pluck('value', 'key');
+
+        return $fromSettings->get('contact_email')
+            ?: $fromSettings->get('footer_email')
+            ?: config('mail.from.address');
     }
 
     public function markAsRead(ContactSubmission $submission): ContactSubmission

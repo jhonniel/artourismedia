@@ -10,7 +10,7 @@ interface TrustStripProps {
   embedded?: boolean
 }
 
-const TRUST_COLORS = ['bg-teal', 'bg-orange', 'bg-navy', 'bg-teal', 'bg-purple']
+const TRUST_COLORS = ['bg-teal', 'bg-orange', 'bg-navy', 'bg-purple', 'bg-teal']
 
 export function TrustStrip({ items, title, embedded = false }: TrustStripProps) {
   const sorted = [...items].sort((a, b) => a.sort_order - b.sort_order)

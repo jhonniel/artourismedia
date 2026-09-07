@@ -81,6 +81,12 @@ TROUBLESHOOTING
          sudo nginx -t && sudo systemctl reload nginx
 
   Blank landing page?     php artisan cache:clear
+  First load OK, refresh blank?
+    → index.html and /assets/* are out of sync (partial deploy or browser cache).
+    → Run: php artisan deploy:check
+    → Fix: unzip the FULL web-deploy.zip again (not just index.html).
+    → Then: php artisan cache:clear
+    → Reload nginx if you updated deploy/nginx/single-domain.conf
   API 500 permission?     sudo chown -R www-data:www-data .
   Check all:              php artisan deploy:check
   Test API:               curl https://artourismedia.com/api/health

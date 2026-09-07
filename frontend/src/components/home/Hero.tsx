@@ -9,7 +9,6 @@ import {
   HeartOutlineIcon,
   AirplaneIcon,
   HeroOrangeAccent,
-  HeartMountainsIcon,
 } from '@/components/ui/Decorative'
 import { cn, parseContent } from '@/lib/utils'
 import type { HeroContent, HomepageSection } from '@/types'
@@ -68,34 +67,6 @@ function HeroHeadline({
   )
 }
 
-function StrategyImpactBadge({ text }: { text: string }) {
-  const match = text.match(/^(Turning\s+Strategy)\s+(into)\s+(.+)$/i)
-
-  return (
-    <div className="absolute bottom-[8%] right-[4%] z-20 flex max-w-[calc(100%-2rem)] items-center gap-3 rounded-full bg-navy px-4 py-2.5 text-white shadow-elevated sm:gap-3.5 sm:px-5 sm:py-3 lg:bottom-[10%] lg:right-[5%]">
-      <HeartMountainsIcon className="h-9 w-9 shrink-0 text-white sm:h-10 sm:w-10" />
-
-      {match ? (
-        <div className="min-w-0 font-serif text-[13px] leading-[1.15] sm:text-[14px]">
-          <span className="block whitespace-nowrap">{match[1]}</span>
-          <span className="mt-0.5 block whitespace-nowrap">
-            <span className="relative inline-block">
-              {match[2]}
-              <span
-                className="absolute -bottom-0.5 left-0 h-[3px] w-full rounded-full bg-orange"
-                aria-hidden="true"
-              />
-            </span>{' '}
-            {match[3]}
-          </span>
-        </div>
-      ) : (
-        <p className="font-serif text-[13px] leading-snug sm:text-[14px]">{text}</p>
-      )}
-    </div>
-  )
-}
-
 function HeroLinkButton({
   href,
   external,
@@ -124,19 +95,20 @@ function HeroLinkButton({
 
 function LandingHero({ content }: { content: HeroContent }) {
   return (
-    <section className="hero-offset relative w-full overflow-x-clip bg-white">
-      {/* Mobile — image fades into overlapping text */}
-      <div className="lg:hidden bg-white">
-        <div className="hero-mobile-stack relative">
-          <div className="hero-mobile-media relative w-full overflow-hidden">
+    <section className="hero-offset relative flex min-h-0 w-full flex-col overflow-hidden bg-white">
+      {/* Mobile — image + bottom fade behind copy (no seam line) */}
+      <div className="hero-landing-mobile lg:hidden flex min-h-0 flex-1 flex-col bg-white">
+        <div className="hero-mobile-stack relative min-h-0 flex-1 overflow-hidden">
+          <div aria-hidden className="hero-mobile-photo">
             <HeroSlideshow
               className="hero-mobile-slideshow absolute inset-0 z-0 size-full"
-              imageClassName="object-cover object-[center_35%]"
+              imageClassName="object-cover object-[center_28%]"
             />
+            <div className="hero-mobile-fade pointer-events-none absolute inset-x-0 bottom-0 z-[1]" />
           </div>
 
-          <Container className="hero-mobile-copy-wrap pb-2">
-            <FadeIn className="hero-copy hero-mobile-copy pb-6">
+          <Container className="hero-mobile-copy-wrap relative z-10 pb-[max(1.25rem,env(safe-area-inset-bottom))]">
+            <FadeIn className="hero-copy">
               <HeroContentBlock content={content} variant="landing" />
             </FadeIn>
           </Container>
@@ -144,18 +116,17 @@ function LandingHero({ content }: { content: HeroContent }) {
       </div>
 
       {/* Desktop — full-bleed image with soft left fade (no hard 50/50 column split) */}
-      <div className="hero-shell hero-landing-shell hidden lg:block">
+      <div className="hero-shell hero-landing-shell hidden min-h-0 flex-1 lg:block">
         <div className="hero-media hero-landing-media">
           <HeroSlideshow
-            className="absolute inset-0 z-0 h-full w-full"
+            className="hero-landing-slideshow absolute inset-0 z-0 h-full w-full"
             imageClassName="object-cover object-[68%_center]"
           />
           <div aria-hidden className="hero-landing-gradient-overlay pointer-events-none" />
-          {content.badge_text && <StrategyImpactBadge text={content.badge_text} />}
           <HeroOrangeAccent className="pointer-events-none absolute -bottom-1 right-0 z-[2] h-32 w-40 xl:h-36 xl:w-48" />
         </div>
 
-        <FadeIn className="hero-copy hero-landing-copy relative z-10 flex flex-col justify-center py-10 xl:py-12">
+        <FadeIn className="hero-copy hero-landing-copy relative z-10 flex flex-col justify-center py-10 lg:py-0 xl:py-0">
           <HeroContentBlock content={content} variant="landing" />
         </FadeIn>
       </div>
@@ -174,7 +145,7 @@ function HeroContentBlock({
 }) {
   const isLanding = variant === 'landing'
   const buttonClass = cn(
-    'px-6 uppercase tracking-[0.12em] sm:px-7',
+    'px-7 uppercase tracking-[0.12em] sm:px-8 lg:px-9 lg:py-4',
     isLanding
       ? 'hero-btn-landing'
       : 'text-[10px] sm:text-[11px] md:text-xs',
@@ -205,7 +176,7 @@ function HeroContentBlock({
         <p
           className={cn(
             isLanding
-              ? 'hero-subhead-landing mt-4 w-full max-w-none text-navy/80 sm:mt-[1.125rem]'
+              ? 'hero-subhead-landing mt-4 w-full max-w-none text-navy/80 sm:mt-6 lg:mt-7'
               : 'mt-4 max-w-[21rem] text-sm leading-[1.6] text-navy/70 sm:mt-5 md:text-[15px] lg:max-w-[23rem]',
           )}
         >
@@ -214,7 +185,7 @@ function HeroContentBlock({
       )}
 
       {(content.cta_text || content.secondary_cta_text) && (
-        <div className={cn('relative flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center', isLanding ? 'mt-5 sm:mt-6' : 'mt-6 sm:mt-7 md:mt-8')}>
+        <div className={cn('relative flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center', isLanding ? 'mt-6 sm:mt-7 lg:mt-8' : 'mt-6 sm:mt-7 md:mt-8')}>
           {content.cta_text && content.cta_url && (
             <HeroLinkButton
               href={content.cta_url}
@@ -231,7 +202,7 @@ function HeroContentBlock({
             <HeroLinkButton
               href={content.secondary_cta_url}
               external={content.secondary_cta_url.startsWith('http')}
-              className="hero-btn-landing inline-flex items-center gap-3 rounded-full border border-navy/15 bg-white px-4 py-2.5 font-bold uppercase tracking-[0.12em] text-navy transition-colors hover:border-teal hover:text-teal sm:px-5"
+              className="hero-btn-landing inline-flex items-center gap-3 rounded-full border border-navy/15 bg-white px-5 py-3 font-bold uppercase tracking-[0.12em] text-navy transition-colors hover:border-teal hover:text-teal sm:px-6 lg:py-3.5"
             >
               {content.secondary_cta_text}
               <span className="flex h-8 w-8 items-center justify-center rounded-full border border-navy/15 bg-white">

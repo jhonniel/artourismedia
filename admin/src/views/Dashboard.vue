@@ -87,7 +87,7 @@ onMounted(async () => {
           <p v-else class="text-sm text-slate-500">No projects yet</p>
         </Card>
 
-        <Card title="Recent Messages" subtitle="Latest contact submissions" class="lg:col-span-2">
+        <Card title="Recent Consultations" subtitle="Latest Schedule a Consultation requests" class="lg:col-span-2">
           <ul v-if="data.recent_messages.length" class="divide-y divide-slate-100">
             <li v-for="message in data.recent_messages" :key="message.uuid" class="flex items-center justify-between py-3">
               <div>

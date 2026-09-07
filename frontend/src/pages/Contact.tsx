@@ -20,7 +20,7 @@ export default function Contact() {
     email: '',
     company: '',
     phone: '',
-    subject: '',
+    subject: 'Schedule a Consultation',
     message: '',
   })
   const [errors, setErrors] = useState<Partial<Record<keyof ContactFormData, string>>>({})
@@ -42,7 +42,7 @@ export default function Contact() {
     try {
       await contact.mutateAsync(form)
       setSubmitted(true)
-      setForm({ name: '', email: '', company: '', phone: '', subject: '', message: '' })
+      setForm({ name: '', email: '', company: '', phone: '', subject: 'Schedule a Consultation', message: '' })
     } catch {
       // handled by mutation state
     }
@@ -54,18 +54,18 @@ export default function Contact() {
   return (
     <>
       <SEO
-        title="Contact"
-        description="Get in touch with our tourism consultancy team."
+        title="Schedule a Consultation"
+        description="Request a consultation with Art! Boncato Tourism Consultancy."
         url={pageUrl}
         jsonLd={contactPageJsonLd(settings ?? {}, pageUrl)}
       />
       <Container className="py-16 md:py-24">
         <FadeIn>
           <SectionHeading
-            eyebrow="Get in touch"
+            eyebrow="Schedule a Consultation"
             title="Let's start a"
             accent="conversation"
-            description="Tell us about your destination or tourism project — we'd love to hear from you."
+            description="Tell us about your destination or tourism project — we'll review your request and get back to you."
             align="center"
           />
         </FadeIn>
@@ -126,8 +126,8 @@ export default function Contact() {
           <FadeIn delay={200} className="lg:col-span-3">
             {submitted ? (
               <div className="rounded-3xl bg-teal/10 p-5 text-center sm:p-8">
-                <h3 className="text-2xl font-bold text-teal">Message sent!</h3>
-                <p className="mt-2 text-navy/70">Thank you for reaching out. We'll get back to you soon.</p>
+                <h3 className="text-2xl font-bold text-teal">Consultation request sent!</h3>
+                <p className="mt-2 text-navy/70">Thank you for reaching out. We&apos;ll review your request and respond soon.</p>
                 <Button variant="outline" className="mt-6" onClick={() => setSubmitted(false)}>
                   Send another message
                 </Button>
@@ -177,7 +177,7 @@ export default function Contact() {
                   <p className="text-sm text-orange">{contact.error.message}</p>
                 )}
                 <Button type="submit" variant="orange" size="lg" disabled={contact.isPending} className="w-full sm:w-auto">
-                  {contact.isPending ? 'Sending…' : 'Send Message'}
+                  {contact.isPending ? 'Sending…' : 'Schedule Consultation'}
                 </Button>
               </form>
             )}

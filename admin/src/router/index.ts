@@ -180,7 +180,7 @@ const router = createRouter({
           path: 'communication/contact',
           name: 'contact-submissions',
           component: () => import('@/views/communication/ContactSubmissions.vue'),
-          meta: { title: 'Contact Submissions', roles: ['admin', 'editor'] },
+          meta: { title: 'Consultation Requests', roles: ['admin', 'editor'] },
         },
         {
           path: 'communication/newsletter',

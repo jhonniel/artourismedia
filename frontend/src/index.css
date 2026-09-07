@@ -190,75 +190,146 @@
     padding-bottom: env(safe-area-inset-bottom, 0px);
   }
 
-  .hero-mobile-media {
-    aspect-ratio: 16 / 10;
-    min-height: 12rem;
-    max-height: 20rem;
-    background-color: #ffffff;
+  .hero-mobile-stack {
+    position: relative;
+    overflow-x: clip;
   }
 
-  @media (min-width: 640px) {
-    .hero-mobile-media {
-      min-height: 14rem;
-      max-height: 22rem;
-    }
+  .hero-mobile-photo {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
   }
 
-  .hero-mobile-slideshow {
+  .hero-mobile-photo .hero-mobile-slideshow {
     -webkit-mask-image: linear-gradient(
       180deg,
       #000 0%,
-      #000 30%,
-      rgb(0 0 0 / 0.94) 46%,
-      rgb(0 0 0 / 0.78) 58%,
-      rgb(0 0 0 / 0.52) 68%,
-      rgb(0 0 0 / 0.22) 78%,
-      transparent 90%
+      #000 55%,
+      rgb(0 0 0 / 0.75) 72%,
+      rgb(0 0 0 / 0.35) 88%,
+      rgb(0 0 0 / 0.08) 100%
     );
     mask-image: linear-gradient(
       180deg,
       #000 0%,
-      #000 30%,
-      rgb(0 0 0 / 0.94) 46%,
-      rgb(0 0 0 / 0.78) 58%,
-      rgb(0 0 0 / 0.52) 68%,
-      rgb(0 0 0 / 0.22) 78%,
-      transparent 90%
+      #000 55%,
+      rgb(0 0 0 / 0.75) 72%,
+      rgb(0 0 0 / 0.35) 88%,
+      rgb(0 0 0 / 0.08) 100%
+    );
+  }
+
+  .hero-mobile-fade {
+    height: 72%;
+    background: linear-gradient(
+      to top,
+      #ffffff 0%,
+      #ffffff 14%,
+      rgb(255 255 255 / 0.98) 28%,
+      rgb(255 255 255 / 0.85) 42%,
+      rgb(255 255 255 / 0.55) 56%,
+      rgb(255 255 255 / 0.22) 72%,
+      transparent 100%
     );
   }
 
   .hero-mobile-copy-wrap {
     position: relative;
-    z-index: 2;
-    margin-top: -5rem;
-  }
-
-  .hero-mobile-copy {
-    padding-top: 0;
-    border-radius: 1.5rem 1.5rem 0 0;
-    background: linear-gradient(
-      180deg,
-      rgb(255 255 255 / 0.97) 0%,
-      #ffffff 28%
-    );
-    padding-top: 1.25rem;
+    z-index: 10;
+    margin-top: clamp(15rem, 62vw, 21rem);
+    background: transparent;
+    border-radius: 0;
+    box-shadow: none;
   }
 
   @media (min-width: 640px) {
     .hero-mobile-copy-wrap {
-      margin-top: -6.5rem;
-    }
-
-    .hero-mobile-copy {
-      padding-top: 1.5rem;
+      margin-top: clamp(16rem, 58vw, 22rem);
     }
   }
 
   .hero-landing-shell {
     position: relative;
     width: 100%;
-    min-height: min(720px, calc(100vh - 5rem));
+    min-height: calc(100dvh - var(--header-height));
     overflow: hidden;
+  }
+
+  .landing-main {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .landing-page {
+    flex: 1;
+    min-height: 0;
+    height: calc(100dvh - var(--header-height));
+    max-height: calc(100dvh - var(--header-height));
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .landing-page .hero-offset {
+    flex: 1;
+    min-height: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  @media (max-width: 1023px) {
+    .landing-page .hero-offset {
+      min-height: 100dvh;
+    }
+
+    .landing-page .hero-landing-mobile {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .landing-page .hero-mobile-stack {
+      flex: 1;
+      min-height: 0;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      overflow: hidden;
+    }
+
+    .landing-page .hero-mobile-copy-wrap {
+      margin-top: 0;
+      flex-shrink: 0;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .landing-page .hero-offset {
+      min-height: 100dvh;
+    }
+
+    .landing-page .hero-landing-shell {
+      flex: 1;
+      min-height: 0;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .landing-page .hero-landing-copy {
+      min-height: 0;
+      height: 100%;
+    }
   }
 
   .hero-landing-media {
@@ -272,6 +343,7 @@
     position: absolute;
     inset: 0;
     z-index: 1;
+    pointer-events: none;
     background: linear-gradient(
       to right,
       #ffffff 0%,
@@ -287,9 +359,9 @@
     position: relative;
     z-index: 10;
     box-sizing: border-box;
-    width: min(48%, 42rem);
+    width: min(52%, 46rem);
     margin-left: var(--site-band-inset);
-    min-height: min(720px, calc(100vh - 5rem));
+    min-height: calc(100dvh - var(--header-height));
     padding-left: var(--site-gutter);
     padding-right: clamp(1.5rem, 2vw, 2.5rem);
   }
@@ -319,30 +391,37 @@
 
   @media (min-width: 1024px) {
     .hero-shell .hero-headline-landing {
-      font-size: clamp(2.65rem, 2.4vw, 3.45rem);
+      font-size: clamp(3.75rem, 3.6vw, 5.25rem);
+      line-height: 1.04;
     }
 
     .hero-shell .hero-eyebrow-landing {
-      font-size: 0.6875rem;
+      font-size: 0.75rem;
     }
 
     .hero-shell .hero-subhead-landing {
-      font-size: clamp(1rem, 0.95vw, 1.125rem);
+      font-size: clamp(1.375rem, 1.35vw, 1.625rem);
+      line-height: 1.5;
     }
 
     .hero-shell .hero-btn-landing {
-      font-size: 0.75rem;
+      font-size: 0.875rem;
+    }
+
+    .hero-shell .hero-landing-copy {
+      padding-top: clamp(2.5rem, 4vh, 4rem);
+      padding-bottom: clamp(2.5rem, 4vh, 4rem);
     }
 
     .hero-landing-gradient-overlay {
       background: linear-gradient(
         to right,
         #ffffff 0%,
-        #ffffff 28%,
-        rgb(255 255 255 / 0.96) 36%,
-        rgb(255 255 255 / 0.7) 44%,
-        rgb(255 255 255 / 0.3) 52%,
-        transparent 62%
+        #ffffff 30%,
+        rgb(255 255 255 / 0.96) 38%,
+        rgb(255 255 255 / 0.72) 46%,
+        rgb(255 255 255 / 0.32) 54%,
+        transparent 64%
       );
     }
   }

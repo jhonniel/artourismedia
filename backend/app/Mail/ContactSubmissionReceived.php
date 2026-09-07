@@ -4,13 +4,12 @@ namespace App\Mail;
 
 use App\Models\ContactSubmission;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class ContactSubmissionReceived extends Mailable implements ShouldQueue
+class ContactSubmissionReceived extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -18,16 +17,17 @@ class ContactSubmissionReceived extends Mailable implements ShouldQueue
 
     public function envelope(): Envelope
     {
+        $subject = $this->submission->subject ?: 'Schedule a Consultation';
+
         return new Envelope(
-            subject: 'New contact submission: '.($this->submission->subject ?: $this->submission->name),
+            subject: 'New consultation request: '.$subject,
         );
     }
 
     public function content(): Content
     {
         return new Content(
-            htmlString: '<p><strong>'.$this->submission->name.'</strong> ('.$this->submission->email.') submitted a message.</p>'
-                .'<p>'.nl2br(e($this->submission->message)).'</p>',
+            view: 'mail.contact-submission-received',
         );
     }
 }

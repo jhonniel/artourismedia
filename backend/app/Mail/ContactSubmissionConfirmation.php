@@ -4,13 +4,12 @@ namespace App\Mail;
 
 use App\Models\ContactSubmission;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class ContactSubmissionConfirmation extends Mailable implements ShouldQueue
+class ContactSubmissionConfirmation extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -19,15 +18,14 @@ class ContactSubmissionConfirmation extends Mailable implements ShouldQueue
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'We received your message',
+            subject: 'We received your consultation request',
         );
     }
 
     public function content(): Content
     {
         return new Content(
-            htmlString: '<p>Hi '.$this->submission->name.',</p>'
-                .'<p>Thank you for contacting Destination Studio. We have received your message and will respond shortly.</p>',
+            view: 'mail.contact-submission-confirmation',
         );
     }
 }

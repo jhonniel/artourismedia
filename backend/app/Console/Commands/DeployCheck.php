@@ -126,6 +126,9 @@ class DeployCheck extends Command
             $this->line('✓ Health route registered');
         }
 
+        $failed = $this->checkSpaAssets('public/index.html', 'Website') || $failed;
+        $failed = $this->checkSpaAssets('public/admin/index.html', 'Admin') || $failed;
+
         if ($failed) {
             $this->newLine();
             $this->error('Deployment check failed. Fix the issues above before going live.');
@@ -144,5 +147,41 @@ class DeployCheck extends Command
         return in_array(config('cache.default'), ['redis'], true)
             || in_array(config('queue.default'), ['redis'], true)
             || in_array(config('session.driver'), ['redis'], true);
+    }
+
+    protected function checkSpaAssets(string $relativePath, string $label): bool
+    {
+        $path = base_path($relativePath);
+
+        if (! File::exists($path)) {
+            $this->warn("{$label} SPA missing: {$relativePath}");
+
+            return false;
+        }
+
+        $html = File::get($path);
+        preg_match_all('/(?:src|href)="(\/assets\/[^"?]+)"/', $html, $matches);
+        $assets = array_unique($matches[1] ?? []);
+        $missing = [];
+
+        foreach ($assets as $asset) {
+            if (! File::exists(public_path(ltrim($asset, '/')))) {
+                $missing[] = $asset;
+            }
+        }
+
+        if ($missing !== []) {
+            $this->error("{$label} index.html references missing files:");
+            foreach ($missing as $asset) {
+                $this->line("  - {$asset}");
+            }
+            $this->line('  Redeploy the full web-deploy.zip (or replace public/assets + index.html together).');
+
+            return true;
+        }
+
+        $this->line("✓ {$label} SPA assets match index.html");
+
+        return false;
     }
 }

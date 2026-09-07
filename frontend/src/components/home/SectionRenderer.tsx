@@ -8,19 +8,23 @@ import type { HomepageData, HomepageSection, SocialLink } from '@/types'
 interface SectionRendererProps {
   data: HomepageData
   socialLinks?: SocialLink[]
+  landingOnly?: boolean
 }
 
-export function SectionRenderer({ data, socialLinks = [] }: SectionRendererProps) {
+export function SectionRenderer({ data, socialLinks = [], landingOnly = false }: SectionRendererProps) {
   const sections = [...data.sections]
     .filter((s) => s.type)
+    .filter((s) => !landingOnly || s.type === 'hero')
     .sort((a, b) => a.sort_order - b.sort_order)
 
+  if (sections.length === 0) return null
+
   return (
-    <>
+    <div className={landingOnly ? 'landing-page' : undefined}>
       {sections.map((section) => (
         <SectionBlock key={section.uuid} section={section} data={data} socialLinks={socialLinks} />
       ))}
-    </>
+    </div>
   )
 }
 

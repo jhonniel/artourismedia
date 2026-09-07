@@ -116,8 +116,8 @@ function onSearch(): void {
 <template>
   <div>
     <div class="mb-6">
-      <h2 class="admin-page-title">Contact Submissions</h2>
-      <p class="admin-page-subtitle">View and manage incoming messages</p>
+      <h2 class="admin-page-title">Consultation Requests</h2>
+      <p class="admin-page-subtitle">Schedule a Consultation submissions from the website</p>
     </div>
 
     <div

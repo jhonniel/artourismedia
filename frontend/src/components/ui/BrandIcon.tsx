@@ -1,6 +1,7 @@
 import { cn } from '@/lib/utils'
 import { assetUrl } from '@/lib/assets'
 import { SERVICE_ICON_BY_NAME } from '@/components/icons/ServiceIcons'
+import { PARTNER_ICON_BY_NAME } from '@/components/icons/PartnerIcons'
 
 const ICON_FILES: Record<string, string> = {
   building: assetUrl('/images/icons/building.svg'),
@@ -74,6 +75,20 @@ function resolveIconName(name?: string | null): string | null {
 
 export function BrandIcon({ name, className, size = 'md', light = false }: BrandIconProps) {
   const iconName = resolveIconName(name)
+  const PartnerComponent = iconName ? PARTNER_ICON_BY_NAME[iconName] : null
+
+  if (PartnerComponent) {
+    return (
+      <PartnerComponent
+        className={cn(
+          SIZE_MAP[size],
+          light && 'text-white',
+          className,
+        )}
+      />
+    )
+  }
+
   const ServiceComponent = iconName ? SERVICE_ICON_BY_NAME[iconName] : null
 
   if (ServiceComponent) {

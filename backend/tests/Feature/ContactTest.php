@@ -32,6 +32,10 @@ class ContactTest extends TestCase
         $this->assertDatabaseHas('contact_submissions', [
             'email' => 'jane@example.com',
             'status' => 'new',
+            'subject' => 'Schedule a Consultation',
         ]);
+
+        Mail::assertSent(\App\Mail\ContactSubmissionReceived::class);
+        Mail::assertSent(\App\Mail\ContactSubmissionConfirmation::class);
     }
 }
