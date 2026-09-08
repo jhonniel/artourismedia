@@ -77,9 +77,9 @@ class DatabaseSeeder extends Seeder
     protected function seedSiteSettings(): void
     {
         $settings = [
-            ['key' => 'site_name', 'value' => 'Art!', 'type' => 'string', 'group' => 'general'],
-            ['key' => 'site_tagline', 'value' => 'Boncato Tourism Consultancy', 'type' => 'string', 'group' => 'general'],
-            ['key' => 'tagline', 'value' => 'Boncato Tourism Consultancy', 'type' => 'string', 'group' => 'general'],
+            ['key' => 'site_name', 'value' => 'ArTourisMedia', 'type' => 'string', 'group' => 'general'],
+            ['key' => 'site_tagline', 'value' => 'Tourism Consultancy', 'type' => 'string', 'group' => 'general'],
+            ['key' => 'tagline', 'value' => 'Tourism Consultancy', 'type' => 'string', 'group' => 'general'],
             ['key' => 'contact_email', 'value' => 'atm@artourismedia.com', 'type' => 'string', 'group' => 'contact'],
             ['key' => 'contact_phone', 'value' => '+63 917 123 4567', 'type' => 'string', 'group' => 'contact'],
             ['key' => 'contact_address', 'value' => 'Philippines', 'type' => 'string', 'group' => 'contact'],
@@ -98,7 +98,7 @@ class DatabaseSeeder extends Seeder
             ['key' => 'google_analytics_id', 'value' => '', 'type' => 'string', 'group' => 'branding'],
             ['key' => 'default_seo_title', 'value' => 'Art! Boncato | Tourism Consultancy', 'type' => 'string', 'group' => 'branding'],
             ['key' => 'default_seo_description', 'value' => 'Art Boncato Tourism Consultancy helps governments and communities shape inspiring destinations people remember.', 'type' => 'string', 'group' => 'branding'],
-            ['key' => 'logo_url', 'value' => Assets::url('/images/brand/logo-header-v2.png'), 'type' => 'string', 'group' => 'branding'],
+            ['key' => 'logo_url', 'value' => Assets::url('/images/brand/artourismedia-logo.png'), 'type' => 'string', 'group' => 'branding'],
             ['key' => 'favicon_url', 'value' => Assets::url('/favicon.svg'), 'type' => 'string', 'group' => 'branding'],
         ];
 
@@ -110,11 +110,12 @@ class DatabaseSeeder extends Seeder
     protected function seedNavigation(): void
     {
         $items = [
-            ['label' => 'About', 'url' => '/about', 'sort_order' => 1],
-            ['label' => 'Services', 'url' => '/services', 'sort_order' => 2],
-            ['label' => 'Projects', 'url' => '/projects', 'sort_order' => 3],
-            ['label' => 'Insights', 'url' => '/insights', 'sort_order' => 4],
-            ['label' => 'Schedule a Consultation', 'url' => '/contact', 'sort_order' => 5, 'is_cta' => true],
+            ['label' => 'Home', 'url' => '/', 'sort_order' => 1],
+            ['label' => 'About', 'url' => '/about', 'sort_order' => 2],
+            ['label' => 'Services', 'url' => '/services', 'sort_order' => 3],
+            ['label' => 'Projects', 'url' => '/projects', 'sort_order' => 4],
+            ['label' => 'Insights', 'url' => '/insights', 'sort_order' => 5],
+            ['label' => 'Schedule a Consultation', 'url' => '/contact', 'sort_order' => 6, 'is_cta' => true],
         ];
 
         $labels = [];
@@ -526,72 +527,14 @@ class DatabaseSeeder extends Seeder
         Page::query()->updateOrCreate(
             ['slug' => 'about'],
             [
-                'title' => 'About Destination Studio',
-                'content' => '<p>Destination Studio is a tourism consultancy helping places tell better stories, welcome more visitors, and grow responsibly. Our multidisciplinary team combines strategy, creative, and analytics to deliver measurable impact for destinations across the Philippines and Southeast Asia.</p>',
-                'metadata' => [
-                    'values' => [
-                        [
-                            'title' => 'Purpose-Led Strategy',
-                            'description' => 'We align tourism growth with community priorities, environmental stewardship, and long-term destination health.',
-                            'icon' => 'target',
-                        ],
-                        [
-                            'title' => 'Collaborative Design',
-                            'description' => 'We co-create with local stakeholders so every brand, experience, and campaign reflects authentic place identity.',
-                            'icon' => 'handshake',
-                        ],
-                        [
-                            'title' => 'Measurable Impact',
-                            'description' => 'We track visitor sentiment, economic outcomes, and campaign performance to prove what works.',
-                            'icon' => 'chart-line',
-                        ],
-                    ],
-                    'timeline' => [
-                        [
-                            'year' => '1992',
-                            'title' => 'Founded in Manila',
-                            'description' => 'Destination Studio began as a boutique consultancy serving emerging Philippine destinations.',
-                        ],
-                        [
-                            'year' => '2008',
-                            'title' => 'Regional expansion',
-                            'description' => 'Our team grew across ASEAN, partnering with provincial governments and hospitality groups.',
-                        ],
-                        [
-                            'year' => '2020',
-                            'title' => 'Digital-first storytelling',
-                            'description' => 'We launched integrated content and campaign services for post-pandemic recovery.',
-                        ],
-                        [
-                            'year' => 'Today',
-                            'title' => 'Nation-building partners',
-                            'description' => 'We continue to help destinations become places people remember and return to.',
-                        ],
-                    ],
-                    'team' => [
-                        [
-                            'name' => 'Maria Santos',
-                            'role' => 'Managing Director',
-                            'bio' => 'Twenty-five years leading destination master plans across Luzon, Visayas, and Mindanao.',
-                            'avatar_url' => Assets::url('/images/team/maria-santos.png'),
-                        ],
-                        [
-                            'name' => 'James Rivera',
-                            'role' => 'Head of Strategy',
-                            'bio' => 'Former tourism board advisor specializing in visitor experience and stakeholder engagement.',
-                            'avatar_url' => Assets::url('/images/team/james-rivera.png'),
-                        ],
-                        [
-                            'name' => 'Elena Cruz',
-                            'role' => 'Creative Director',
-                            'bio' => 'Award-winning brand strategist for heritage cities and coastal destination campaigns.',
-                            'avatar_url' => Assets::url('/images/team/elena-cruz.png'),
-                        ],
-                    ],
-                ],
+                'title' => 'About Art Boncato',
+                'content' => '<p>Art Boncato, Jr. is a tourism and hospitality executive who continues to build on a career spanning 30 years.</p>'
+                    .'<p>He has spent the past 10 years in several senior leadership roles as the Group General Manager of Megaworld Hotels and Resorts; Executive Vice President and Chief Operating Officer of the World Trade Center Metro Manila; Regional Director, Assistant Secretary, and Undersecretary of the Philippine Department of Tourism; and Assistant Secretary of the Department of Trade and Industry seconded to the Department of Finance to organize the 51st Asian Development Bank Summit in Manila.</p>'
+                    .'<p>He is now steering ArTourisMedia, a team that delivers bespoke tourism solutions for planning and development, branding and marketing, learning and development, MICE execution, and a partner in advocating tourism growth in Mindanao.</p>',
+                'metadata' => null,
                 'is_published' => true,
-                'seo_title' => 'About Us | Destination Studio',
-                'seo_description' => 'Meet the team behind Destination Studio, a strategic tourism consultancy for destinations.',
+                'seo_title' => 'About Art Boncato | ArTourisMedia',
+                'seo_description' => 'Learn about Art Boncato, Jr.—tourism and hospitality executive leading ArTourisMedia with bespoke solutions for destinations across the Philippines.',
             ]
         );
 

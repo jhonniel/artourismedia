@@ -27,7 +27,7 @@ function getSocialStyles(platform: string): { bg: string; text: string } {
     }
   }
   if (p.includes('linkedin')) return { bg: 'bg-[#0A66C2]', text: 'text-white' }
-  if (p.includes('tiktok')) return { bg: 'bg-navy', text: 'text-white' }
+  if (p.includes('tiktok')) return { bg: 'bg-[#000000]', text: 'text-white' }
 
   return { bg: 'bg-white/15', text: 'text-white' }
 }
@@ -60,7 +60,12 @@ export function Footer({ footer, socialLinks, siteName }: FooterProps) {
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-12 lg:gap-8 xl:gap-10">
           <div className="sm:col-span-2 lg:col-span-4">
             <div className="mb-5">
-              <BrandLogo siteName={siteName} variant="footer" className="h-10 w-auto" />
+              <BrandLogo
+                logoUrl={logoUrl}
+                siteName={siteName}
+                variant="footer"
+                className="h-10 w-auto max-w-[11rem] rounded-md"
+              />
             </div>
             {footer.description && (
               <p className="max-w-sm text-sm leading-relaxed text-white/75">{footer.description}</p>

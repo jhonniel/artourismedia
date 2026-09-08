@@ -11,7 +11,7 @@ interface MobileMenuProps {
   settings: SiteSettings
 }
 
-export function MobileMenu({ open, onClose, navigation }: MobileMenuProps) {
+export function MobileMenu({ open, onClose, navigation, settings }: MobileMenuProps) {
   useEffect(() => {
     if (!open) return
 
@@ -54,7 +54,7 @@ export function MobileMenu({ open, onClose, navigation }: MobileMenuProps) {
         aria-label="Mobile navigation"
       >
         <div className="flex shrink-0 items-center justify-between border-b border-navy/10 px-4 py-4">
-          <HeaderLogo compact />
+          <HeaderLogo compact logoUrl={settings.logo_url} siteName={settings.site_name} />
           <button
             type="button"
             onClick={onClose}

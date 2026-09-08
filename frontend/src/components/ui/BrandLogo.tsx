@@ -8,14 +8,14 @@ interface BrandLogoProps {
 }
 
 const VARIANT_SRC: Record<string, string> = {
-  header: assetUrl('/images/brand/logo-header-v2.png'),
-  footer: assetUrl('/images/brand/logo-mark-white.png'),
-  mark: assetUrl('/images/brand/logo-mark.png'),
+  header: assetUrl('/images/brand/artourismedia-logo.png'),
+  footer: assetUrl('/images/brand/artourismedia-logo.png'),
+  mark: assetUrl('/images/brand/artourismedia-logo.png'),
 }
 
 export function BrandLogo({
   logoUrl,
-  siteName = 'Art!',
+  siteName = 'ArTourisMedia',
   className = 'h-9 w-auto md:h-10',
   variant = 'header',
 }: BrandLogoProps) {
@@ -28,9 +28,9 @@ export function BrandLogo({
       className={className}
       onError={(event) => {
         const target = event.currentTarget
-        const fallback = VARIANT_SRC[variant].replace('.png', '.svg')
+        const fallback = VARIANT_SRC.header
 
-        if (!target.src.endsWith('.svg')) {
+        if (target.src !== fallback) {
           target.src = fallback
         }
       }}

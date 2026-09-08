@@ -1,38 +1,22 @@
+import { BrandLogo } from '@/components/ui/BrandLogo'
+
 interface HeaderLogoProps {
   compact?: boolean
+  logoUrl?: string
+  siteName?: string
 }
 
-export function HeaderLogo({ compact = false }: HeaderLogoProps) {
+export function HeaderLogo({ compact = false, logoUrl, siteName = 'ArTourisMedia' }: HeaderLogoProps) {
   return (
-    <div className={compact ? 'flex items-center gap-2.5' : 'flex items-center gap-3 md:gap-4 lg:gap-5'}>
-      <div
-        className={
-          compact
-            ? 'font-logo text-[1.65rem] leading-none tracking-tight'
-            : 'font-logo text-[1.75rem] leading-none tracking-tight sm:text-[2.1rem] md:text-[2.35rem] lg:text-[2.55rem] xl:text-[2.85rem]'
-        }
-        aria-label="Art!"
-      >
-        <span className="text-orange">A</span>
-        <span className="text-orange">r</span>
-        <span className="text-teal">t</span>
-        <span className="text-navy">!</span>
-      </div>
-
-      {!compact && (
-        <>
-          <span className="hidden h-10 w-px shrink-0 bg-navy/20 sm:block lg:h-12" aria-hidden="true" />
-
-          <div className="hidden leading-none sm:block">
-            <p className="text-xs font-extrabold tracking-[0.06em] text-navy md:text-[14px] lg:text-[15px] xl:text-base">
-              BONCATO
-            </p>
-            <p className="mt-1 text-[10px] font-medium tracking-[0.14em] text-navy/70 md:text-[10px] lg:text-[11px] xl:text-xs">
-              TOURISM CONSULTANCY
-            </p>
-          </div>
-        </>
-      )}
-    </div>
+    <BrandLogo
+      logoUrl={logoUrl}
+      siteName={siteName}
+      variant="header"
+      className={
+        compact
+          ? 'h-8 w-auto max-w-[9.5rem] rounded-md'
+          : 'h-9 w-auto max-w-[10.5rem] rounded-md sm:h-10 sm:max-w-[11.5rem] md:h-11 md:max-w-[12.5rem] lg:h-12 lg:max-w-[13.5rem]'
+      }
+    />
   )
 }

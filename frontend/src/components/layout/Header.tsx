@@ -42,7 +42,7 @@ export function Header({ navigation, settings }: HeaderProps) {
         <div className="mx-auto flex w-full max-w-[90rem] items-center justify-between gap-4 px-4 sm:px-6 lg:grid lg:grid-cols-[1fr_auto_1fr] lg:items-center lg:gap-6 lg:px-8 xl:gap-8 xl:px-10 2xl:px-12">
           <div className="flex min-w-0 justify-start">
             <Link to="/" className="shrink-0">
-              <HeaderLogo />
+              <HeaderLogo logoUrl={settings.logo_url} siteName={settings.site_name} />
             </Link>
           </div>
 

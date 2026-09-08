@@ -25,7 +25,7 @@ function getSocialStyles(platform: string): { bg: string; text: string } {
     }
   }
   if (p.includes('linkedin')) return { bg: 'bg-[#0A66C2]', text: 'text-white' }
-  if (p.includes('tiktok')) return { bg: 'bg-navy', text: 'text-white' }
+  if (p.includes('tiktok')) return { bg: 'bg-[#000000]', text: 'text-white' }
 
   return { bg: 'bg-teal', text: 'text-white' }
 }
