@@ -18,7 +18,7 @@ class ContactSubmissionConfirmation extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'We received your consultation request',
+            subject: 'Thank you — we received your consultation request',
         );
     }
 

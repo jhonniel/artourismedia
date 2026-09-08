@@ -5,13 +5,19 @@ interface FadeInProps {
   children: ReactNode
   className?: string
   delay?: number
+  immediate?: boolean
 }
 
-export function FadeIn({ children, className, delay = 0 }: FadeInProps) {
+export function FadeIn({ children, className, delay = 0, immediate = false }: FadeInProps) {
   const ref = useRef<HTMLDivElement>(null)
-  const [visible, setVisible] = useState(false)
+  const [visible, setVisible] = useState(immediate)
 
   useEffect(() => {
+    if (immediate) {
+      setVisible(true)
+      return
+    }
+
     const element = ref.current
     if (!element) return
 
@@ -33,7 +39,7 @@ export function FadeIn({ children, className, delay = 0 }: FadeInProps) {
 
     observer.observe(element)
     return () => observer.disconnect()
-  }, [])
+  }, [immediate])
 
   return (
     <div

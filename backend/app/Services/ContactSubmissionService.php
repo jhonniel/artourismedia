@@ -6,7 +6,9 @@ use App\Mail\ContactSubmissionConfirmation;
 use App\Mail\ContactSubmissionReceived;
 use App\Models\ContactSubmission;
 use App\Models\SiteSetting;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Throwable;
 
 class ContactSubmissionService extends CrudService
 {
@@ -22,14 +24,56 @@ class ContactSubmissionService extends CrudService
             'subject' => $data['subject'] ?? 'Schedule a Consultation',
         ]));
 
-        $adminEmail = $this->adminNotificationEmail();
-        if ($adminEmail) {
-            Mail::to($adminEmail)->send(new ContactSubmissionReceived($submission));
+        if ($this->isMailConfigured()) {
+            $this->sendSubmissionEmails($submission);
         }
 
-        Mail::to($submission->email)->send(new ContactSubmissionConfirmation($submission));
-
         return $submission;
+    }
+
+    protected function sendSubmissionEmails(ContactSubmission $submission): void
+    {
+        try {
+            $adminEmail = $this->adminNotificationEmail();
+            if ($adminEmail) {
+                Mail::to($adminEmail)->send(new ContactSubmissionReceived($submission));
+            }
+
+            if ($submission->email) {
+                Mail::to($submission->email)->send(new ContactSubmissionConfirmation($submission));
+            }
+        } catch (Throwable $e) {
+            Log::warning('Consultation request saved but email could not be sent.', [
+                'submission_uuid' => $submission->uuid,
+                'error' => $e->getMessage(),
+            ]);
+        }
+    }
+
+    protected function isMailConfigured(): bool
+    {
+        $mailer = config('mail.default');
+
+        if (in_array($mailer, ['log', 'array'], true)) {
+            return false;
+        }
+
+        if ($mailer === 'smtp') {
+            $host = config('mail.mailers.smtp.host');
+            $username = config('mail.mailers.smtp.username');
+            $password = config('mail.mailers.smtp.password');
+
+            return filled($host)
+                && $host !== '127.0.0.1'
+                && filled($username)
+                && filled($password);
+        }
+
+        if ($mailer === 'resend') {
+            return filled(config('services.resend.key'));
+        }
+
+        return filled($mailer);
     }
 
     protected function adminNotificationEmail(): ?string
@@ -40,7 +84,7 @@ class ContactSubmissionService extends CrudService
 
         return $fromSettings->get('contact_email')
             ?: $fromSettings->get('footer_email')
-            ?: config('mail.from.address');
+            ?: config('mail.admin_address');
     }
 
     public function markAsRead(ContactSubmission $submission): ContactSubmission

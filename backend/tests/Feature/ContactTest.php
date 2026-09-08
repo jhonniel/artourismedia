@@ -20,6 +20,11 @@ class ContactTest extends TestCase
 
     public function test_contact_form_submission_is_accepted(): void
     {
+        config([
+            'mail.default' => 'resend',
+            'services.resend.key' => 're_test_key',
+        ]);
+
         $response = $this->postJson('/api/contact', [
             'name' => 'Jane Doe',
             'email' => 'jane@example.com',
@@ -35,7 +40,32 @@ class ContactTest extends TestCase
             'subject' => 'Schedule a Consultation',
         ]);
 
-        Mail::assertSent(\App\Mail\ContactSubmissionReceived::class);
-        Mail::assertSent(\App\Mail\ContactSubmissionConfirmation::class);
+        Mail::assertSent(\App\Mail\ContactSubmissionReceived::class, function ($mail) {
+            return $mail->hasTo('atm@artourismedia.com');
+        });
+        Mail::assertSent(\App\Mail\ContactSubmissionConfirmation::class, function ($mail) {
+            return $mail->hasTo('jane@example.com');
+        });
+    }
+
+    public function test_contact_form_is_stored_when_mail_is_not_configured(): void
+    {
+        config(['mail.default' => 'log']);
+
+        $response = $this->postJson('/api/contact', [
+            'name' => 'Jane Doe',
+            'email' => 'jane@example.com',
+            'message' => 'Hello without mail configured.',
+        ]);
+
+        $response->assertCreated()
+            ->assertJsonPath('success', true);
+
+        $this->assertDatabaseHas('contact_submissions', [
+            'email' => 'jane@example.com',
+            'message' => 'Hello without mail configured.',
+        ]);
+
+        Mail::assertNothingSent();
     }
 }

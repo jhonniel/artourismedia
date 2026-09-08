@@ -2,14 +2,12 @@ import axios, { type InternalAxiosRequestConfig } from 'axios'
 import type { ApiResponse } from '@/types'
 
 function resolveApiBaseURL(): string {
-  const configured = import.meta.env.VITE_API_URL
-
-  // In dev, always use the Vite proxy so phones/tablets on the LAN work.
+  // In dev, always use the Vite proxy so the browser hits the same host/port as the UI.
   if (import.meta.env.DEV) {
-    return configured?.startsWith('http') ? configured : '/api'
+    return '/api'
   }
 
-  return configured ?? '/api'
+  return import.meta.env.VITE_API_URL ?? '/api'
 }
 
 const apiBaseURL = resolveApiBaseURL()

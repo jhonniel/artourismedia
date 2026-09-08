@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Service extends Model
@@ -35,5 +36,10 @@ class Service extends Model
     public function getRouteKeyName(): string
     {
         return 'slug';
+    }
+
+    public function videos(): HasMany
+    {
+        return $this->hasMany(ServiceVideo::class)->orderByDesc('published_at')->orderBy('sort_order');
     }
 }

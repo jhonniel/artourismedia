@@ -46,8 +46,8 @@ export function About({ section, socialLinks = [] }: AboutProps) {
               <LazyImage
                 src={content.image_url}
                 alt={content.image_alt ?? ''}
-                wrapperClassName="aspect-[4/3] w-full overflow-hidden rounded-[1.5rem] shadow-card sm:rounded-[1.75rem] xl:rounded-[2rem]"
-                className="object-cover object-[center_22%]"
+                wrapperClassName="w-full overflow-hidden rounded-[1.5rem] bg-white shadow-card sm:rounded-[1.75rem] xl:rounded-[2rem]"
+                className="!h-auto !w-full !object-contain"
               />
             )}
           </FadeIn>
@@ -55,7 +55,7 @@ export function About({ section, socialLinks = [] }: AboutProps) {
           <FadeIn delay={80}>
             <div className="max-w-xl lg:max-w-none">
               {content.eyebrow && (
-                <p className="mb-3 text-[11px] font-bold uppercase tracking-[0.18em] text-teal sm:text-xs">
+                <p className="mb-4 text-sm font-bold uppercase tracking-[0.16em] text-teal md:text-base">
                   {content.eyebrow}
                 </p>
               )}
@@ -68,7 +68,7 @@ export function About({ section, socialLinks = [] }: AboutProps) {
 
               {content.body && (
                 <div
-                  className="prose-content mt-5 text-sm leading-[1.65] text-navy/75 md:text-[15px]"
+                  className="prose-content mt-5 text-lg leading-[1.65] text-navy/75 md:text-xl"
                   dangerouslySetInnerHTML={{ __html: content.body }}
                 />
               )}

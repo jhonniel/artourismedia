@@ -475,7 +475,7 @@
   }
 
   .prose-content h3 {
-    @apply mt-8 mb-3 text-lg font-bold text-navy md:text-xl;
+    @apply mt-8 mb-3 text-xl font-bold text-navy md:text-2xl;
   }
 
   .prose-content p {
@@ -509,5 +509,18 @@
 
   .prose-content blockquote {
     @apply border-l-4 border-teal pl-4 italic text-navy/70 my-6;
+  }
+
+  .prose-content-service {
+    @apply text-lg leading-relaxed md:text-xl;
+  }
+
+  .prose-content-service h3 {
+    @apply mt-8 mb-4 text-2xl font-bold text-navy md:text-3xl;
+  }
+
+  .prose-content-service ul,
+  .prose-content-service ol {
+    @apply mb-4 space-y-3 pl-6 text-lg md:text-xl;
   }
 }

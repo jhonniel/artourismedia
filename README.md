@@ -70,9 +70,9 @@ curl -I https://artourismedia.com/index.php     # must NOT say "File not found"
 
 | Live URL | Served by |
 |----------|-----------|
-| https://artourismedia.com/ | `public/index.html` (website) |
-| https://artourismedia.com/admin/ | `public/admin/index.html` |
-| https://artourismedia.com/api/site | `public/index.php` (Laravel API) |
+| https://artourismedia.com/ | `index.php` → Laravel → `index.html` (website) |
+| https://artourismedia.com/admin/ | `index.php` → Laravel → `admin/index.html` |
+| https://artourismedia.com/api/site | `index.php` (Laravel API) |
 
 ### Updates (site already working)
 
@@ -95,9 +95,9 @@ Use `static-web.zip` **only** for a quick UI-only refresh when `/api/health` alr
   .env.production.example               ← copy to .env
   scripts/server-after-unzip.sh
   public/                               ← Nginx root
-    index.php                           ← API
-    index.html                          ← website
-    admin/index.html                    ← admin
+    index.php                           ← single entry point
+    index.html                          ← built website (served by Laravel)
+    admin/index.html                    ← built admin (served by Laravel)
 ```
 
 Images are **not** in the zip — they load from **DigitalOcean Spaces**.  

@@ -9,6 +9,8 @@ import { SEO } from '@/components/ui/SEO'
 import { FadeIn } from '@/components/ui/FadeIn'
 import { canonicalUrl, serviceJsonLd } from '@/lib/structuredData'
 import { useService } from '@/hooks'
+import { ServiceVideoGallery } from '@/components/services/ServiceVideoGallery'
+import { FeaturedMostWatchedVideos } from '@/components/services/FeaturedMostWatchedVideos'
 
 export default function ServiceDetail() {
   const { slug } = useParams<{ slug: string }>()
@@ -31,6 +33,8 @@ export default function ServiceDetail() {
   }
 
   const pageUrl = canonicalUrl(`/services/${data.slug}`)
+  const featuredVideos = data.featured_videos ?? []
+  const showFeaturedPanel = data.slug === 'mindanao-connect' && featuredVideos.length > 0
 
   return (
     <>
@@ -41,24 +45,26 @@ export default function ServiceDetail() {
         url={pageUrl}
         jsonLd={serviceJsonLd(data, pageUrl)}
       />
-      <Container className="py-16 md:py-24">
-        <FadeIn>
+      <Container className="pt-6 pb-16 md:pt-8 md:pb-24">
+        <FadeIn immediate>
           <Link to="/services" className="text-sm font-semibold text-teal hover:text-orange transition-colors">
             ← All services
           </Link>
 
           <div className="mt-6 grid gap-12 lg:grid-cols-2 lg:items-start">
             <div>
-              <span className="mb-4 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-teal text-white shadow-soft">
-                <ServiceIcon slug={data.slug} icon={data.icon} className="h-8 w-8" />
-              </span>
+              {data.slug !== 'mindanao-connect' && (
+                <span className="mb-4 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-teal text-white shadow-soft">
+                  <ServiceIcon slug={data.slug} icon={data.icon} className="h-8 w-8" />
+                </span>
+              )}
               <h1 className="text-4xl font-bold md:text-5xl">{data.title}</h1>
               {data.description && (
                 <p className="mt-4 text-lg text-navy/70 leading-relaxed">{data.description}</p>
               )}
               {data.content && (
                 <div
-                  className="prose-content mt-8"
+                  className="prose-content prose-content-service mt-8"
                   dangerouslySetInnerHTML={{ __html: data.content }}
                 />
               )}
@@ -77,14 +83,22 @@ export default function ServiceDetail() {
               )}
             </div>
 
-            {data.image_url && (
-              <LazyImage
-                src={data.image_url}
-                alt={data.title}
-                wrapperClassName="rounded-3xl shadow-elevated aspect-[4/3]"
-              />
+            {showFeaturedPanel ? (
+              <FeaturedMostWatchedVideos videos={featuredVideos} />
+            ) : (
+              data.image_url && (
+                <LazyImage
+                  src={data.image_url}
+                  alt={data.title}
+                  wrapperClassName="rounded-3xl shadow-elevated aspect-[4/3]"
+                />
+              )
             )}
           </div>
+
+          {data.videos && data.videos.length > 0 && (
+            <ServiceVideoGallery videos={data.videos} title="Mindanao CONNECT Videos" />
+          )}
         </FadeIn>
       </Container>
     </>

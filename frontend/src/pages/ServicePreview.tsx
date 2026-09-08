@@ -53,7 +53,7 @@ export default function ServicePreview() {
         This inactive service is only visible with a valid preview link.
       </div>
       <SEO title={`Preview: ${data.title}`} description={data.description} noindex />
-      <Container className="py-16 md:py-24">
+      <Container className="pt-6 pb-16 md:pt-8 md:pb-24">
         <FadeIn>
           <Link to="/services" className="text-sm font-semibold text-teal hover:text-orange transition-colors">
             ← All services
@@ -72,7 +72,7 @@ export default function ServicePreview() {
               )}
               {data.content && (
                 <div
-                  className="prose-content mt-8"
+                  className="prose-content prose-content-service mt-8"
                   dangerouslySetInnerHTML={{ __html: data.content }}
                 />
               )}

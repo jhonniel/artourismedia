@@ -28,9 +28,9 @@ AFTER UNZIP — FOLDER LOOKS LIKE THIS
     .env.production.example      ← copy to .env
     scripts/server-after-unzip.sh
     public/                      ← NGINX POINTS HERE
-      index.html                 ← website
-      index.php                  ← /api/*
-      admin/index.html           ← admin panel
+      index.php                  ← ONLY entry point (nginx + Apache)
+      index.html                 ← built website (Laravel serves this)
+      admin/index.html           ← built admin (Laravel serves this)
 
 
 FIRST DEPLOY
@@ -46,6 +46,7 @@ FIRST DEPLOY
 
   Nginx: root /var/www/artourismedia.com/public;
   Template: deploy/nginx/single-domain.conf
+  (One entry point: index.php — reload nginx after updating the config)
 
 
 UPDATES (site already live)
@@ -55,8 +56,12 @@ UPDATES (site already live)
   unzip -o /path/to/web-deploy.zip
   composer install --no-dev --optimize-autoloader
   php artisan migrate --force
+  php artisan mindanao-connect:import-videos
   php artisan cache:clear
   php artisan config:cache
+
+  Cron (required for auto YouTube sync):
+    * * * * * cd /var/www/artourismedia.com && php artisan schedule:run >> /dev/null 2>&1
 
 
 TROUBLESHOOTING
@@ -90,6 +95,24 @@ TROUBLESHOOTING
   API 500 permission?     sudo chown -R www-data:www-data .
   Check all:              php artisan deploy:check
   Test API:               curl https://artourismedia.com/api/health
+
+  Mindanao CONNECT videos missing?
+    → curl https://artourismedia.com/api/services/mindanao-connect
+    → Response must include "videos": [...] (not just title/description).
+    → If missing: you deployed static-web.zip only, or skipped migrate/import.
+    → Fix: deploy web-deploy.zip, then:
+         php artisan migrate --force
+         php artisan mindanao-connect:import-videos
+         php artisan cache:clear
+
+  Consultation emails not sending?
+    → In .env set:
+         MAIL_MAILER=resend
+         RESEND_API_KEY=your_resend_api_key
+         MAIL_FROM_ADDRESS=atm@artourismedia.com
+         MAIL_ADMIN_ADDRESS=atm@artourismedia.com
+    → Verify artourismedia.com domain in Resend dashboard.
+    → php artisan config:clear && php artisan cache:clear
 
 
 IMAGES

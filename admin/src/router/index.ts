@@ -165,6 +165,12 @@ const router = createRouter({
           meta: { title: 'Edit Service', roles: ['admin', 'editor'] },
         },
         {
+          path: 'content/mindanao-connect/videos',
+          name: 'mindanao-connect-videos',
+          component: () => import('@/views/content/MindanaoConnectVideos.vue'),
+          meta: { title: 'Mindanao CONNECT Videos', roles: ['admin', 'editor'] },
+        },
+        {
           path: 'content/statistics',
           name: 'statistics',
           component: () => import('@/views/content/StatisticsList.vue'),

@@ -13,7 +13,9 @@ use App\Models\Project;
 use App\Models\ProjectCategory;
 use App\Models\SeoSetting;
 use App\Models\Service;
+use App\Models\ServiceVideo;
 use App\Models\SiteSetting;
+use App\Services\MindanaoConnectVideoImportService;
 use App\Models\SocialLink;
 use App\Models\Statistic;
 use App\Models\Tag;
@@ -64,6 +66,7 @@ class DatabaseSeeder extends Seeder
         $this->seedStatistics();
         $this->seedSocialLinks();
         $this->seedServices();
+        $this->seedMindanaoConnectVideos();
         $this->seedProjectCategoriesAndProjects();
         $this->seedPostCategoriesTagsAndPosts($admin);
         $this->seedPages();
@@ -162,13 +165,11 @@ class DatabaseSeeder extends Seeder
                 'title' => 'About',
                 'content' => [
                     'eyebrow' => 'About Art Boncato',
-                    'title' => 'Experience. Insight.',
-                    'title_accent' => 'Commitment.',
-                    'body' => '<p>For over 30 years, Art Boncato has led tourism strategy, destination development, and national campaigns—partnering with governments, organizations, and communities to shape places that inspire and endure.</p>',
+                    'body' => '<p>For over 30 years, Art Boncato has shaped tourism and hospitality through strategic leadership, destination development, and national tourism initiatives—driving sustainable growth and creating opportunities for communities across the Philippines, especially Mindanao.</p>',
                     'cta_text' => 'More About Art',
                     'cta_url' => '/about',
-                    'image_url' => Assets::url('/images/about/about-professional-chair.jpg'),
-                    'image_alt' => 'Art Boncato professional portrait in office',
+                    'image_url' => Assets::url('/images/about/art-boncato-portrait.jpg'),
+                    'image_alt' => 'Art Boncato professional portrait',
                 ],
                 'sort_order' => 3,
             ],
@@ -329,6 +330,47 @@ class DatabaseSeeder extends Seeder
         Service::query()
             ->whereNotIn('slug', $slugs)
             ->update(['is_active' => false]);
+    }
+
+    protected function seedMindanaoConnectVideos(): void
+    {
+        $service = Service::query()->where('slug', 'mindanao-connect')->first();
+
+        if (! $service) {
+            return;
+        }
+
+        if (app()->environment('testing')) {
+            ServiceVideo::query()->updateOrCreate(
+                ['youtube_id' => 'hPBoDRcv-5U'],
+                [
+                    'service_id' => $service->id,
+                    'youtube_url' => 'https://youtube.com/watch?v=hPBoDRcv-5U',
+                    'title' => 'Mindanao Roadtrip with Art',
+                    'description' => 'Featured video from the Mindanao CONNECT series.',
+                    'is_active' => true,
+                    'sort_order' => 1,
+                ]
+            );
+
+            return;
+        }
+
+        try {
+            app(MindanaoConnectVideoImportService::class)->importFromChannel();
+        } catch (\Throwable) {
+            ServiceVideo::query()->updateOrCreate(
+                ['youtube_id' => 'hPBoDRcv-5U'],
+                [
+                    'service_id' => $service->id,
+                    'youtube_url' => 'https://youtube.com/watch?v=hPBoDRcv-5U',
+                    'title' => 'Mindanao Roadtrip with Art',
+                    'description' => 'Featured video from the Mindanao CONNECT series.',
+                    'is_active' => true,
+                    'sort_order' => 1,
+                ]
+            );
+        }
     }
 
     protected function seedProjectCategoriesAndProjects(): void

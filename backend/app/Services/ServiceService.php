@@ -40,6 +40,7 @@ class ServiceService extends CrudService
         return Service::query()
             ->where('slug', $slug)
             ->where('is_active', true)
+            ->with(['videos' => fn ($query) => $query->where('is_active', true)->orderByDesc('published_at')->orderBy('sort_order')])
             ->firstOrFail();
     }
 

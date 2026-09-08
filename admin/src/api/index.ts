@@ -271,3 +271,30 @@ export const trustStripApi = {
   reorder: (uuids: string[]) =>
     request(apiClient.post('/admin/trust-strip-items/reorder', { ordered_uuids: uuids })),
 }
+
+export interface MindanaoConnectVideo {
+  uuid: string
+  youtube_url: string
+  youtube_id: string
+  thumbnail_url: string
+  title: string
+  description?: string
+  view_count: number
+  is_active: boolean
+  sort_order: number
+}
+
+export const mindanaoConnectVideosApi = {
+  list: () => request<MindanaoConnectVideo[]>(apiClient.get('/admin/mindanao-connect/videos')),
+  create: (payload: Partial<MindanaoConnectVideo>) =>
+    request<MindanaoConnectVideo>(apiClient.post('/admin/mindanao-connect/videos', payload)),
+  update: (uuid: string, payload: Partial<MindanaoConnectVideo>) =>
+    request<MindanaoConnectVideo>(apiClient.put(`/admin/mindanao-connect/videos/${uuid}`, payload)),
+  delete: (uuid: string) => request(apiClient.delete(`/admin/mindanao-connect/videos/${uuid}`)),
+  reorder: (uuids: string[]) =>
+    request(apiClient.post('/admin/mindanao-connect/videos/reorder', { ordered_uuids: uuids })),
+  importFromChannel: () =>
+    request<{ imported: number; updated: number; total: number }>(
+      apiClient.post('/admin/mindanao-connect/videos/import'),
+    ),
+}

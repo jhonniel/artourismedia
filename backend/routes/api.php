@@ -16,6 +16,7 @@ use App\Http\Controllers\Api\Admin\ProjectCategoryController;
 use App\Http\Controllers\Api\Admin\ProjectController;
 use App\Http\Controllers\Api\Admin\SeoSettingController;
 use App\Http\Controllers\Api\Admin\ServiceController;
+use App\Http\Controllers\Api\Admin\ServiceVideoController;
 use App\Http\Controllers\Api\Admin\SiteSettingController;
 use App\Http\Controllers\Api\Admin\SocialLinkController;
 use App\Http\Controllers\Api\Admin\StatisticController;
@@ -120,6 +121,11 @@ Route::prefix('admin')->group(function () {
 
             Route::apiResource('trust-strip-items', TrustStripItemController::class)->parameters(['trust-strip-items' => 'uuid']);
             Route::post('trust-strip-items/reorder', [TrustStripItemController::class, 'reorder']);
+
+            Route::apiResource('mindanao-connect/videos', ServiceVideoController::class)
+                ->parameters(['videos' => 'uuid']);
+            Route::post('mindanao-connect/videos/reorder', [ServiceVideoController::class, 'reorder']);
+            Route::post('mindanao-connect/videos/import', [ServiceVideoController::class, 'importFromChannel']);
 
             Route::apiResource('pages', PageController::class)->parameters(['pages' => 'uuid']);
         });

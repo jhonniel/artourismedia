@@ -53,6 +53,11 @@ class DeployCheck extends Command
             $failed = true;
         }
 
+        if ($isProduction && config('mail.default') === 'resend' && blank(config('services.resend.key'))) {
+            $this->warn('RESEND_API_KEY is missing but MAIL_MAILER is set to resend');
+            $failed = true;
+        }
+
         if (in_array(config('filesystems.default'), ['spaces', 's3'], true)) {
             $spacesRequired = [
                 'DIGITALOCEAN_SPACES_KEY' => config('spaces.key'),

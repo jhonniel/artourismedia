@@ -146,6 +146,18 @@ export interface Service {
   cta_url?: string
   category?: string
   sort_order: number
+  videos?: ServiceVideo[]
+  featured_videos?: ServiceVideo[]
+}
+
+export interface ServiceVideo {
+  uuid: string
+  youtube_url: string
+  youtube_id: string
+  thumbnail_url: string
+  title: string
+  description?: string
+  view_count: number
 }
 
 export interface ProjectCategory {
