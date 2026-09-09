@@ -8,7 +8,7 @@ interface BrandLogoProps {
 }
 
 export const SITE_LOGO_PATH = '/images/brand/artourismedia-logo.png?v=3'
-export const FOOTER_LOGO_PATH = '/images/brand/artourismedia-logo-dark.png?v=1'
+export const FOOTER_LOGO_PATH = '/images/brand/artourismedia-logo-dark.png?v=2'
 
 export function BrandLogo({
   logoUrl,

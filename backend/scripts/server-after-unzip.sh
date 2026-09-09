@@ -35,6 +35,9 @@ fi
 echo "==> php artisan migrate"
 php artisan migrate --force
 
+echo "==> php artisan mindanao-connect:import-videos"
+php artisan mindanao-connect:import-videos || echo "WARN: Mindanao video import failed — run manually after checking server can reach youtube.com"
+
 if [[ "${SEED:-}" == "1" ]]; then
   echo "==> php artisan db:seed"
   php artisan db:seed --force

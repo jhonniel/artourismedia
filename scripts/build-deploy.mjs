@@ -72,6 +72,13 @@ function shouldSkip(relPath) {
       return false
     }
 
+    if (
+      parts.includes('about')
+      && (base === 'art-boncato-portrait.png' || base === 'art-boncato-portrait.jpg')
+    ) {
+      return false
+    }
+
     return true
   }
 

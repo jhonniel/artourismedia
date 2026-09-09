@@ -70,10 +70,16 @@ class MindanaoConnectVideoImportService
 
         $channelIds = collect($videos)->pluck('id')->all();
 
-        ServiceVideo::query()
-            ->where('service_id', $service->id)
-            ->whereNotIn('youtube_id', $channelIds)
-            ->delete();
+        if ($channelIds !== []) {
+            ServiceVideo::query()
+                ->where('service_id', $service->id)
+                ->whereNotIn('youtube_id', $channelIds)
+                ->delete();
+        } else {
+            Log::warning('Mindanao CONNECT import fetched zero videos — keeping existing records.', [
+                'service_id' => $service->id,
+            ]);
+        }
 
         $this->cacheService->flushPublic();
 

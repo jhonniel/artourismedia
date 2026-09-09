@@ -1,4 +1,4 @@
-import { assetUrl } from '@/lib/assets'
+import { assetUrl, buildAssetFallbackChain, sameOriginAssetUrl, toRelativeAssetPath } from '@/lib/assets'
 
 const CATEGORY_FALLBACKS: Record<string, string> = {
   hero: assetUrl('/images/hero/hero-slideshow-01-pamulak.jpg'),
@@ -38,9 +38,15 @@ function categoryFallback(src: string): string | undefined {
 export function buildImageFallbackChain(src?: string | null): string[] {
   if (!src) return []
 
-  const resolved = assetUrl(src)
-  const chain = [resolved, ...extensionAlternatives(resolved)]
-  const category = categoryFallback(src)
+  const relative = toRelativeAssetPath(src)
+  const chain = buildAssetFallbackChain(relative.startsWith('/') ? relative : src)
+
+  for (const candidate of [...chain]) {
+    chain.push(...extensionAlternatives(candidate))
+    chain.push(...extensionAlternatives(sameOriginAssetUrl(relative)))
+  }
+
+  const category = categoryFallback(relative.startsWith('/') ? relative : src)
 
   if (category) {
     chain.push(category)

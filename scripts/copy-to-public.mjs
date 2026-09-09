@@ -36,6 +36,11 @@ const bundledAssets = [
       'mindanao-connect.png',
     ],
   },
+  {
+    sourceDir: path.join(rootDir, 'frontend', 'public', 'images', 'about'),
+    targetDir: path.join(publicDir, 'images', 'about'),
+    names: ['art-boncato-portrait.png', 'art-boncato-portrait.jpg'],
+  },
 ]
 
 export function copyBrandAssetsToPublic() {

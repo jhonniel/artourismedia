@@ -3,7 +3,7 @@ import { HeroSlideshow } from '@/components/home/HeroSlideshow'
 import { Container } from '@/components/ui/Container'
 import { FadeIn } from '@/components/ui/FadeIn'
 import { MindanaoBrand } from '@/components/about/MindanaoBrand'
-import { localFirstAssetUrl } from '@/lib/assets'
+import { LazyImage } from '@/components/ui/LazyImage'
 import {
   ServiceIcon,
   serviceIconImageClass,
@@ -50,11 +50,11 @@ export function AboutPageView({ metadata }: AboutPageViewProps) {
                 <div className="grid items-end gap-8 sm:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] sm:gap-6 lg:gap-8">
                   <div className="relative mx-auto w-full max-w-[18rem] sm:mx-0 sm:max-w-none">
                     {metadata.portrait_url && (
-                      <img
-                        src={localFirstAssetUrl(metadata.portrait_url)}
+                      <LazyImage
+                        src={metadata.portrait_url}
                         alt={metadata.signature_name ?? 'Art Boncato, Jr.'}
-                        decoding="async"
-                        className="mx-auto w-full max-w-[18rem] object-contain object-bottom sm:mx-0 sm:max-w-[20rem] lg:max-w-[24rem] xl:max-w-[28rem]"
+                        wrapperClassName="mx-auto w-full max-w-[18rem] bg-transparent sm:mx-0 sm:max-w-[20rem] lg:max-w-[24rem] xl:max-w-[28rem]"
+                        className="!h-auto !w-full !object-contain !object-bottom"
                       />
                     )}
                   </div>

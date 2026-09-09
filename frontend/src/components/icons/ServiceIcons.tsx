@@ -1,4 +1,5 @@
-import type { ComponentType } from 'react'
+import { useState, type ComponentType } from 'react'
+import { assetUrl, sameOriginAssetUrl } from '@/lib/assets'
 import { cn } from '@/lib/utils'
 
 interface ServiceIconProps {
@@ -42,12 +43,20 @@ const IMAGE_ICON_LAYOUT: Record<ServiceIconLayout, { wrapper: string; image: str
 }
 
 function ImageServiceIcon({ src, className }: ServiceIconProps & { src: string }) {
+  const [useFallback, setUseFallback] = useState(false)
+  const resolvedSrc = useFallback ? sameOriginAssetUrl(src) : assetUrl(src)
+
   return (
     <img
-      src={src}
+      src={resolvedSrc}
       alt=""
       aria-hidden
       className={cn('object-contain', className)}
+      onError={() => {
+        if (!useFallback) {
+          setUseFallback(true)
+        }
+      }}
     />
   )
 }
