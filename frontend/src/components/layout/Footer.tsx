@@ -4,7 +4,13 @@ import { Container } from '@/components/ui/Container'
 import { Input } from '@/components/ui/Input'
 import { SocialIcon } from '@/components/ui/SocialIcon'
 import { BrandLogo } from '@/components/ui/BrandLogo'
-import { WaveDividerNavy, AboutPalmAccent } from '@/components/ui/Decorative'
+import {
+  FooterDotPattern,
+  FooterLeftAccent,
+  FooterPalmSilhouette,
+  FooterRightAccent,
+  FooterTopWave,
+} from '@/components/ui/Decorative'
 import { useNewsletterMutation } from '@/hooks/useMutations'
 import type { FooterData, SocialLink } from '@/types'
 import { cn } from '@/lib/utils'
@@ -53,10 +59,14 @@ export function Footer({ footer, socialLinks, siteName, logoUrl }: FooterProps) 
 
   return (
     <footer className="relative mt-0 w-full overflow-hidden bg-navy pb-[max(0.5rem,env(safe-area-inset-bottom,0px))] text-white">
-      <WaveDividerNavy className="-mt-px block h-10 w-full rotate-180 sm:h-12 md:h-14" />
-      <AboutPalmAccent className="pointer-events-none absolute bottom-0 right-0 z-0 h-40 w-24 opacity-30 sm:h-52 sm:w-32" />
+      <FooterTopWave className="relative z-10 -mt-px block h-14 w-full rotate-180 sm:h-16 md:h-20 lg:h-24" />
 
-      <Container className="relative pt-12 pb-2 sm:pt-14 sm:pb-3 lg:py-16">
+      <FooterLeftAccent className="pointer-events-none absolute bottom-0 left-0 z-0 h-44 w-56 sm:h-52 sm:w-64 md:h-60 md:w-72" />
+      <FooterDotPattern className="pointer-events-none absolute bottom-16 left-6 z-0 h-16 w-16 opacity-80 sm:bottom-20 sm:left-10 md:bottom-24" />
+      <FooterRightAccent className="pointer-events-none absolute bottom-0 right-0 z-0 h-48 w-60 sm:h-56 sm:w-72 md:h-64 md:w-80" />
+      <FooterPalmSilhouette className="pointer-events-none absolute bottom-0 right-4 z-[1] h-40 w-28 sm:right-8 sm:h-48 sm:w-32 md:h-56 md:w-36" />
+
+      <Container className="relative z-10 pt-10 pb-2 sm:pt-12 sm:pb-3 lg:py-16">
         <div className="grid gap-8 lg:grid-cols-12 lg:gap-8 xl:gap-10">
           <div className="lg:col-span-4">
             <div className="mb-5">

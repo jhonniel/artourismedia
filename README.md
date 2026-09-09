@@ -168,8 +168,20 @@ Production database: **PostgreSQL** (`DB_CONNECTION=pgsql` in `.env`).
 | Blank landing page | `php artisan cache:clear` on server |
 | First load OK, refresh blank | Redeploy full `web-deploy.zip`; clear cache |
 | API 500 permission denied | `sudo chown -R www-data:www-data /var/www/artourismedia.com` |
-| Missing images on production | Run `npm run assets:upload` from your PC |
+| Missing / broken images on production | See **Broken images** below |
 | Mindanao CONNECT videos missing | `php artisan migrate --force` then `php artisan mindanao-connect:import-videos` |
+
+### Broken images on production
+
+Usually one or more of these:
+
+1. **Wrong CDN bucket in server `.env`** — must be:
+   `ASSETS_BASE_URL=https://infosoft.sgp1.digitaloceanspaces.com/tingog/reports/static`
+   (not `infosoft-playground…`)
+2. **Assets not uploaded to Spaces** — from your PC: `npm run assets:upload`
+3. **Stale API cache** — on server: `php artisan cache:clear`
+4. **Old URLs in database** — on server: `php artisan migrate --force` (includes CDN URL fix migration)
+5. **UI-only deploy** — `static-web.zip` does not include `public/images/`; use `web-deploy.zip` or upload assets to Spaces
 
 ---
 
