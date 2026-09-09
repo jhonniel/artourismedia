@@ -14,18 +14,23 @@ BACKEND_TARGET = ROOT / "backend" / "public" / "images" / "brand" / "artourismed
 
 
 def is_brand_green(red: int, green: int, blue: int) -> bool:
-    if green < 70:
+    if green < 110:
         return False
 
-    return green > red + 18 and green > blue + 10
+    return green > red + 45 and green > blue + 35
 
 
 def to_footer_pixel(red: int, green: int, blue: int, alpha: int) -> tuple[int, int, int, int]:
     if alpha == 0:
         return red, green, blue, alpha
 
+    maximum = max(red, green, blue)
+
+    if maximum < 120:
+        return 255, 255, 255, alpha
+
     if is_brand_green(red, green, blue):
-        return red, min(255, green + 24), blue, alpha
+        return 36, 179, 136, alpha
 
     return 255, 255, 255, alpha
 

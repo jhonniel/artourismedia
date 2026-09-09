@@ -4,7 +4,7 @@ import { Container } from '@/components/ui/Container'
 import { Input } from '@/components/ui/Input'
 import { SocialIcon } from '@/components/ui/SocialIcon'
 import { BrandLogo } from '@/components/ui/BrandLogo'
-import { FooterDecorations, FooterTopWave } from '@/components/ui/Decorative'
+import { FooterTopWave } from '@/components/ui/Decorative'
 import { useNewsletterMutation } from '@/hooks/useMutations'
 import type { FooterData, SocialLink } from '@/types'
 import { cn } from '@/lib/utils'
@@ -70,19 +70,16 @@ export function Footer({ footer, socialLinks, siteName, logoUrl }: FooterProps) 
       <FooterTopWave className="relative z-10 -mt-px block h-12 w-full sm:h-16 md:h-20 lg:h-24" />
 
       <div className="relative bg-navy pb-[max(0.5rem,env(safe-area-inset-bottom,0px))] text-white">
-        <FooterDecorations className="pointer-events-none absolute inset-x-0 bottom-12 h-20 sm:bottom-14 sm:h-24 md:h-28 lg:h-32" />
-
         <Container className="relative z-10 pt-10 pb-2 sm:pt-12 sm:pb-3 lg:py-16">
           <div className="grid gap-8 lg:grid-cols-12 lg:gap-8 xl:gap-10">
             <div className="lg:col-span-4">
-              <div className="mb-5">
-                <BrandLogo
-                  logoUrl={logoUrl}
-                  siteName={siteName}
-                  variant="footer"
-                  className="h-[4.5rem] w-auto max-w-[20rem] sm:h-16 sm:max-w-[22rem] lg:h-16 lg:max-w-[18rem]"
-                />
-              </div>
+            <div className="mb-5">
+              <BrandLogo
+                logoUrl={logoUrl}
+                siteName={siteName}
+                className="h-[4.5rem] w-auto max-w-[20rem] sm:h-16 sm:max-w-[22rem] lg:h-16 lg:max-w-[18rem]"
+              />
+            </div>
               {footer.description && (
                 <p className="max-w-sm text-sm leading-relaxed text-white/75">{footer.description}</p>
               )}

@@ -11,7 +11,6 @@ export function HeaderLogo({ compact = false, logoUrl, siteName = 'ArTourisMedia
     <BrandLogo
       logoUrl={logoUrl}
       siteName={siteName}
-      variant="header"
       className={
         compact
           ? 'h-9 w-auto max-w-[11rem]'
