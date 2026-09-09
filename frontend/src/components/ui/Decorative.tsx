@@ -185,119 +185,85 @@ export function WaveDividerNavy({ className }: DecorativeProps) {
   )
 }
 
-/** Smooth top wave for the footer — cream/white content transitions into navy. */
+/** Smooth top wave for the footer — white content transitions into navy. */
 export function FooterTopWave({ className }: DecorativeProps) {
+  return (
+    <svg className={className} viewBox="0 0 1440 100" preserveAspectRatio="none" aria-hidden="true">
+      <path
+        d="M0,52 C220,92 380,22 580,58 C780,94 980,28 1180,54 C1300,68 1380,42 1440,48 L1440,100 L0,100 Z"
+        fill="#0B2447"
+      />
+    </svg>
+  )
+}
+
+/**
+ * Bottom-corner footer accents only — shallow band above the copyright row.
+ * One full-width SVG avoids the left/right box gap; limited height keeps waves
+ * out of the main content columns.
+ */
+export function FooterDecorations({ className }: DecorativeProps) {
+  const orangeDots = [
+    [1180, 58], [1200, 44], [1220, 66], [1240, 50], [1260, 72], [1280, 56],
+    [1190, 82], [1210, 94], [1230, 78], [1250, 98], [1270, 84], [1290, 68],
+  ]
+
   return (
     <svg className={className} viewBox="0 0 1440 140" preserveAspectRatio="none" aria-hidden="true">
       <path
-        d="M0,78 C120,118 280,38 420,68 C560,98 720,28 900,58 C1060,88 1220,32 1360,52 C1400,58 1420,46 1440,48 L1440,140 L0,140 Z"
-        fill="#0B2447"
-      />
-      <path
-        d="M0,88 C160,118 340,52 520,78 C700,104 880,44 1060,68 C1200,86 1340,58 1440,62 L1440,140 L0,140 Z"
-        fill="#0B2447"
-        opacity="0.35"
-      />
-    </svg>
-  )
-}
-
-/** Layered teal wave accent — bottom-left of footer. */
-export function FooterLeftAccent({ className }: DecorativeProps) {
-  const dots: Array<[number, number, number, number]> = [
-    [210, 48, 3.2, 0.22], [238, 62, 2.4, 0.18], [268, 44, 3.6, 0.24], [296, 72, 2.2, 0.16],
-    [228, 88, 2.8, 0.2], [256, 98, 2, 0.14], [284, 82, 3, 0.19], [312, 58, 2.6, 0.17],
-    [190, 72, 2.4, 0.15], [320, 92, 2.2, 0.13], [342, 68, 2.8, 0.18], [176, 98, 2, 0.12],
-    [248, 118, 2.2, 0.11], [276, 126, 1.8, 0.1], [304, 112, 2.4, 0.12], [330, 104, 2, 0.11],
-  ]
-
-  return (
-    <svg className={className} viewBox="0 0 480 400" preserveAspectRatio="xMinYMax slice" aria-hidden="true">
-      <defs>
-        <linearGradient id="footer-left-teal-deep" x1="0%" y1="100%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#04565C" />
-          <stop offset="100%" stopColor="#078C95" />
-        </linearGradient>
-        <linearGradient id="footer-left-teal-main" x1="0%" y1="100%" x2="90%" y2="20%">
-          <stop offset="0%" stopColor="#078C95" />
-          <stop offset="55%" stopColor="#1CB5A8" />
-          <stop offset="100%" stopColor="#3CB8B8" />
-        </linearGradient>
-      </defs>
-
-      {dots.map(([cx, cy, r, opacity]) => (
-        <circle key={`${cx}-${cy}`} cx={cx} cy={cy} r={r} fill="#9FE8EF" opacity={opacity} />
-      ))}
-
-      <path
-        d="M-20,400 C40,320 120,360 190,290 C260,220 330,250 420,180 C450,160 470,140 480,120 L480,400 Z"
-        fill="url(#footer-left-teal-deep)"
-      />
-      <path
-        d="M-10,400 C30,310 110,340 175,255 C240,170 320,210 400,145 C430,120 455,105 480,88 L480,400 Z"
-        fill="url(#footer-left-teal-main)"
-        opacity="0.96"
-      />
-      <path
-        d="M0,400 C20,330 70,300 120,250 C170,200 230,220 290,170 C330,140 360,120 390,100 L390,400 Z"
-        fill="#3CB8B8"
-        opacity="0.42"
-      />
-      <ellipse cx="58" cy="250" rx="72" ry="110" fill="#7ADCE6" opacity="0.34" />
-      <path
-        d="M0,400 C0,330 18,260 48,220 C78,180 110,200 130,240 C150,280 120,330 90,360 C60,385 30,395 0,400 Z"
-        fill="#B8E6E6"
-        opacity="0.28"
-      />
-    </svg>
-  )
-}
-
-/** Orange wave accent with dot texture — bottom-right of footer. */
-export function FooterRightAccent({ className }: DecorativeProps) {
-  const dots = [
-    [120, 260], [145, 245], [170, 270], [195, 250], [220, 280], [245, 265],
-    [135, 290], [160, 305], [185, 295], [210, 315], [235, 300], [260, 320],
-    [150, 330], [175, 345], [200, 335], [225, 355], [250, 340], [275, 325],
-    [290, 290], [305, 310], [315, 270], [330, 295], [340, 255], [355, 280],
-  ]
-
-  return (
-    <svg className={className} viewBox="0 0 520 420" preserveAspectRatio="xMaxYMax slice" aria-hidden="true">
-      <path
-        d="M520,420 C420,280 320,340 220,290 C120,240 60,350 -40,280 L-40,420 Z"
-        fill="#E84E0F"
-        opacity="0.95"
-      />
-      <path
-        d="M520,420 C440,320 340,370 240,320 C140,270 80,360 0,310 L0,420 Z"
-        fill="#FF5A1F"
+        d="M0,140 C0,95 35,62 95,52 C155,42 230,68 290,98 C330,118 350,140 380,140 L0,140 Z"
+        fill="#056B72"
         opacity="0.92"
       />
       <path
-        d="M520,420 C460,350 360,390 260,350 C160,310 110,380 40,340 L40,420 Z"
-        fill="#FF8A4C"
-        opacity="0.42"
+        d="M0,140 C0,102 28,72 85,64 C142,56 210,82 265,108 C305,125 325,140 360,140 L0,140 Z"
+        fill="#078C95"
+        opacity="0.85"
       />
-      <g opacity="0.65">
-        {dots.map(([cx, cy]) => (
-          <circle key={`${cx}-${cy}`} cx={cx} cy={cy} r="2.8" fill="white" />
+      <path
+        d="M0,140 C0,110 20,88 70,80 C120,72 185,95 235,118 C275,132 295,140 320,140 L0,140 Z"
+        fill="#3CB8B8"
+        opacity="0.4"
+      />
+
+      <g fill="#2A4568" opacity="0.35">
+        <path d="M1048,140 L1052,88 Q1056,62 1062,42 Q1064,28 1058,14 Q1068,34 1070,58 Q1074,40 1082,24 Q1076,46 1074,78 Q1072,108 1066,140 Z" />
+        <path d="M1078,140 L1082,92 Q1086,68 1090,48 Q1092,34 1086,20 Q1096,40 1098,64 Q1102,46 1110,30 Q1104,52 1102,84 Q1100,114 1094,140 Z" />
+      </g>
+
+      <path
+        d="M1440,140 C1380,88 1310,72 1240,82 C1170,92 1110,118 1050,140 L1440,140 Z"
+        fill="#FF5A1F"
+        opacity="0.9"
+      />
+      <path
+        d="M1440,140 C1390,98 1330,82 1270,90 C1210,98 1150,120 1090,140 L1440,140 Z"
+        fill="#FF8A4C"
+        opacity="0.32"
+      />
+
+      <g opacity="0.5">
+        {orangeDots.map(([cx, cy]) => (
+          <circle key={`${cx}-${cy}`} cx={cx} cy={cy} r="2.2" fill="white" />
         ))}
       </g>
     </svg>
   )
 }
 
-/** Palm silhouettes over the footer right accent. */
+/** @deprecated Use FooterDecorations — kept for imports. */
+export function FooterLeftAccent({ className }: DecorativeProps) {
+  return <FooterDecorations className={className} />
+}
+
+/** @deprecated Use FooterDecorations — kept for imports. */
+export function FooterRightAccent({ className }: DecorativeProps) {
+  return <FooterDecorations className={className} />
+}
+
+/** @deprecated Palms are rendered inside FooterDecorations. */
 export function FooterPalmSilhouette({ className }: DecorativeProps) {
-  return (
-    <svg className={className} viewBox="0 0 240 340" aria-hidden="true">
-      <g fill="#142D52" opacity="0.72">
-        <path d="M168,340 L176,210 Q180,160 188,115 Q192,88 184,62 Q198,98 202,135 Q208,98 218,72 Q212,118 210,165 Q208,215 198,265 Q192,300 186,340 Z" />
-        <path d="M124,340 L132,230 Q136,185 140,148 Q144,112 136,82 Q148,118 152,155 Q158,122 168,96 Q162,138 160,185 Q158,235 150,285 Q144,318 138,340 Z" />
-      </g>
-    </svg>
-  )
+  return <FooterDecorations className={className} />
 }
 
 /** Scattered dots for footer navy background — left side. */
