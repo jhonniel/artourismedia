@@ -40,7 +40,11 @@ export function Layout() {
         defaultDescription={settings.default_seo_description ?? undefined}
       />
       <GoogleAnalytics measurementId={settings.google_analytics_id} />
-      <Header navigation={data.navigation} settings={data.settings} />
+      <Header
+        navigation={data.navigation}
+        settings={data.settings}
+        socialLinks={data.social_links}
+      />
       <main className="main-offset flex-1 w-full">
         <Outlet />
       </main>

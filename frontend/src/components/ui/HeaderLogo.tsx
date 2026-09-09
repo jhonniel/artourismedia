@@ -14,8 +14,8 @@ export function HeaderLogo({ compact = false, logoUrl, siteName = 'ArTourisMedia
       variant="header"
       className={
         compact
-          ? 'h-8 w-auto max-w-[9.5rem] rounded-md'
-          : 'h-9 w-auto max-w-[10.5rem] rounded-md sm:h-10 sm:max-w-[11.5rem] md:h-11 md:max-w-[12.5rem] lg:h-12 lg:max-w-[13.5rem]'
+          ? 'h-9 w-auto max-w-[11rem]'
+          : 'h-10 w-auto max-w-[12rem] sm:h-11 sm:max-w-[13rem] md:h-12 md:max-w-[14rem] lg:h-[3.25rem] lg:max-w-[15rem]'
       }
     />
   )

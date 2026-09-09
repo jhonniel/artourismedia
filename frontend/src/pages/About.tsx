@@ -1,10 +1,9 @@
-import { Container } from '@/components/ui/Container'
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner'
 import { ErrorMessage } from '@/components/ui/ErrorMessage'
 import { SEO } from '@/components/ui/SEO'
-import { FadeIn } from '@/components/ui/FadeIn'
-import { AboutSections } from '@/components/about/AboutSections'
+import { AboutPageView } from '@/components/about/AboutPageView'
 import { canonicalUrl, webPageJsonLd } from '@/lib/structuredData'
+import { mergeAboutMetadata } from '@/lib/aboutDefaults'
 import { usePage } from '@/hooks'
 
 export default function About() {
@@ -12,21 +11,22 @@ export default function About() {
 
   if (isLoading) {
     return (
-      <Container className="py-24">
+      <div className="flex min-h-[50vh] items-center justify-center py-24">
         <LoadingSpinner size="lg" />
-      </Container>
+      </div>
     )
   }
 
   if (isError || !data) {
     return (
-      <Container className="py-24">
+      <div className="px-4 py-24">
         <ErrorMessage message="Unable to load about page." onRetry={() => refetch()} />
-      </Container>
+      </div>
     )
   }
 
   const pageUrl = canonicalUrl('/about')
+  const metadata = mergeAboutMetadata(data.metadata, data.content)
 
   return (
     <>
@@ -36,20 +36,7 @@ export default function About() {
         url={pageUrl}
         jsonLd={webPageJsonLd(data, pageUrl)}
       />
-      <Container className="py-16 md:py-24">
-        <FadeIn>
-          <div className="mx-auto max-w-3xl text-center">
-            <h1 className="text-4xl font-bold md:text-5xl">{data.title}</h1>
-            {data.content && (
-              <div
-                className="prose-content mt-6 text-lg text-navy/70"
-                dangerouslySetInnerHTML={{ __html: data.content }}
-              />
-            )}
-          </div>
-        </FadeIn>
-        <AboutSections metadata={data.metadata} />
-      </Container>
+      <AboutPageView metadata={metadata} />
     </>
   )
 }

@@ -3,10 +3,10 @@ import { assetUrl } from '@/lib/assets'
 const CATEGORY_FALLBACKS: Record<string, string> = {
   hero: assetUrl('/images/hero/hero-slideshow-01-pamulak.jpg'),
   about: assetUrl('/images/about/studio-workspace.svg'),
-  brand: assetUrl('/images/brand/artourismedia-logo.png'),
+  brand: '/images/brand/artourismedia-logo.png',
   projects: assetUrl('/images/projects/camiguin.svg'),
   posts: assetUrl('/images/posts/sustainable-tourism.svg'),
-  services: assetUrl('/images/services/tourism-planning.svg'),
+  services: assetUrl('/images/services/tourism-planning-development.jpg'),
   team: assetUrl('/images/team/maria-santos.png'),
 }
 

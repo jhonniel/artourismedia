@@ -49,7 +49,29 @@ function shouldSkip(relPath) {
   }
 
   // Static images are served from DigitalOcean Spaces — not bundled in deploy.
+  // Exception: brand logo is bundled so header/footer always work.
   if (parts.includes('public') && parts.includes('images')) {
+    if (base === 'images' || base === 'brand') {
+      return false
+    }
+
+    if (parts.includes('brand') && base === 'artourismedia-logo.png') {
+      return false
+    }
+
+    if (
+      parts.includes('services')
+      && (
+        base === 'tourism-planning-development.png'
+        || base === 'destination-branding-marketing.png'
+        || base === 'mice-management.png'
+        || base === 'thought-leadership-learning-development.png'
+        || base === 'mindanao-connect.png'
+      )
+    ) {
+      return false
+    }
+
     return true
   }
 

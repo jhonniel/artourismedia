@@ -19,6 +19,41 @@ const preserved = new Set([
 
 const removableRoots = ['index.html', 'assets', 'admin', 'images', 'favicon.svg', 'favicon.png']
 
+const bundledAssets = [
+  {
+    sourceDir: path.join(rootDir, 'frontend', 'public', 'images', 'brand'),
+    targetDir: path.join(publicDir, 'images', 'brand'),
+    names: ['artourismedia-logo.png'],
+  },
+  {
+    sourceDir: path.join(rootDir, 'frontend', 'public', 'images', 'services'),
+    targetDir: path.join(publicDir, 'images', 'services'),
+    names: [
+      'tourism-planning-development.png',
+      'destination-branding-marketing.png',
+      'mice-management.png',
+      'thought-leadership-learning-development.png',
+      'mindanao-connect.png',
+    ],
+  },
+]
+
+export function copyBrandAssetsToPublic() {
+  for (const { sourceDir, targetDir, names } of bundledAssets) {
+    fs.mkdirSync(targetDir, { recursive: true })
+
+    for (const name of names) {
+      const source = path.join(sourceDir, name)
+
+      if (!fs.existsSync(source)) {
+        throw new Error(`Missing bundled asset: ${source}`)
+      }
+
+      fs.copyFileSync(source, path.join(targetDir, name))
+    }
+  }
+}
+
 export function copyBuildsToPublic() {
   if (!fs.existsSync(frontendDist)) {
     throw new Error('Missing frontend/dist. Run the production build first.')
@@ -46,6 +81,8 @@ export function copyBuildsToPublic() {
   }
 
   fs.cpSync(adminDist, path.join(publicDir, 'admin'), { recursive: true })
+
+  copyBrandAssetsToPublic()
 
   console.log('\nUnified web root ready:')
   console.log(`- ${publicDir}`)

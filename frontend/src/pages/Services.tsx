@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
-import { ServiceIcon } from '@/components/icons/ServiceIcons'
+import { ServiceIcon, serviceIconImageClass, serviceIconWrapperClass } from '@/components/icons/ServiceIcons'
+import { cn } from '@/lib/utils'
 import { Container } from '@/components/ui/Container'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { Card } from '@/components/ui/Card'
@@ -49,8 +50,22 @@ export default function Services() {
             <FadeIn key={service.uuid} delay={index * 80}>
               <Link to={`/services/${service.slug}`} className="block h-full group">
                 <Card hover className="h-full">
-                  <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-teal text-white shadow-soft transition-colors group-hover:bg-teal/90">
-                    <ServiceIcon slug={service.slug} icon={service.icon} className="h-7 w-7" />
+                  <div
+                    className={cn(
+                      'mb-4 flex items-center justify-center transition-colors',
+                      serviceIconWrapperClass(
+                        service.slug,
+                        service.icon,
+                        'card',
+                        'bg-teal text-white group-hover:bg-teal/90',
+                      ),
+                    )}
+                  >
+                    <ServiceIcon
+                      slug={service.slug}
+                      icon={service.icon}
+                      className={serviceIconImageClass(service.slug, service.icon, 'card')}
+                    />
                   </div>
                   <h2 className="text-xl font-bold group-hover:text-teal transition-colors">{service.title}</h2>
                   {service.description && (

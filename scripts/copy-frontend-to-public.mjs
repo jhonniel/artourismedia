@@ -1,6 +1,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { copyBrandAssetsToPublic } from './copy-to-public.mjs'
 
 const rootDir = path.join(path.dirname(fileURLToPath(import.meta.url)), '..')
 const publicDir = path.join(rootDir, 'backend', 'public')
@@ -40,5 +41,7 @@ for (const entry of fs.readdirSync(frontendDist)) {
 
   fs.cpSync(path.join(frontendDist, entry), path.join(publicDir, entry), { recursive: true })
 }
+
+copyBrandAssetsToPublic()
 
 console.log('Copied frontend/dist -> backend/public (website only)')

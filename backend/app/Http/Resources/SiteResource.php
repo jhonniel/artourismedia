@@ -11,9 +11,9 @@ class SiteResource extends JsonResource
     {
         return [
             'settings' => $this->resource['settings'] ?? [],
-            'navigation' => NavigationItemResource::collection($this->resource['navigation'] ?? []),
+            'navigation' => NavigationItemResource::collection($this->resource['navigation'] ?? [])->resolve(),
             'footer' => $this->resource['footer'] ?? [],
-            'social_links' => SocialLinkResource::collection($this->resource['social_links'] ?? []),
+            'social_links' => SocialLinkResource::collection($this->resource['social_links'] ?? [])->resolve(),
         ];
     }
 }

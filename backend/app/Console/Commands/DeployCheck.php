@@ -133,6 +133,7 @@ class DeployCheck extends Command
 
         $failed = $this->checkSpaAssets('public/index.html', 'Website') || $failed;
         $failed = $this->checkSpaAssets('public/admin/index.html', 'Admin') || $failed;
+        $failed = $this->checkPublicApiCache() || $failed;
 
         if ($failed) {
             $this->newLine();
@@ -152,6 +153,37 @@ class DeployCheck extends Command
         return in_array(config('cache.default'), ['redis'], true)
             || in_array(config('queue.default'), ['redis'], true)
             || in_array(config('session.driver'), ['redis'], true);
+    }
+
+    protected function checkPublicApiCache(): bool
+    {
+        $failed = false;
+
+        foreach (['api.site', 'api.homepage'] as $key) {
+            $cached = cache()->get($key);
+
+            if ($cached === null) {
+                $this->line("✓ {$key} cache empty");
+
+                continue;
+            }
+
+            $encoded = json_encode($cached) ?: '';
+
+            if (str_contains($encoded, '__PHP_Incomplete_Class')
+                || str_contains($encoded, 'AnonymousResourceCollection')) {
+                $this->error("{$key} cache is corrupted (stale Laravel resource objects)");
+                $this->line('  Run: php artisan cache:clear');
+
+                $failed = true;
+
+                continue;
+            }
+
+            $this->line("✓ {$key} cache valid");
+        }
+
+        return $failed;
     }
 
     protected function checkSpaAssets(string $relativePath, string $label): bool

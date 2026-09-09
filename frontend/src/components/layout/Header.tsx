@@ -1,18 +1,21 @@
 import { Link, useLocation } from 'react-router-dom'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { cn } from '@/lib/utils'
-import type { NavigationItem, SiteSettings } from '@/types'
+import type { NavigationItem, SiteSettings, SocialLink } from '@/types'
 import { MobileMenu } from '@/components/layout/MobileMenu'
 import { HeaderLogo } from '@/components/ui/HeaderLogo'
+import { MobileNavToggle } from '@/components/ui/MobileNavToggle'
 
 interface HeaderProps {
   navigation: NavigationItem[]
   settings: SiteSettings
+  socialLinks?: SocialLink[]
 }
 
-export function Header({ navigation, settings }: HeaderProps) {
+export function Header({ navigation, settings, socialLinks = [] }: HeaderProps) {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
+  const headerRef = useRef<HTMLElement>(null)
   const location = useLocation()
 
   useEffect(() => {
@@ -25,6 +28,26 @@ export function Header({ navigation, settings }: HeaderProps) {
     setMobileOpen(false)
   }, [location.pathname])
 
+  useEffect(() => {
+    const header = headerRef.current
+    if (!header) return
+
+    const syncHeaderHeight = () => {
+      document.documentElement.style.setProperty('--header-height', `${header.offsetHeight}px`)
+    }
+
+    syncHeaderHeight()
+
+    const observer = new ResizeObserver(syncHeaderHeight)
+    observer.observe(header)
+    window.addEventListener('resize', syncHeaderHeight)
+
+    return () => {
+      observer.disconnect()
+      window.removeEventListener('resize', syncHeaderHeight)
+    }
+  }, [mobileOpen, scrolled])
+
   const navItems = [...navigation].sort((a, b) => a.sort_order - b.sort_order)
   const ctaItem = navItems.find((item) => item.is_cta)
   const regularItems = navItems.filter((item) => !item.is_cta)
@@ -32,16 +55,22 @@ export function Header({ navigation, settings }: HeaderProps) {
   return (
     <>
       <header
+        ref={headerRef}
         className={cn(
-          'fixed inset-x-0 top-0 z-50 transition-all duration-300',
-          scrolled
+          'fixed inset-x-0 top-0 transition-[background-color,box-shadow,padding] duration-300',
+          mobileOpen ? 'z-[101] bg-white py-3 shadow-none lg:shadow-soft' : 'z-50',
+          !mobileOpen && scrolled
             ? 'bg-white/95 py-3 shadow-soft backdrop-blur-sm lg:py-4 xl:py-5'
-            : 'bg-white py-4 md:py-5 lg:py-6 xl:py-7',
+            : !mobileOpen && 'bg-white py-4 md:py-5 lg:py-6 xl:py-7',
         )}
       >
-        <div className="mx-auto flex w-full max-w-[90rem] items-center justify-between gap-4 px-4 sm:px-6 lg:grid lg:grid-cols-[1fr_auto_1fr] lg:items-center lg:gap-6 lg:px-8 xl:gap-8 xl:px-10 2xl:px-12">
-          <div className="flex min-w-0 justify-start">
-            <Link to="/" className="shrink-0">
+        <div className="mx-auto flex h-11 w-full max-w-[90rem] items-center justify-between gap-3 px-4 sm:h-auto sm:gap-4 sm:px-6 lg:grid lg:grid-cols-[1fr_auto_1fr] lg:items-center lg:gap-6 lg:px-8 xl:gap-8 xl:px-10 2xl:px-12">
+          <div className="flex min-w-0 flex-1 justify-start lg:flex-none">
+            <Link
+              to="/"
+              className="block min-w-0 max-w-[calc(100vw-4.5rem)] sm:max-w-none"
+              onClick={() => mobileOpen && setMobileOpen(false)}
+            >
               <HeaderLogo logoUrl={settings.logo_url} siteName={settings.site_name} />
             </Link>
           </div>
@@ -55,7 +84,7 @@ export function Header({ navigation, settings }: HeaderProps) {
             ))}
           </nav>
 
-          <div className="flex shrink-0 items-center justify-end gap-3">
+          <div className="flex shrink-0 items-center justify-end gap-2 sm:gap-3">
             {ctaItem && (
               <Link
                 to={ctaItem.url}
@@ -66,17 +95,11 @@ export function Header({ navigation, settings }: HeaderProps) {
               </Link>
             )}
 
-            <button
-              type="button"
-              className="touch-target inline-flex items-center justify-center rounded-xl text-navy transition-colors hover:bg-navy/5 lg:hidden"
-              onClick={() => setMobileOpen(true)}
-              aria-label="Open menu"
-              aria-expanded={mobileOpen}
-            >
-              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            </button>
+            <MobileNavToggle
+              open={mobileOpen}
+              onClick={() => setMobileOpen((current) => !current)}
+              label={mobileOpen ? 'Close menu' : 'Open menu'}
+            />
           </div>
         </div>
       </header>
@@ -86,6 +109,7 @@ export function Header({ navigation, settings }: HeaderProps) {
         onClose={() => setMobileOpen(false)}
         navigation={navItems}
         settings={settings}
+        socialLinks={socialLinks}
       />
     </>
   )

@@ -253,6 +253,23 @@ export interface Page {
   seo_description?: string
 }
 
+export interface AboutStat {
+  icon?: 'calendar' | 'users' | 'briefcase' | 'mountain'
+  value: string
+  label: string
+}
+
+export interface AboutLeadershipItem {
+  title: string
+  organization: string
+}
+
+export interface AboutExpertiseItem {
+  slug?: string
+  title: string
+  description: string
+}
+
 export interface AboutValue {
   title: string
   description: string
@@ -273,8 +290,26 @@ export interface AboutTeamMember {
 }
 
 export interface AboutPageMetadata {
+  eyebrow?: string
+  headline?: string
+  intro?: string
+  portrait_url?: string
+  landscape_url?: string
+  signature_name?: string
+  signature_title?: string
+  quote?: string
+  stats?: AboutStat[]
+  career_heading?: string
+  career_body?: string
+  leadership?: AboutLeadershipItem[]
+  expertise_heading?: string
+  expertise_description?: string
+  expertise?: AboutExpertiseItem[]
+  closing_eyebrow?: string
+  closing_heading?: string
+  closing_body?: string
+  closing_image_url?: string
   values?: AboutValue[]
-  timeline?: AboutTimelineItem[]
   team?: AboutTeamMember[]
 }
 

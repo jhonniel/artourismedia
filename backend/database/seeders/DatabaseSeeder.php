@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 use App\Models\HomepageSection;
 use App\Support\Assets;
+use App\Support\AboutPageMetadata;
+use App\Support\LegalPageContent;
 use App\Models\NavigationItem;
 use App\Models\NewsletterSubscriber;
 use App\Models\Page;
@@ -98,8 +100,8 @@ class DatabaseSeeder extends Seeder
             ['key' => 'google_analytics_id', 'value' => '', 'type' => 'string', 'group' => 'branding'],
             ['key' => 'default_seo_title', 'value' => 'Art! Boncato | Tourism Consultancy', 'type' => 'string', 'group' => 'branding'],
             ['key' => 'default_seo_description', 'value' => 'Art Boncato Tourism Consultancy helps governments and communities shape inspiring destinations people remember.', 'type' => 'string', 'group' => 'branding'],
-            ['key' => 'logo_url', 'value' => Assets::url('/images/brand/artourismedia-logo.png'), 'type' => 'string', 'group' => 'branding'],
-            ['key' => 'favicon_url', 'value' => Assets::url('/favicon.svg'), 'type' => 'string', 'group' => 'branding'],
+            ['key' => 'logo_url', 'value' => '/images/brand/artourismedia-logo.png', 'type' => 'string', 'group' => 'branding'],
+            ['key' => 'favicon_url', 'value' => Assets::url('/favicon.png'), 'type' => 'string', 'group' => 'branding'],
         ];
 
         foreach ($settings as $setting) {
@@ -276,7 +278,7 @@ class DatabaseSeeder extends Seeder
                 'content' => '<p>We are guided by the Visitor, Industry, Community and Environment (VICE) framework, from the research process right through to every practical action on the ground.</p><h3>Projects and Experience:</h3><ul><li>Camiguin Tourism Development Plan 2025-2028</li><li>Mts. Timpoong- Hibok-Hibok National Monument (MTHNM) Ecotourism and Management Plan 2022</li><li>Island Garden City of Samal (IGACOS) Tourism Plans Review 2022</li><li>Camiguin Pivot and Transformation : A Tourism Recovery Plan 2021-2023</li><li>Mantigue Island Tourism Management Plan 2021</li><li>Implementing the Siargao Tourism Master Plan (STMP): Action Plan Recommendations 2021</li></ul>',
                 'category' => 'Planning',
                 'icon' => 'tourism-planning',
-                'image_url' => Assets::url('/images/services/tourism-planning.svg'),
+                'image_url' => '/images/services/tourism-planning-development.png',
                 'sort_order' => 1,
             ],
             [
@@ -286,7 +288,7 @@ class DatabaseSeeder extends Seeder
                 'content' => '<p>We underline the significance of stakeholder buy-in as an essential step in the process.</p><h3>Projects and Experience:</h3><ul><li>Isle Be There Marketing Plan 2024, 2025, 2026</li><li>Camiguin Isle Be There Branding 2024</li><li>Clean Camiguin Marketing Plan 2021, 2022, 2023</li><li>Clean Camiguin Branding 2021</li></ul>',
                 'category' => 'Marketing',
                 'icon' => 'destination-branding',
-                'image_url' => Assets::url('/images/services/tourism-planning.svg'),
+                'image_url' => '/images/services/destination-branding-marketing.png',
                 'sort_order' => 2,
             ],
             [
@@ -296,7 +298,7 @@ class DatabaseSeeder extends Seeder
                 'content' => '<p>This main service also includes consulting and actual facility management and specialist manufacturing for exhibits.</p><h3>Projects and Experience:</h3><ul><li>Camiguin International Convention Center (conceptual stage)</li><li>ASEAN Tourism Forum (ATF) and ASEAN Summit Opening Ceremonies 2026 at The Mactan Expo (coordination team member for Megaworld Hotels and Resorts)</li><li>World Trade Center Metro Manila (senior leadership) 2022-2024</li><li>Iloilo MICE Situation Report and Marketing Plan (for the Department of Tourism) 2019</li><li>50th Asian Development Bank Summit 2018 (official Philippine government lead organizer with the ADB)</li><li>Kadayawan Festival 2016 (Co-chairman of Mayor Sara Duterte-Carpio)</li><li>ASEAN Tourism Forum (ATF) 2006 (Co-Chairman of Mayor Rodrigo R. Duterte, Davao Organizing Committee)</li><li>Conventions and Events Organizers, Inc. 1995-2001 (organized at least 70 local and regional MICE projects as lone Mindanao Professional Convention Organizer accredited by the Philippine Convention and Visitors Corporation now named Tourism Promotions Board)</li></ul>',
                 'category' => 'MICE',
                 'icon' => 'mice-events',
-                'image_url' => Assets::url('/images/services/tourism-planning.svg'),
+                'image_url' => '/images/services/mice-management.png',
                 'sort_order' => 3,
             ],
             [
@@ -306,7 +308,7 @@ class DatabaseSeeder extends Seeder
                 'content' => '<p>This is accomplished by creating and utilizing tools that deal with problems affecting a skilled workforce in the hospitality sector.</p><h3>Projects and Experience</h3><ul><li>Camiguin Roundtable on Sustainable Island Destination Governance (September 2026)</li><li>Camiguin Tourism Training Institute (conceptual stage)</li></ul>',
                 'category' => 'Learning',
                 'icon' => 'learning-leadership',
-                'image_url' => Assets::url('/images/services/tourism-planning.svg'),
+                'image_url' => '/images/services/thought-leadership-learning-development.png',
                 'sort_order' => 4,
             ],
             [
@@ -316,7 +318,7 @@ class DatabaseSeeder extends Seeder
                 'content' => '<p>Make Mindanao your next greenfield. Let us help you in this.</p><h3>Projects and Experience</h3><ul><li>Mindanao Tourism Situation Report ( for crafting haha)</li><li>Mindanao Roadtrip with Art videos</li><li>Mindanao Fun 101 magazine digital file</li></ul>',
                 'category' => 'Regional',
                 'icon' => 'mindanao-connect',
-                'image_url' => Assets::url('/images/services/tourism-planning.svg'),
+                'image_url' => '/images/services/mindanao-connect.png',
                 'sort_order' => 5,
             ],
         ];
@@ -524,14 +526,14 @@ class DatabaseSeeder extends Seeder
 
     protected function seedPages(): void
     {
+        $aboutMetadata = AboutPageMetadata::defaults();
+
         Page::query()->updateOrCreate(
             ['slug' => 'about'],
             [
                 'title' => 'About Art Boncato',
-                'content' => '<p>Art Boncato, Jr. is a tourism and hospitality executive who continues to build on a career spanning 30 years.</p>'
-                    .'<p>He has spent the past 10 years in several senior leadership roles as the Group General Manager of Megaworld Hotels and Resorts; Executive Vice President and Chief Operating Officer of the World Trade Center Metro Manila; Regional Director, Assistant Secretary, and Undersecretary of the Philippine Department of Tourism; and Assistant Secretary of the Department of Trade and Industry seconded to the Department of Finance to organize the 51st Asian Development Bank Summit in Manila.</p>'
-                    .'<p>He is now steering ArTourisMedia, a team that delivers bespoke tourism solutions for planning and development, branding and marketing, learning and development, MICE execution, and a partner in advocating tourism growth in Mindanao.</p>',
-                'metadata' => null,
+                'content' => $aboutMetadata['career_body'],
+                'metadata' => $aboutMetadata,
                 'is_published' => true,
                 'seo_title' => 'About Art Boncato | ArTourisMedia',
                 'seo_description' => 'Learn about Art Boncato, Jr.—tourism and hospitality executive leading ArTourisMedia with bespoke solutions for destinations across the Philippines.',
@@ -542,8 +544,10 @@ class DatabaseSeeder extends Seeder
             ['slug' => 'privacy-policy'],
             [
                 'title' => 'Privacy Policy',
-                'content' => '<p>Destination Studio respects your privacy. This policy explains how we collect, use, and protect personal information submitted through our website and consultation forms.</p>',
+                'content' => LegalPageContent::privacyPolicy(),
                 'is_published' => true,
+                'seo_title' => 'Privacy Policy | ArTourisMedia',
+                'seo_description' => 'Learn how ArTourisMedia collects, uses, and protects personal information submitted through our website, contact forms, and newsletter.',
             ]
         );
 
@@ -551,9 +555,10 @@ class DatabaseSeeder extends Seeder
             ['slug' => 'terms-of-use'],
             [
                 'title' => 'Terms of Use',
-                'content' => '<p>By using the Destination Studio website, you agree to these terms. Content is provided for informational purposes and does not constitute professional advice without a signed engagement.</p>',
+                'content' => LegalPageContent::termsOfUse(),
                 'is_published' => true,
-                'seo_title' => 'Terms of Use | Destination Studio',
+                'seo_title' => 'Terms of Use | ArTourisMedia',
+                'seo_description' => 'Terms governing use of the ArTourisMedia website, content, and online communications.',
             ]
         );
     }

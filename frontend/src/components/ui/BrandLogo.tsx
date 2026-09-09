@@ -1,5 +1,3 @@
-import { assetUrl } from '@/lib/assets'
-
 interface BrandLogoProps {
   logoUrl?: string
   siteName?: string
@@ -7,31 +5,21 @@ interface BrandLogoProps {
   variant?: 'header' | 'footer' | 'mark'
 }
 
-const VARIANT_SRC: Record<string, string> = {
-  header: assetUrl('/images/brand/artourismedia-logo.png'),
-  footer: assetUrl('/images/brand/artourismedia-logo.png'),
-  mark: assetUrl('/images/brand/artourismedia-logo.png'),
-}
+export const SITE_LOGO_PATH = '/images/brand/artourismedia-logo.png?v=3'
 
 export function BrandLogo({
-  logoUrl,
   siteName = 'ArTourisMedia',
-  className = 'h-9 w-auto md:h-10',
-  variant = 'header',
+  className = 'h-10 w-auto md:h-11',
 }: BrandLogoProps) {
-  const src = logoUrl ? assetUrl(logoUrl) : VARIANT_SRC[variant]
-
   return (
     <img
-      src={src}
+      src={SITE_LOGO_PATH}
       alt={siteName}
       className={className}
       onError={(event) => {
         const target = event.currentTarget
-        const fallback = VARIANT_SRC.header
-
-        if (target.src !== fallback) {
-          target.src = fallback
+        if (!target.src.endsWith(SITE_LOGO_PATH)) {
+          target.src = SITE_LOGO_PATH
         }
       }}
     />

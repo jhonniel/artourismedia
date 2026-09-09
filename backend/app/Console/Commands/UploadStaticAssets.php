@@ -76,18 +76,22 @@ class UploadStaticAssets extends Command
             $uploaded++;
         }
 
-        // Favicon at site root
-        $favicon = realpath(base_path('../frontend/public/favicon.svg'));
-        if ($favicon !== false && is_file($favicon)) {
-            $remotePath = $prefix.'/favicon.svg';
+        // Favicons at site root
+        foreach (['favicon.png', 'favicon-192.png', 'apple-touch-icon.png'] as $faviconName) {
+            $favicon = realpath(base_path('../frontend/public/'.$faviconName));
+            if ($favicon === false || ! is_file($favicon)) {
+                continue;
+            }
+
+            $remotePath = $prefix.'/'.$faviconName;
             if ($dryRun) {
-                $this->line("  would upload: favicon.svg → {$remotePath}");
+                $this->line("  would upload: {$faviconName} → {$remotePath}");
             } else {
                 $disk->put($remotePath, file_get_contents($favicon), [
                     'visibility' => 'public',
-                    'ContentType' => 'image/svg+xml',
+                    'ContentType' => 'image/png',
                 ]);
-                $this->line('  uploaded: favicon.svg');
+                $this->line("  uploaded: {$faviconName}");
             }
             $uploaded++;
         }

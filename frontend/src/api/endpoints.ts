@@ -1,7 +1,10 @@
 import { apiClient, unwrap } from '@/api/client'
+import { asArray, isCorruptedPayload } from '@/lib/normalizeApi'
 import type {
   ContactFormData,
   HomepageData,
+  HomepageSection,
+  NavigationItem,
   NewsletterFormData,
   Page,
   PaginatedResponse,
@@ -12,11 +15,42 @@ import type {
   ProjectsQueryParams,
   Service,
   SiteData,
+  SocialLink,
+  Statistic,
+  TrustStripItem,
 } from '@/types'
 
+function assertUsablePayload(data: unknown, label: string): void {
+  if (isCorruptedPayload(data)) {
+    throw new Error(`Invalid ${label} response from server. Please refresh again.`)
+  }
+}
+
 export const endpoints = {
-  site: () => unwrap<SiteData>(apiClient.get('/site')),
-  homepage: () => unwrap<HomepageData>(apiClient.get('/homepage')),
+  site: async () => {
+    const data = await unwrap<SiteData>(apiClient.get('/site'))
+    assertUsablePayload(data, 'site')
+
+    return {
+      ...data,
+      navigation: asArray<NavigationItem>(data.navigation),
+      social_links: asArray<SocialLink>(data.social_links),
+    }
+  },
+  homepage: async () => {
+    const data = await unwrap<HomepageData>(apiClient.get('/homepage'))
+    assertUsablePayload(data, 'homepage')
+
+    return {
+      ...data,
+      sections: asArray<HomepageSection>(data.sections),
+      trust_strip_items: asArray<TrustStripItem>(data.trust_strip_items),
+      services: asArray<Service>(data.services),
+      featured_projects: asArray<Project>(data.featured_projects),
+      statistics: asArray<Statistic>(data.statistics),
+      latest_posts: asArray<Post>(data.latest_posts),
+    } satisfies HomepageData
+  },
   page: (slug: string) => unwrap<Page>(apiClient.get(`/pages/${slug}`)),
   services: () => unwrap<Service[]>(apiClient.get('/services')),
   service: (slug: string) => unwrap<Service>(apiClient.get(`/services/${slug}`)),

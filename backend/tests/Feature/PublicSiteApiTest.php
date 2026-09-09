@@ -29,6 +29,36 @@ class PublicSiteApiTest extends TestCase
         $navigation = $response->json('data.navigation');
         $this->assertIsArray($navigation);
         $this->assertArrayNotHasKey('__PHP_Incomplete_Class_Name', $response->json('data'));
+
+        $cached = cache()->get('api.site');
+        $this->assertIsArray($cached);
+        $this->assertIsArray($cached['navigation'] ?? null);
+        $this->assertStringNotContainsString(
+            '__PHP_Incomplete_Class',
+            json_encode($cached) ?: '',
+        );
+    }
+
+    public function test_site_endpoint_rebuilds_corrupted_cache(): void
+    {
+        $this->seed();
+
+        cache()->put('api.site', [
+            'settings' => ['site_name' => 'Broken'],
+            'navigation' => ['__PHP_Incomplete_Class_Name' => 'AnonymousResourceCollection'],
+            'footer' => [],
+            'social_links' => [],
+        ], 300);
+
+        $response = $this->getJson('/api/site');
+
+        $response->assertOk()
+            ->assertJsonPath('success', true);
+
+        $navigation = $response->json('data.navigation');
+        $this->assertIsArray($navigation);
+        $this->assertNotEmpty($navigation);
+        $this->assertArrayHasKey('label', $navigation[0]);
     }
 
     public function test_homepage_endpoint_returns_sections_array(): void
@@ -52,5 +82,13 @@ class PublicSiteApiTest extends TestCase
         $this->assertIsArray($sections);
         $this->assertNotEmpty($sections);
         $this->assertArrayNotHasKey('__PHP_Incomplete_Class_Name', $response->json('data'));
+
+        $cached = cache()->get('api.homepage');
+        $this->assertIsArray($cached);
+        $this->assertIsArray($cached['sections'] ?? null);
+        $this->assertStringNotContainsString(
+            '__PHP_Incomplete_Class',
+            json_encode($cached) ?: '',
+        );
     }
 }

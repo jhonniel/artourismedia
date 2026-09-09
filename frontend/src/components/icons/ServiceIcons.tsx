@@ -1,93 +1,75 @@
-import type { ComponentType, ReactNode } from 'react'
+import type { ComponentType } from 'react'
 import { cn } from '@/lib/utils'
 
 interface ServiceIconProps {
   className?: string
 }
 
-const s = {
-  stroke: 'currentColor',
-  strokeWidth: 1.5,
-  strokeLinecap: 'round' as const,
-  strokeLinejoin: 'round' as const,
-  fill: 'none' as const,
+export const TOURISM_PLANNING_ICON_PATH = '/images/services/tourism-planning-development.png?v=2'
+export const DESTINATION_BRANDING_ICON_PATH = '/images/services/destination-branding-marketing.png?v=2'
+export const MICE_MANAGEMENT_ICON_PATH = '/images/services/mice-management.png?v=2'
+export const THOUGHT_LEADERSHIP_ICON_PATH = '/images/services/thought-leadership-learning-development.png?v=3'
+export const MINDANAO_CONNECT_ICON_PATH = '/images/services/mindanao-connect.png?v=2'
+
+const IMAGE_SERVICE_ICON_KEYS = new Set([
+  'tourism-planning-development',
+  'tourism-planning',
+  'destination-branding-marketing',
+  'destination-branding',
+  'mice-management',
+  'mice-events',
+  'thought-leadership-learning-development',
+  'learning-leadership',
+  'thought-leadership',
+  'mindanao-connect',
+])
+
+type ServiceIconLayout = 'home' | 'card' | 'detail'
+
+const IMAGE_ICON_LAYOUT: Record<ServiceIconLayout, { wrapper: string; image: string }> = {
+  home: {
+    wrapper: 'h-12 w-12 sm:h-14 sm:w-14',
+    image: 'h-12 w-12 sm:h-14 sm:w-14',
+  },
+  card: {
+    wrapper: 'h-12 w-12 sm:h-14 sm:w-14',
+    image: 'h-12 w-12 sm:h-14 sm:w-14',
+  },
+  detail: {
+    wrapper: 'h-14 w-14 sm:h-16 sm:w-16',
+    image: 'h-14 w-14 sm:h-16 sm:w-16',
+  },
 }
 
-function IconBase({ className, children }: ServiceIconProps & { children: ReactNode }) {
+function ImageServiceIcon({ src, className }: ServiceIconProps & { src: string }) {
   return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
+    <img
+      src={src}
+      alt=""
       aria-hidden
-      className={cn('h-8 w-8 shrink-0', className)}
-    >
-      {children}
-    </svg>
+      className={cn('object-contain', className)}
+    />
   )
 }
 
-/** Tourism planning — folded destination map with pin */
 export function TourismPlanningIcon({ className }: ServiceIconProps) {
-  return (
-    <IconBase className={className}>
-      <path {...s} d="M4 7.5 12 4l8 3.5v10L12 21 4 17.5V7.5z" />
-      <path {...s} d="M12 4v17" opacity={0.22} />
-      <path {...s} d="M12 9a2.25 2.25 0 1 0 0 4.5 2.25 2.25 0 0 0 0-4.5z" />
-      <circle cx="12" cy="11.25" r="0.85" fill="currentColor" stroke="none" />
-    </IconBase>
-  )
+  return <ImageServiceIcon src={TOURISM_PLANNING_ICON_PATH} className={className} />
 }
 
-/** Destination branding — megaphone / campaign reach */
 export function DestinationBrandingIcon({ className }: ServiceIconProps) {
-  return (
-    <IconBase className={className}>
-      <path {...s} d="M11 6v12" />
-      <path {...s} d="M6 9.5h5l5.5-3v12l-5.5-3H6a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1z" />
-      <path {...s} d="M17.5 9a2.75 2.75 0 0 1 0 6" />
-      <path {...s} d="M4 10.5v3" strokeWidth={2} />
-    </IconBase>
-  )
+  return <ImageServiceIcon src={DESTINATION_BRANDING_ICON_PATH} className={className} />
 }
 
-/** MICE — conference presentation */
 export function MiceManagementIcon({ className }: ServiceIconProps) {
-  return (
-    <IconBase className={className}>
-      <rect {...s} x="3" y="5" width="18" height="12" rx="1.5" />
-      <rect {...s} x="7.5" y="9" width="9" height="5" rx="0.75" />
-      <path {...s} d="M12 17v3" />
-      <path {...s} d="M8.5 20h7" />
-      <path {...s} d="M7 20.5h1M16 20.5h1" strokeWidth={1.25} opacity={0.5} />
-    </IconBase>
-  )
+  return <ImageServiceIcon src={MICE_MANAGEMENT_ICON_PATH} className={className} />
 }
 
-/** Learning & development — graduation cap */
 export function ThoughtLeadershipIcon({ className }: ServiceIconProps) {
-  return (
-    <IconBase className={className}>
-      <path {...s} d="M12 3 3 7.5 12 12l9-4.5L12 3z" />
-      <path {...s} d="M6 9.5V14c0 2.2 2.7 4 6 4s6-1.8 6-4V9.5" />
-      <path {...s} d="M20 7.5V14" />
-      <path {...s} d="M12 12v4" opacity={0.35} />
-    </IconBase>
-  )
+  return <ImageServiceIcon src={THOUGHT_LEADERSHIP_ICON_PATH} className={className} />
 }
 
-/** Mindanao CONNECT — network hub */
 export function MindanaoConnectIcon({ className }: ServiceIconProps) {
-  return (
-    <IconBase className={className}>
-      <circle {...s} cx="12" cy="12" r="2.25" />
-      <circle {...s} cx="6.5" cy="8" r="1.75" />
-      <circle {...s} cx="17.5" cy="8" r="1.75" />
-      <circle {...s} cx="6.5" cy="16" r="1.75" />
-      <circle {...s} cx="17.5" cy="16" r="1.75" />
-      <path {...s} d="M10.1 10.6 8 9.4M13.9 10.6 16 9.4M10.1 13.4 8 14.6M13.9 13.4 16 14.6" />
-    </IconBase>
-  )
+  return <ImageServiceIcon src={MINDANAO_CONNECT_ICON_PATH} className={className} />
 }
 
 export const SERVICE_ICON_BY_SLUG: Record<string, ComponentType<ServiceIconProps>> = {
@@ -106,6 +88,41 @@ export const SERVICE_ICON_BY_NAME: Record<string, ComponentType<ServiceIconProps
   'learning-leadership': ThoughtLeadershipIcon,
   'thought-leadership': ThoughtLeadershipIcon,
   'mindanao-connect': MindanaoConnectIcon,
+}
+
+export function usesImageServiceIcon(slug?: string, icon?: string | null): boolean {
+  const key = slug ?? (icon ? resolveIconKey(icon) : '')
+
+  return IMAGE_SERVICE_ICON_KEYS.has(key)
+}
+
+export function serviceIconWrapperClass(
+  slug?: string,
+  icon?: string | null,
+  layout: ServiceIconLayout = 'card',
+  fallback = 'bg-teal text-white',
+): string {
+  if (usesImageServiceIcon(slug, icon)) {
+    return cn('bg-transparent p-0 shadow-none', IMAGE_ICON_LAYOUT[layout].wrapper)
+  }
+
+  return cn(
+    layout === 'detail' ? 'h-16 w-16' : 'h-14 w-14 sm:h-16 sm:w-16',
+    'rounded-2xl shadow-soft',
+    fallback,
+  )
+}
+
+export function serviceIconImageClass(
+  slug?: string,
+  icon?: string | null,
+  layout: ServiceIconLayout = 'card',
+): string {
+  if (usesImageServiceIcon(slug, icon)) {
+    return IMAGE_ICON_LAYOUT[layout].image
+  }
+
+  return layout === 'detail' ? 'h-8 w-8' : 'h-8 w-8 sm:h-10 sm:w-10'
 }
 
 export function ServiceIcon({

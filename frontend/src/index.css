@@ -176,6 +176,54 @@
     padding-top: var(--header-height);
   }
 
+  .mobile-menu-backdrop {
+    background: rgba(11, 36, 71, 0.34);
+    backdrop-filter: blur(4px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.28s ease;
+  }
+
+  .mobile-menu-backdrop.is-open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .mobile-menu-panel {
+    top: var(--header-height);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(0.75rem);
+    transition:
+      opacity 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .mobile-menu-panel.is-open {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+
+  .mobile-menu-item,
+  .mobile-menu-footer {
+    opacity: 0;
+    transform: translateY(0.5rem);
+    transition:
+      opacity 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .mobile-menu-panel.is-open .mobile-menu-item,
+  .mobile-menu-panel.is-open .mobile-menu-footer {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  html.mobile-menu-open {
+    overflow: hidden;
+  }
+
   .hero-offset {
     margin-top: calc(-1 * var(--header-height));
     padding-top: var(--header-height);

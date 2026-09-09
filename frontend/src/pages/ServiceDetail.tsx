@@ -1,5 +1,6 @@
 import { Link, useParams } from 'react-router-dom'
-import { ServiceIcon } from '@/components/icons/ServiceIcons'
+import { ServiceIcon, serviceIconImageClass, serviceIconWrapperClass } from '@/components/icons/ServiceIcons'
+import { cn } from '@/lib/utils'
 import { Container } from '@/components/ui/Container'
 import { Button } from '@/components/ui/Button'
 import { LazyImage } from '@/components/ui/LazyImage'
@@ -54,8 +55,17 @@ export default function ServiceDetail() {
           <div className="mt-6 grid gap-12 lg:grid-cols-2 lg:items-start">
             <div>
               {data.slug !== 'mindanao-connect' && (
-                <span className="mb-4 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-teal text-white shadow-soft">
-                  <ServiceIcon slug={data.slug} icon={data.icon} className="h-8 w-8" />
+                <span
+                  className={cn(
+                    'mb-4 inline-flex items-center justify-center',
+                    serviceIconWrapperClass(data.slug, data.icon, 'detail'),
+                  )}
+                >
+                  <ServiceIcon
+                    slug={data.slug}
+                    icon={data.icon}
+                    className={serviceIconImageClass(data.slug, data.icon, 'detail')}
+                  />
                 </span>
               )}
               <h1 className="text-4xl font-bold md:text-5xl">{data.title}</h1>

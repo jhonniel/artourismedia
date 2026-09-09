@@ -133,20 +133,22 @@ for (const relative of files.sort()) {
   uploaded++
 }
 
-const favicon = path.join(rootDir, 'frontend', 'public', 'favicon.svg')
-if (fs.existsSync(favicon)) {
-  const key = root ? `${root}/${prefix}/favicon.svg` : `${prefix}/favicon.svg`
+for (const faviconName of ['favicon.png', 'favicon-192.png', 'apple-touch-icon.png']) {
+  const favicon = path.join(rootDir, 'frontend', 'public', faviconName)
+  if (!fs.existsSync(favicon)) continue
+
+  const key = root ? `${root}/${prefix}/${faviconName}` : `${prefix}/${faviconName}`
   if (dryRun) {
-    console.log(`  would upload: favicon.svg → ${key}`)
+    console.log(`  would upload: ${faviconName} → ${key}`)
   } else {
     await client.send(new PutObjectCommand({
       Bucket: env.DIGITALOCEAN_SPACES_BUCKET,
       Key: key,
       Body: fs.readFileSync(favicon),
       ACL: 'public-read',
-      ContentType: 'image/svg+xml',
+      ContentType: 'image/png',
     }))
-    console.log('  uploaded: favicon.svg')
+    console.log(`  uploaded: ${faviconName}`)
   }
   uploaded++
 }
