@@ -55,7 +55,7 @@ function shouldSkip(relPath) {
       return false
     }
 
-    if (parts.includes('brand') && base === 'artourismedia-logo.png') {
+    if (parts.includes('brand') && (base === 'artourismedia-logo.png' || base === 'artourismedia-logo-dark.png')) {
       return false
     }
 

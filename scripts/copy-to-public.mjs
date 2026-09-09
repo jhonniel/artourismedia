@@ -23,7 +23,7 @@ const bundledAssets = [
   {
     sourceDir: path.join(rootDir, 'frontend', 'public', 'images', 'brand'),
     targetDir: path.join(publicDir, 'images', 'brand'),
-    names: ['artourismedia-logo.png'],
+    names: ['artourismedia-logo.png', 'artourismedia-logo-dark.png'],
   },
   {
     sourceDir: path.join(rootDir, 'frontend', 'public', 'images', 'services'),
