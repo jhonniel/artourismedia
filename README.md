@@ -2,6 +2,21 @@
 
 Public website + admin CMS + Laravel API for [artourismedia.com](https://artourismedia.com).
 
+## Project layout
+
+```
+ART_WEBSITE/
+  frontend/     React public website (Vite)
+  admin/        Vue admin CMS (Vite)
+  backend/      Laravel API + unified public web root
+  scripts/      Build, deploy, asset upload
+  dist/         Generated deploy zips
+  deploy/       Nginx templates
+  docs/         Setup, API, database notes
+```
+
+---
+
 ## Local development
 
 ```bash
@@ -22,26 +37,28 @@ Copy `frontend/.env.example` → `frontend/.env` for Spaces image URLs locally.
 
 ---
 
-## Deploy to server
-
-### Which file to upload?
-
-There are **two zips** in `dist/` — you only deploy **one**:
-
-| File | Deploy? | Contains |
-|------|---------|----------|
-| **`dist/web-deploy.zip`** | **Yes — use this** | Website + admin + Laravel API + `index.php` |
-| `dist/static-web.zip` | No (not yet) | UI only — **no API**, causes `/api/*` 404 |
-
-Do **not** upload both. Do **not** upload `frontend/` or `admin/` folders separately.
-
-### Build on your PC
+## Build deploy packages
 
 ```bash
 npm run build:deploy
 ```
 
-### First deploy on server
+This builds the frontend and admin, copies them into `backend/public/`, stages Laravel, and writes:
+
+| File | Size (approx.) | Use |
+|------|----------------|-----|
+| **`dist/web-deploy.zip`** | ~1.5 MB | **Full deploy** — website + admin + Laravel API |
+| `dist/static-web.zip` | ~3.5 MB | **UI-only update** when API is already live |
+
+Do **not** upload both zips. Do **not** upload `frontend/` or `admin/` source folders separately.
+
+`npm run build` builds production assets locally without creating the zip (same Vite output, copied to `backend/public/`).
+
+---
+
+## Deploy to server
+
+### First deploy
 
 ```bash
 cd /var/www/artourismedia.com
@@ -61,19 +78,6 @@ root /var/www/artourismedia.com/public;
 
 Template: `deploy/nginx/single-domain.conf`
 
-### After deploy — verify
-
-```bash
-curl -s https://artourismedia.com/api/health    # JSON, success: true
-curl -I https://artourismedia.com/index.php     # must NOT say "File not found"
-```
-
-| Live URL | Served by |
-|----------|-----------|
-| https://artourismedia.com/ | `index.php` → Laravel → `index.html` (website) |
-| https://artourismedia.com/admin/ | `index.php` → Laravel → `admin/index.html` |
-| https://artourismedia.com/api/site | `index.php` (Laravel API) |
-
 ### Updates (site already working)
 
 ```bash
@@ -87,6 +91,28 @@ php artisan config:cache
 
 Use `static-web.zip` **only** for a quick UI-only refresh when `/api/health` already works.
 
+After UI or branding changes, upload CDN assets from your PC:
+
+```bash
+npm run assets:upload
+```
+
+This pushes images, favicons (`favicon.png`, `apple-touch-icon.png`), and other static files to DigitalOcean Spaces.
+
+### After deploy — verify
+
+```bash
+curl -s https://artourismedia.com/api/health    # JSON, success: true
+curl -I https://artourismedia.com/index.php     # must NOT say "File not found"
+php artisan deploy:check
+```
+
+| Live URL | Served by |
+|----------|-----------|
+| https://artourismedia.com/ | `index.php` → Laravel → `index.html` (website) |
+| https://artourismedia.com/admin/ | `index.php` → Laravel → `admin/index.html` |
+| https://artourismedia.com/api/site | `index.php` (Laravel API) |
+
 ### Server folder layout (after unzip)
 
 ```
@@ -96,12 +122,12 @@ Use `static-web.zip` **only** for a quick UI-only refresh when `/api/health` alr
   scripts/server-after-unzip.sh
   public/                               ← Nginx root
     index.php                           ← single entry point
-    index.html                          ← built website (served by Laravel)
-    admin/index.html                    ← built admin (served by Laravel)
+    index.html                          ← built website
+    admin/index.html                    ← built admin
+    favicon.png                         ← bundled with deploy
 ```
 
-Images are **not** in the zip — they load from **DigitalOcean Spaces**.  
-Upload from PC: `npm run assets:upload`
+Most images are served from **DigitalOcean Spaces**, not the zip. Brand logo and service icons are bundled; hero, about, and slideshow assets need `npm run assets:upload`.
 
 Full server checklist: **`dist/README.txt`**
 
@@ -124,9 +150,11 @@ Production database: **PostgreSQL** (`DB_CONNECTION=pgsql` in `.env`).
 
 | Command | Purpose |
 |---------|---------|
-| `npm run dev` | Local dev (all apps) |
-| `npm run build:deploy` | Build `dist/web-deploy.zip` |
-| `npm run assets:upload` | Upload images to Spaces |
+| `npm run dev` | Local dev (website + admin + API) |
+| `npm run build` | Production build → `backend/public/` |
+| `npm run build:deploy` | Build + create `dist/web-deploy.zip` and `dist/static-web.zip` |
+| `npm run assets:upload` | Upload images and favicons to Spaces |
+| `npm run start` | Run production-like server locally (after build) |
 | `php artisan deploy:check` | Verify server config (run on server) |
 | `bash scripts/verify-deploy.sh` | Check files exist after unzip (run on server) |
 
@@ -138,7 +166,10 @@ Production database: **PostgreSQL** (`DB_CONNECTION=pgsql` in `.env`).
 |---------|-----|
 | `/api/*` 404 "File not found" | Deploy `web-deploy.zip` (not static-web). Check `public/index.php` exists. Nginx root → `public/` |
 | Blank landing page | `php artisan cache:clear` on server |
+| First load OK, refresh blank | Redeploy full `web-deploy.zip`; clear cache |
 | API 500 permission denied | `sudo chown -R www-data:www-data /var/www/artourismedia.com` |
+| Missing images on production | Run `npm run assets:upload` from your PC |
+| Mindanao CONNECT videos missing | `php artisan migrate --force` then `php artisan mindanao-connect:import-videos` |
 
 ---
 

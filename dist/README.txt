@@ -5,10 +5,20 @@
 WHICH ZIP? (read this first)
 ----------------------------
 
-  web-deploy.zip   ← USE THIS (website + admin + API)
-  static-web.zip   ← DO NOT use for first deploy (UI only, no API)
+  web-deploy.zip   ← USE THIS (website + admin + API, ~1.5 MB)
+  static-web.zip   ← UI-only update (~3.5 MB) when /api/health already works
 
-  You only deploy ONE zip — never both.
+  You only deploy ONE zip per update — never both.
+
+
+BUILD ON PC
+-----------
+
+  npm run build:deploy
+
+  Output:
+    dist/web-deploy.zip   full Laravel app + built UI
+    dist/static-web.zip   backend/public only (no app/, routes/, vendor/)
 
 
   PC                          SERVER
@@ -16,7 +26,7 @@ WHICH ZIP? (read this first)
   npm run build:deploy   →    upload dist/web-deploy.zip
                               unzip to /var/www/artourismedia.com
                               cp .env.production.example .env
-                              SEED=1 bash scripts/server-after-unzip.sh
+                              SEED=1 bash scripts/server-after-unzip.sh   (first time)
                               Nginx root → .../public
 
 
@@ -31,6 +41,7 @@ AFTER UNZIP — FOLDER LOOKS LIKE THIS
       index.php                  ← ONLY entry point (nginx + Apache)
       index.html                 ← built website (Laravel serves this)
       admin/index.html           ← built admin (Laravel serves this)
+      favicon.png                ← bundled with deploy
 
 
 FIRST DEPLOY
@@ -56,9 +67,12 @@ UPDATES (site already live)
   unzip -o /path/to/web-deploy.zip
   composer install --no-dev --optimize-autoloader
   php artisan migrate --force
-  php artisan mindanao-connect:import-videos
+  php artisan mindanao-connect:import-videos   # if Mindanao CONNECT changed
   php artisan cache:clear
   php artisan config:cache
+
+  From PC after branding/image changes:
+    npm run assets:upload
 
   Cron (required for auto YouTube sync):
     * * * * * cd /var/www/artourismedia.com && php artisan schedule:run >> /dev/null 2>&1
@@ -91,15 +105,17 @@ TROUBLESHOOTING
     → Run: php artisan deploy:check
     → Fix: unzip the FULL web-deploy.zip again (not just index.html).
     → Then: php artisan cache:clear
-    → Reload nginx if you updated deploy/nginx/single-domain.conf
   API 500 permission?     sudo chown -R www-data:www-data .
   Check all:              php artisan deploy:check
   Test API:               curl https://artourismedia.com/api/health
 
+  Missing images on live site?
+    → Most images load from DigitalOcean Spaces, not the zip.
+    → From PC: npm run assets:upload
+
   Mindanao CONNECT videos missing?
     → curl https://artourismedia.com/api/services/mindanao-connect
     → Response must include "videos": [...] (not just title/description).
-    → If missing: you deployed static-web.zip only, or skipped migrate/import.
     → Fix: deploy web-deploy.zip, then:
          php artisan migrate --force
          php artisan mindanao-connect:import-videos
@@ -115,10 +131,11 @@ TROUBLESHOOTING
     → php artisan config:clear && php artisan cache:clear
 
 
-IMAGES
-------
+IMAGES & FAVICONS
+-----------------
 
-  Not in zip — served from DigitalOcean Spaces.
-  Upload from PC: npm run assets:upload
+  Hero, about, and slideshow images are served from DigitalOcean Spaces.
+  Brand logo, service icons, and favicon.png are bundled in web-deploy.zip.
+  Upload or refresh CDN assets from PC: npm run assets:upload
 
 ================================================================================

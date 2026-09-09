@@ -11,10 +11,9 @@ interface AboutSectionsProps {
 
 export function AboutSections({ metadata }: AboutSectionsProps) {
   const values = metadata?.values ?? []
-  const timeline = metadata?.timeline ?? []
   const team = metadata?.team ?? []
 
-  if (values.length === 0 && timeline.length === 0 && team.length === 0) {
+  if (values.length === 0 && team.length === 0) {
     return null
   }
 
@@ -42,31 +41,6 @@ export function AboutSections({ metadata }: AboutSectionsProps) {
                   <h3 className="text-xl font-bold text-navy">{value.title}</h3>
                   <p className="mt-3 text-navy/60 leading-relaxed">{value.description}</p>
                 </Card>
-              </FadeIn>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {timeline.length > 0 && (
-        <section>
-          <FadeIn>
-            <SectionHeading
-              eyebrow="Our journey"
-              title="Three decades of"
-              accent="destination building"
-              align="center"
-            />
-          </FadeIn>
-          <div className="mx-auto mt-10 max-w-3xl space-y-8">
-            {timeline.map((item, index) => (
-              <FadeIn key={`${item.year}-${item.title}`} delay={index * 60}>
-                <div className="relative border-l-2 border-teal/30 pl-8">
-                  <span className="absolute -left-[9px] top-1 h-4 w-4 rounded-full border-2 border-teal bg-white" />
-                  <p className="text-sm font-semibold uppercase tracking-wider text-teal">{item.year}</p>
-                  <h3 className="mt-1 text-xl font-bold text-navy">{item.title}</h3>
-                  <p className="mt-2 text-navy/60 leading-relaxed">{item.description}</p>
-                </div>
               </FadeIn>
             ))}
           </div>
