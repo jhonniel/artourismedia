@@ -609,6 +609,60 @@ class DatabaseSeeder extends Seeder
                 'seo_description' => 'How Camiguin\'s Clean Camiguin plan supports post-pandemic tourism recovery and transformation.',
             ]
         );
+
+        Post::query()->updateOrCreate(
+            ['slug' => 'dof-dti-adb-meeting-manila-2018'],
+            [
+                'post_category_id' => $mediaCategory?->id,
+                'author_id' => $admin->id,
+                'title' => 'DOF, DTI to team-up in hosting ADB meeting in Manila next yr.',
+                'excerpt' => 'The Department of Finance tapped the Department of Trade and Industry—and Trade Assistant Secretary Arturo Boncato Jr.—to help organize the 51st annual meeting of the Asian Development Bank board of governors in Manila.',
+                'content' => '<p>The Department of Finance (DOF) on Monday said it has tapped the expertise of the Department of Trade and Industry (DTI) in organizing the 51st annual meeting of the Asian Development Bank (ADB) board of governors.</p><p>Trade Assistant Secretary Arturo Boncato Jr., head of the DTI Competitiveness and Ease of Doing Business Group and a marketing and communications expert, will help the DOF organize the ADB Board of Governors meeting in Manila on May 3 to 6, 2018.</p><p>Finance Secretary Carlos G. Dominguez III was appointed chairman of the ADB Board of Governors in May, succeeding Japan Deputy Prime Minister and Finance Minister Taro Aso who chaired the 50th Annual Meeting in Yokohama.</p><p>Under the administration of former President Benigno Aquino III, Boncato was assistant secretary at the Department of Tourism and was in charge of handling special projects for Mindanao.</p><p><em>— Jon Viktor Cabuenas/VDS, GMA News</em></p><p><a href="https://www.gmanetwork.com/news/money/companies/616783/dof-dti-to-team-up-in-hosting-adb-meeting-in-manila-next-yr/story/" target="_blank" rel="noopener noreferrer">Read the full article on GMA News</a></p>',
+                'featured_image_url' => Assets::url('/images/services/mice-management.jpg'),
+                'status' => 'published',
+                'is_featured' => true,
+                'reading_time' => 3,
+                'published_at' => now(),
+                'seo_title' => 'DOF, DTI Host ADB Meeting Manila 2018 | Art Boncato | GMA News',
+                'seo_description' => 'GMA News reports on Arturo Boncato Jr. supporting DOF and DTI in organizing the 51st Asian Development Bank board of governors meeting in Manila.',
+            ]
+        );
+
+        Post::query()->updateOrCreate(
+            ['slug' => 'atf-2006-davao-asean-tourism-showcase'],
+            [
+                'post_category_id' => $mediaCategory?->id,
+                'author_id' => $admin->id,
+                'title' => 'ATF 2006 in Davao to showcase the best of ASEAN tourism',
+                'excerpt' => 'A nine-day ASEAN Tourism Forum in Davao City brought together thousands of regional tourism executives, buyers, and sellers to showcase the best of ASEAN tourism products and cooperation.',
+                'content' => '<p><strong>DAVAO CITY</strong> — A virtual showcase of the best in tourism products in the Association of Southeast Asian Nations (ASEAN) will be showcased in this southern metropolis when the nine-day ASEAN Tourism Forum (ATF) 2006 kicks off tomorrow.</p><p>According to Art Boncato, chairman of the local host council of the ATF 2006, hundreds of tourism sellers from all over the region shall put their best foot forward for the many buyers joining the much-awaited and biggest tourism event in ASEAN.</p><p>“It would be like traveling to the different parts of ASEAN as everyone would be represented here during the ATF,” he said.</p><p>Boncato said it’s all systems go for the ATF as preparations have gone full-blast for the arrival of more than 3,000 tourism executives and major players not only from the region but from around the world as well.</p><p>“It would be an exciting event as it would not only give us Filipinos the chance to showcase our wealth, but also there would be an exchange of opportunities and continued cooperation among the participants in the ATF,” he said.</p><p>Mayor Rodrigo Duterte said the ATF is seen to help further boost the economic development of the South.</p><p>Duterte has earmarked over P20 million for the necessary infrastructure in preparation for the holding of the ATF and another P7 million for the security requirements of the delegates.</p><p>As part of the infrastructure component, the major thoroughfares are dotted with orchid-shaped lampposts, showing that Davao City is an “orchid city.”</p><p>The ATF 2006 gathers the highest ranking tourism officials of Indonesia, Malaysia, Singapore, Thailand, Brunei Darussalam, Vietnam, Myanmar, Cambodia, Laos and the Philippines.</p><p>Also expected to attend the event are the tourism ministers of Japan, China and South Korea, being part of the “ASEAN + 3” grouping.</p><p>The ATF is expected to lure buyers of tourism products not only from the ASEAN member-nations but also from Europe, the United States and the Middle East.</p><p>All the hotels and inns here have undergone major refurbishing and renovation in preparation for ATF 2006, which shall include a meeting of the ASEAN Joint Tourism Task Force to discuss areas of cooperation in promoting the region’s tourism attractions, facilities, services and investments.</p><p>One of the ATF 2006’s highlights is the meeting of the ASEAN tourism ministers on Jan. 16 to further strengthen their cooperation.</p><p>Various tourism-related ASEAN organizations such as the Federation of ASEAN Travel Associations, Association of ASEAN Airlines, Association of ASEAN Hotels and Restaurants and the ASEAN Tourism Association are holding separate meetings during the nine-day ATF.</p>',
+                'featured_image_url' => Assets::url('/images/hero/hero-slideshow-01-pamulak-float.jpg'),
+                'status' => 'published',
+                'is_featured' => true,
+                'reading_time' => 5,
+                'published_at' => now(),
+                'seo_title' => 'ATF 2006 Davao ASEAN Tourism Forum | Art Boncato',
+                'seo_description' => 'How Davao City hosted ASEAN Tourism Forum 2006, showcasing ASEAN tourism products and leadership from Art Boncato and Mayor Rodrigo Duterte.',
+            ]
+        );
+
+        Post::query()->updateOrCreate(
+            ['slug' => 'philippines-rising-muslim-friendly-destination-halal-travel-summit'],
+            [
+                'post_category_id' => $mediaCategory?->id,
+                'author_id' => $admin->id,
+                'title' => 'Philippines recognized as rising Muslim-friendly destination at halal travel summit',
+                'excerpt' => 'Developing halal travel has been a key part of the Philippines\' tourism strategy as the Muslim travel market is expected to reach 245 million international arrivals by 2030.',
+                'content' => '<ul><li>Developing halal travel has been key part of the Philippines\' tourism strategy</li><li>Muslim travel market expected to reach 245 million international arrivals by 2030</li></ul><p><strong>MANILA:</strong> The Philippines has been recognized as a rising Muslim-friendly destination at this year\'s Halal in Travel Global Summit, where one of the country\'s officials and a Filipino hotel chain were also honored for their work in promoting halal tourism.</p><p>The Philippines stands among three other countries — Thailand, Ireland and Spain — in the Rising Muslim-friendly non-Organization of Islamic Cooperation Destinations in the latest edition of the Mastercard-CrescentRating Global Muslim Travel Index.</p><p>The index is an annual report benchmarking destinations in the Muslim travel market.</p><p>At the summit in Singapore earlier this week, Philippine Tourism Undersecretary Myra Paz Abubakar was named Halal Travel Personality of the Year, while the country\'s largest hotel operator, Megaworld Hotels and Resorts, won the Muslim-friendly Hotel Chain of the Year Award.</p><p>“This means that the DOT (Department of Tourism) is on the right track with our programs for Muslim-friendly and halal tourism. We have already done a lot but there is still so much to be done,” Abubakar, who was recognized for her “instrumental role” in advancing Muslim-friendly tourism in the Philippines, told Arab News on Saturday.</p><p>The archipelagic country, known for its white-sand beaches, diving spots and rich culture, has in recent years stepped up efforts to cater to Muslim tourists by ensuring that they have access to halal products and services.</p><p>“We have to continue moving forward and upward as the Muslim Market is a big market waiting to be tapped,” Abubakar said.</p><p>The Muslim travel market is on the rise, with international Muslim arrivals reaching 176 million people in 2024, according to the GMTI. The report estimates that the market will grow to 245 million arrivals by 2030, with their travel expenditure reaching $235 billion.</p><p>The index has noted the Philippines\' efforts to become a Muslim-friendly destination since 2021, and awarded the country the Emerging Muslim-friendly Destination accolade at the halal travel summit in 2023.</p><p>While the category has been removed for the 2025 edition, the GMTI covered the Philippines and its efforts to promote halal tourism, such as establishing more Muslim-friendly airports, to create a more inclusive travel experience.</p><p>The predominantly Catholic country — where Muslims constitute about 10 percent of the almost 120 million population — also launched last year a beach dedicated to Muslim women travelers in Boracay, the country\'s top resort island and one of the world\'s most popular.</p><p>Those efforts, part of the Philippines\' move to diversify its economy away from dependency on the declining Chinese market, have led to a recent surge in international tourism arrivals from countries in the Middle East and the Gulf Cooperation Council.</p><p><a href="https://www.arabnews.com/world/philippines-recognized-as-rising-muslim-friendly-destination-at-halal-travel-summit-2604468" target="_blank" rel="noopener noreferrer">Read the full article on Arab News</a> (June 14, 2025).</p>',
+                'featured_image_url' => Assets::url('/images/posts/halal-travel-summit-award.jpg'),
+                'status' => 'published',
+                'is_featured' => true,
+                'reading_time' => 6,
+                'published_at' => now(),
+                'seo_title' => 'Philippines Muslim-Friendly Destination Recognition | Arab News | Art Boncato',
+                'seo_description' => 'Arab News reports on the Philippines\' rising Muslim-friendly destination status and Megaworld Hotels & Resorts\' award at the Halal in Travel Global Summit.',
+            ]
+        );
     }
 
     protected function seedPages(): void
