@@ -8,7 +8,6 @@ import {
   SparkleIcon,
   HeartOutlineIcon,
   AirplaneIcon,
-  HeroOrangeAccent,
 } from '@/components/ui/Decorative'
 import { cn, parseContent } from '@/lib/utils'
 import type { HeroContent, HomepageSection } from '@/types'
@@ -123,7 +122,6 @@ function LandingHero({ content }: { content: HeroContent }) {
             imageClassName="object-cover object-[68%_center]"
           />
           <div aria-hidden className="hero-landing-gradient-overlay pointer-events-none" />
-          <HeroOrangeAccent className="pointer-events-none absolute -bottom-1 right-0 z-[2] h-32 w-40 xl:h-36 xl:w-48" />
         </div>
 
         <FadeIn className="hero-copy hero-landing-copy relative z-10 flex flex-col justify-center py-10 lg:py-0 xl:py-0">

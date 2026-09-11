@@ -45,7 +45,7 @@ class HomepageSectionService extends CrudService
                 ->where('is_published', true)
                 ->where('is_featured', true)
                 ->orderBy('sort_order')
-                ->limit(3)
+                ->limit(5)
                 ->with('category')
                 ->get(),
             'statistics' => Statistic::query()

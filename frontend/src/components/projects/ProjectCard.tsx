@@ -19,7 +19,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
           src={project.cover_image_url}
           alt={project.title}
           wrapperClassName="aspect-[16/10]"
-          className="transition-transform duration-500 group-hover:scale-105"
+          className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
         />
         <div className="p-6">
           {categoryName && (

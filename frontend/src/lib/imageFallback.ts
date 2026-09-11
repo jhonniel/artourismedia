@@ -1,7 +1,7 @@
 import { assetUrl, buildAssetFallbackChain, sameOriginAssetUrl, toRelativeAssetPath } from '@/lib/assets'
 
 const CATEGORY_FALLBACKS: Record<string, string> = {
-  hero: assetUrl('/images/hero/hero-slideshow-01-pamulak.jpg'),
+  hero: assetUrl('/images/hero/hero-slideshow-01-pamulak-float.jpg'),
   about: assetUrl('/images/about/studio-workspace.svg'),
   brand: assetUrl('/images/brand/artourismedia-logo.png'),
   projects: assetUrl('/images/projects/camiguin.svg'),
@@ -10,7 +10,15 @@ const CATEGORY_FALLBACKS: Record<string, string> = {
   team: assetUrl('/images/team/maria-santos.png'),
 }
 
+function hasConcreteProjectAsset(src: string): boolean {
+  return /\/images\/projects\/[^/]+\.(png|jpe?g|webp)(\?|$)/i.test(src)
+}
+
 function extensionAlternatives(src: string): string[] {
+  if (hasConcreteProjectAsset(src)) {
+    return []
+  }
+
   const alternatives: string[] = []
 
   if (/\.png$/i.test(src)) {
@@ -26,6 +34,10 @@ function extensionAlternatives(src: string): string[] {
 }
 
 function categoryFallback(src: string): string | undefined {
+  if (hasConcreteProjectAsset(src)) {
+    return undefined
+  }
+
   for (const [segment, fallback] of Object.entries(CATEGORY_FALLBACKS)) {
     if (src.includes(`/${segment}/`)) {
       return fallback

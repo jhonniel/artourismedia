@@ -11,16 +11,6 @@ const rootDir = path.join(path.dirname(fileURLToPath(import.meta.url)), '..')
 const imagesDir = path.join(rootDir, 'frontend', 'public', 'images')
 const dryRun = process.argv.includes('--dry-run')
 
-const HERO_SLIDESHOW_KEEP = new Set([
-  'hero-slideshow-01-pamulak.jpg',
-  'hero-slideshow-03-mountain-valley.jpg',
-  'hero-slideshow-04-sunken-cemetery.jpg',
-  'hero-slideshow-05-maranao-dance.jpg',
-  'hero-slideshow-06-sugba-lagoon.jpg',
-  'hero-slideshow-07-grand-mosque.jpg',
-  'hero-slideshow-08-cold-spring.jpg',
-])
-
 function loadEnv(filePath) {
   if (!fs.existsSync(filePath)) return {}
   const env = {}
@@ -49,10 +39,9 @@ function shouldSkip(relative) {
   if (dir === 'hero' || dir.endsWith('/hero')) {
     if (/^hero-slide-\d+\.jpg$/i.test(name)) return true
     if (/^hero-slideshow-\d+\.jpg$/i.test(name)) return true
-    if (!HERO_SLIDESHOW_KEEP.has(name)) {
-      if (/^hero-(beach|composite|person|art|blob|scene|coastline|mockup|landing)/i.test(name)) {
-        return true
-      }
+    if (/^hero-slideshow-\d{2}-.+\.jpg$/i.test(name)) return false
+    if (/^hero-(beach|composite|person|art|blob|scene|coastline|mockup|landing)/i.test(name)) {
+      return true
     }
   }
 

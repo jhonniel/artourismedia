@@ -27,10 +27,12 @@ export function FadeIn({ children, className, delay = 0, immediate = false }: Fa
       return
     }
 
+    const reveal = () => setVisible(true)
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry?.isIntersecting) {
-          setVisible(true)
+          reveal()
           observer.disconnect()
         }
       },
@@ -38,7 +40,30 @@ export function FadeIn({ children, className, delay = 0, immediate = false }: Fa
     )
 
     observer.observe(element)
-    return () => observer.disconnect()
+
+    const revealIfVisible = () => {
+      const rect = element.getBoundingClientRect()
+      if (rect.top < window.innerHeight && rect.bottom > 0) {
+        reveal()
+        observer.disconnect()
+      }
+    }
+
+    revealIfVisible()
+    requestAnimationFrame(revealIfVisible)
+
+    const onPageShow = (event: PageTransitionEvent) => {
+      if (event.persisted) {
+        reveal()
+      }
+    }
+
+    window.addEventListener('pageshow', onPageShow)
+
+    return () => {
+      observer.disconnect()
+      window.removeEventListener('pageshow', onPageShow)
+    }
   }, [immediate])
 
   return (

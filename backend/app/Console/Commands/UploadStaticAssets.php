@@ -14,16 +14,6 @@ class UploadStaticAssets extends Command
 
     protected $description = 'Upload static site images to DigitalOcean Spaces (excludes mockups and unused hero files)';
 
-    /** @var list<string> */
-    private const HERO_SLIDESHOW_KEEP = [
-        'hero-slideshow-01-pamulak.jpg',
-        'hero-slideshow-03-mountain-valley.jpg',
-        'hero-slideshow-04-sunken-cemetery.jpg',
-        'hero-slideshow-05-maranao-dance.jpg',
-        'hero-slideshow-06-sugba-lagoon.jpg',
-        'hero-slideshow-07-grand-mosque.jpg',
-        'hero-slideshow-08-cold-spring.jpg',
-    ];
 
     public function handle(): int
     {
@@ -131,10 +121,12 @@ class UploadStaticAssets extends Command
                 return true;
             }
 
-            if (! in_array($name, self::HERO_SLIDESHOW_KEEP, true)) {
-                if (preg_match('/^hero-(beach|composite|person|art|blob|scene|coastline|mockup|landing)/i', $name)) {
-                    return true;
-                }
+            if (preg_match('/^hero-slideshow-\d{2}-.+\.jpg$/i', $name)) {
+                return false;
+            }
+
+            if (preg_match('/^hero-(beach|composite|person|art|blob|scene|coastline|mockup|landing)/i', $name)) {
+                return true;
             }
         }
 

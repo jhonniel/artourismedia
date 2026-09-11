@@ -9,6 +9,7 @@
     "build:production": "node scripts/build-production.mjs",
     "build:deploy": "node scripts/build-deploy.mjs",
     "assets:upload": "node scripts/upload-static-assets.mjs",
+    "hero:import": "node scripts/import-hero-slideshow.mjs",
     "start": "node scripts/start-production.mjs",
     "e2e": "playwright test --config e2e/playwright.config.ts",
     "e2e:ui": "playwright test --config e2e/playwright.config.ts --ui",

@@ -3,7 +3,6 @@ import { Container } from '@/components/ui/Container'
 import { LazyImage } from '@/components/ui/LazyImage'
 import { FadeIn } from '@/components/ui/FadeIn'
 import { SocialIcon } from '@/components/ui/SocialIcon'
-import { AboutPalmAccent } from '@/components/ui/Decorative'
 import { Button } from '@/components/ui/Button'
 import { parseContent } from '@/lib/utils'
 import { cn } from '@/lib/utils'
@@ -37,8 +36,6 @@ export function About({ section, socialLinks = [] }: AboutProps) {
 
   return (
     <section className="relative overflow-hidden bg-white py-16 md:py-20 lg:py-24">
-      <AboutPalmAccent className="pointer-events-none absolute -right-8 top-8 hidden h-[22rem] w-48 opacity-90 lg:block xl:-right-4 xl:top-4 xl:h-[26rem] xl:w-56" />
-
       <Container className="relative">
         <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-12 xl:gap-16">
           <FadeIn>
@@ -46,8 +43,8 @@ export function About({ section, socialLinks = [] }: AboutProps) {
               <LazyImage
                 src={content.image_url}
                 alt={content.image_alt ?? ''}
-                wrapperClassName="w-full overflow-hidden rounded-[1.5rem] bg-white shadow-card sm:rounded-[1.75rem] xl:rounded-[2rem]"
-                className="!h-auto !w-full !object-contain"
+                wrapperClassName="aspect-[4/5] w-full overflow-hidden rounded-[1.25rem] sm:rounded-[1.5rem] lg:rounded-[1.75rem]"
+                className="h-full w-full object-cover object-[center_18%]"
               />
             )}
           </FadeIn>

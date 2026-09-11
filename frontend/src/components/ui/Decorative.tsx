@@ -1,3 +1,5 @@
+import { cn } from '@/lib/utils'
+
 interface DecorativeProps {
   className?: string
 }
@@ -185,14 +187,48 @@ export function WaveDividerNavy({ className }: DecorativeProps) {
   )
 }
 
-/** Smooth top wave for the footer — white content transitions into navy. */
+const NAVY_TO_WHITE_WAVE =
+  'M0,52 C220,92 380,22 580,58 C780,94 980,28 1180,54 C1300,68 1380,42 1440,48'
+
+const WAVE_DIVIDER_CLASS = 'block w-full leading-none -mt-px -mb-px'
+
+function WhiteNavyWaveShape() {
+  return (
+    <>
+      <rect width="1440" height="100" fill="#FFFFFF" />
+      <path d={`${NAVY_TO_WHITE_WAVE} L1440,102 L0,102 Z`} fill="#0B2447" />
+    </>
+  )
+}
+
+/** Smooth top wave — explicit white above the curve so it blends with white sections. */
 export function FooterTopWave({ className }: DecorativeProps) {
   return (
-    <svg className={className} viewBox="0 0 1440 100" preserveAspectRatio="none" aria-hidden="true">
-      <path
-        d="M0,52 C220,92 380,22 580,58 C780,94 980,28 1180,54 C1300,68 1380,42 1440,48 L1440,100 L0,100 Z"
-        fill="#0B2447"
-      />
+    <svg
+      className={cn(WAVE_DIVIDER_CLASS, className)}
+      viewBox="0 0 1440 100"
+      preserveAspectRatio="none"
+      overflow="visible"
+      aria-hidden="true"
+    >
+      <WhiteNavyWaveShape />
+    </svg>
+  )
+}
+
+/** Smooth bottom wave — exact vertical mirror of FooterTopWave. */
+export function NavyToWhiteWave({ className }: DecorativeProps) {
+  return (
+    <svg
+      className={cn(WAVE_DIVIDER_CLASS, className)}
+      viewBox="0 0 1440 100"
+      preserveAspectRatio="none"
+      overflow="visible"
+      aria-hidden="true"
+    >
+      <g transform="translate(0, 100) scale(1, -1)">
+        <WhiteNavyWaveShape />
+      </g>
     </svg>
   )
 }

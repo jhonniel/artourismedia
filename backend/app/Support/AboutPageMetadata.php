@@ -10,8 +10,8 @@ class AboutPageMetadata
             'eyebrow' => 'About Art Boncato',
             'headline' => 'Three Decades of Leadership in Tourism, Hospitality & Destination Development',
             'intro' => 'For over 30 years, Art Boncato has shaped tourism and hospitality through strategic leadership, destination development, and national tourism initiatives—driving sustainable growth and creating opportunities for communities across the Philippines, especially Mindanao.',
-            'portrait_url' => '/images/about/art-boncato-portrait.png?v=12',
-            'landscape_url' => '/images/hero/hero-slideshow-03-mountain-valley.jpg',
+            'portrait_url' => '/images/about/art-boncato-portrait.jpg?v=14',
+            'landscape_url' => '/images/hero/hero-slideshow-19-mountain-valley.jpg',
             'signature_name' => 'Art Boncato, Jr.',
             'signature_title' => 'Tourism & Hospitality Executive',
             'quote' => 'Tourism creates opportunities, connects people, and builds stronger communities.',
@@ -58,7 +58,7 @@ class AboutPageMetadata
             'closing_eyebrow' => 'Rooted in Mindanao',
             'closing_heading' => 'Connected to a Brighter Tomorrow',
             'closing_body' => 'Art Boncato continues to champion tourism growth in Mindanao—connecting people, places, and possibilities for communities across the island.',
-            'closing_image_url' => '/images/hero/hero-slideshow-06-sugba-lagoon.jpg',
+            'closing_image_url' => '/images/hero/hero-slideshow-20-siargao-lagoon.jpg',
         ];
     }
 }

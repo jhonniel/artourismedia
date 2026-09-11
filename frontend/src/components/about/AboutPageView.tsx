@@ -53,8 +53,8 @@ export function AboutPageView({ metadata }: AboutPageViewProps) {
                       <LazyImage
                         src={metadata.portrait_url}
                         alt={metadata.signature_name ?? 'Art Boncato, Jr.'}
-                        wrapperClassName="mx-auto w-full max-w-[18rem] bg-transparent sm:mx-0 sm:max-w-[20rem] lg:max-w-[24rem] xl:max-w-[28rem]"
-                        className="!h-auto !w-full !object-contain !object-bottom"
+                        wrapperClassName="mx-auto aspect-[4/5] w-full max-w-[18rem] overflow-hidden rounded-[1.25rem] sm:mx-0 sm:max-w-[20rem] lg:max-w-[24rem] xl:max-w-[28rem]"
+                        className="h-full w-full object-cover object-[center_18%]"
                       />
                     )}
                   </div>

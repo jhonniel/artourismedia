@@ -152,7 +152,7 @@ class DatabaseSeeder extends Seeder
                     'cta_url' => '/contact',
                     'secondary_cta_text' => 'Explore Our Work',
                     'secondary_cta_url' => '/projects',
-                    'image_url' => Assets::url('/images/hero/hero-slideshow-01-pamulak.jpg'),
+                    'image_url' => Assets::url('/images/hero/hero-slideshow-01-pamulak-float.jpg'),
                     'image_alt' => 'Art Boncato Tourism Consultancy',
                 ],
                 'sort_order' => 1,
@@ -389,16 +389,15 @@ class DatabaseSeeder extends Seeder
         }
 
         $islandCategory = ProjectCategory::query()->where('slug', 'island-destinations')->first();
-        $heritageCategory = ProjectCategory::query()->where('slug', 'cultural-heritage')->first();
 
         Project::query()->updateOrCreate(
-            ['slug' => 'camiguin-tourism-master-plan'],
+            ['slug' => 'clean-camiguin-pivot-transformation'],
             [
                 'project_category_id' => $islandCategory?->id,
-                'title' => 'Camiguin Tourism Master Plan',
-                'excerpt' => 'A comprehensive master plan guiding sustainable growth for Camiguin\'s island destination.',
-                'content' => '<p>Art Boncato led stakeholder workshops and produced a 10-year tourism master plan balancing conservation, community livelihoods, and visitor growth for Camiguin Island.</p>',
-                'cover_image_url' => Assets::url('/images/projects/camiguin.png'),
+                'title' => 'Clean Camiguin Pivot and Transformation: A Post-Pandemic Strategic Development Plan',
+                'excerpt' => 'A strategic framework developed to guide Camiguin\'s tourism sector through post-pandemic recovery and transformation. The plan provided a platform for repositioning the province, strengthening destination readiness and pursuing a more competitive, sustainable and resilient tourism economy.',
+                'content' => '<p>A strategic framework developed to guide Camiguin\'s tourism sector through post-pandemic recovery and transformation. The plan provided a platform for repositioning the province, strengthening destination readiness and pursuing a more competitive, sustainable and resilient tourism economy.</p>',
+                'cover_image_url' => Assets::url('/images/projects/clean-camiguin.png?v=16'),
                 'category_label' => 'Strategy & Planning',
                 'is_featured' => true,
                 'is_published' => true,
@@ -408,36 +407,69 @@ class DatabaseSeeder extends Seeder
         );
 
         Project::query()->updateOrCreate(
-            ['slug' => 'provincial-destination-branding'],
+            ['slug' => 'mantigue-island-tourism-management-plan'],
             [
-                'project_category_id' => $heritageCategory?->id,
-                'title' => 'Destination Branding for Provincial Tourism',
-                'excerpt' => 'A unified brand platform and campaign toolkit for a provincial tourism office.',
-                'content' => '<p>We developed a distinctive destination identity, visual system, and launch campaign that increased off-peak visitation across the province\'s key corridors.</p>',
-                'cover_image_url' => Assets::url('/images/projects/provincial-branding.png'),
-                'category_label' => 'Branding & Marketing',
+                'project_category_id' => $islandCategory?->id,
+                'title' => 'Mantigue Island Tourism Management Plan',
+                'excerpt' => 'A destination-level management plan designed to balance visitor experience, environmental protection and community benefits. It established actionable measures for visitor management, carrying capacity, tourism facilities, product enhancement, safety and service standards, stakeholder participation and the long-term protection of Mantigue Island\'s natural resources.',
+                'content' => '<p>A destination-level management plan designed to balance visitor experience, environmental protection and community benefits. It established actionable measures for visitor management, carrying capacity, tourism facilities, product enhancement, safety and service standards, stakeholder participation and the long-term protection of Mantigue Island\'s natural resources.</p>',
+                'cover_image_url' => Assets::url('/images/projects/mantigue-island.jpg'),
+                'category_label' => 'Destination Management',
                 'is_featured' => true,
                 'is_published' => true,
                 'sort_order' => 2,
-                'color' => '#FF5A1F',
+                'color' => '#078C95',
             ]
         );
 
         Project::query()->updateOrCreate(
-            ['slug' => 'international-promotion-campaign'],
+            ['slug' => 'mounts-timpoong-hibok-hibok-ecotourism-plan'],
             [
                 'project_category_id' => $islandCategory?->id,
-                'title' => 'International Promotion Campaign',
-                'excerpt' => 'A multi-market campaign bringing Philippine destinations to global audiences.',
-                'content' => '<p>From content production to trade engagement, we delivered an integrated international promotion program that expanded reach across key source markets.</p>',
-                'cover_image_url' => Assets::url('/images/projects/international-campaign.png'),
-                'category_label' => 'Media & Promotion',
+                'title' => 'Mounts Timpoong and Hibok-Hibok Ecotourism Management and Investment Plan',
+                'excerpt' => 'An integrated ecotourism framework for the sustainable development and management of the Mounts Timpoong–Hibok-Hibok landscape. The engagement combined conservation, visitor experience, community participation, site management and investment planning to support responsible tourism within an environmentally sensitive destination.',
+                'content' => '<p>An integrated ecotourism framework for the sustainable development and management of the Mounts Timpoong–Hibok-Hibok landscape. The engagement combined conservation, visitor experience, community participation, site management and investment planning to support responsible tourism within an environmentally sensitive destination.</p>',
+                'cover_image_url' => Assets::url('/images/projects/mounts-timpoong-hibok-hibok.png'),
+                'category_label' => 'Ecotourism & Conservation',
                 'is_featured' => true,
                 'is_published' => true,
                 'sort_order' => 3,
-                'color' => '#0B2447',
+                'color' => '#078C95',
             ]
         );
+
+        Project::query()->updateOrCreate(
+            ['slug' => 'samal-strategic-action-plan'],
+            [
+                'project_category_id' => $islandCategory?->id,
+                'title' => 'Reformulated Island Garden City of Samal Strategic Action Plan',
+                'excerpt' => 'An updated strategic action plan responsive to changing tourism conditions, emerging market opportunities and evolving destination-management requirements. The plan identified priority interventions for strengthening Samal\'s tourism competitiveness while protecting the island\'s environmental resources and promoting benefits for its communities and tourism enterprises.',
+                'content' => '<p>An updated strategic action plan responsive to changing tourism conditions, emerging market opportunities and evolving destination-management requirements. The plan identified priority interventions for strengthening Samal\'s tourism competitiveness while protecting the island\'s environmental resources and promoting benefits for its communities and tourism enterprises.</p>',
+                'cover_image_url' => Assets::url('/images/projects/samal-island.jpg'),
+                'category_label' => 'Strategy & Planning',
+                'is_featured' => true,
+                'is_published' => true,
+                'sort_order' => 4,
+                'color' => '#078C95',
+            ]
+        );
+
+        Project::query()->updateOrCreate(
+            ['slug' => 'camiguin-tourism-development-action-plan-2026-2028'],
+            [
+                'project_category_id' => $islandCategory?->id,
+                'title' => 'Camiguin Tourism Development Action Plan 2026–2028',
+                'excerpt' => 'A results-oriented action plan that translates Camiguin\'s tourism vision into coordinated programs, projects, implementation responsibilities and investment priorities. It provides a practical roadmap for government, tourism enterprises, communities and development partners to advance the province\'s tourism goals over the three-year period.',
+                'content' => '<p>A results-oriented action plan that translates Camiguin\'s tourism vision into coordinated programs, projects, implementation responsibilities and investment priorities. It provides a practical roadmap for government, tourism enterprises, communities and development partners to advance the province\'s tourism goals over the three-year period.</p>',
+                'cover_image_url' => Assets::url('/images/projects/camiguin-sunken-cemetery.jpg'),
+                'category_label' => 'Strategy & Planning',
+                'is_featured' => true,
+                'is_published' => true,
+                'sort_order' => 5,
+                'color' => '#078C95',
+            ]
+        );
+
     }
 
     protected function seedPostCategoriesTagsAndPosts(User $admin): void
@@ -520,6 +552,60 @@ class DatabaseSeeder extends Seeder
                 'is_featured' => true,
                 'reading_time' => 5,
                 'published_at' => now()->subDays(14),
+            ]
+        );
+
+        Post::query()->updateOrCreate(
+            ['slug' => 'camiguin-tourism-development-plan-2026-2028'],
+            [
+                'post_category_id' => $strategyCategory?->id,
+                'author_id' => $admin->id,
+                'title' => 'Camiguin\'s 2026–2028 Tourism Roadmap Takes Shape',
+                'excerpt' => 'A results-oriented action plan translates Camiguin\'s tourism vision into coordinated programs, implementation responsibilities and investment priorities for the next three years.',
+                'content' => '<p>Camiguin is moving from broad vision to coordinated action. The province\'s Tourism Development Action Plan 2026–2028 sets out practical programs, implementation roles and investment priorities for government, tourism enterprises, communities and development partners.</p><p>It builds on recent planning work across the island and gives stakeholders a shared roadmap for strengthening competitiveness while protecting Camiguin\'s natural and cultural assets.</p><p><a href="/projects/camiguin-tourism-development-action-plan-2026-2028">View the Camiguin Tourism Development Action Plan 2026–2028 project</a></p>',
+                'featured_image_url' => Assets::url('/images/projects/camiguin-sunken-cemetery.jpg'),
+                'status' => 'published',
+                'is_featured' => true,
+                'reading_time' => 5,
+                'published_at' => now(),
+                'seo_title' => 'Camiguin Tourism Development Action Plan 2026–2028 | Art Boncato',
+                'seo_description' => 'How Camiguin\'s new tourism action plan turns vision into coordinated programs and investment priorities.',
+            ]
+        );
+
+        Post::query()->updateOrCreate(
+            ['slug' => 'samal-island-tourism-strategic-action-plan'],
+            [
+                'post_category_id' => $strategyCategory?->id,
+                'author_id' => $admin->id,
+                'title' => 'Samal Island Refreshes Its Tourism Strategic Action Plan',
+                'excerpt' => 'An updated strategic action plan helps Samal respond to changing tourism conditions while protecting environmental resources and delivering benefits for communities and enterprises.',
+                'content' => '<p>The Island Garden City of Samal has updated its strategic action plan to reflect new market opportunities, shifting visitor expectations and evolving destination-management requirements.</p><p>The reformulated plan identifies priority interventions for strengthening Samal\'s tourism competitiveness, safeguarding the island\'s environmental resources and ensuring communities and tourism enterprises share in the benefits of growth.</p><p><a href="/projects/samal-strategic-action-plan">View the Samal Strategic Action Plan project</a></p>',
+                'featured_image_url' => Assets::url('/images/projects/samal-island.jpg'),
+                'status' => 'published',
+                'is_featured' => true,
+                'reading_time' => 6,
+                'published_at' => now()->subDay(),
+                'seo_title' => 'Samal Island Tourism Strategic Action Plan | Art Boncato',
+                'seo_description' => 'How Samal\'s refreshed tourism strategic action plan supports competitiveness, communities and environmental protection.',
+            ]
+        );
+
+        Post::query()->updateOrCreate(
+            ['slug' => 'clean-camiguin-post-pandemic-transformation'],
+            [
+                'post_category_id' => $strategyCategory?->id,
+                'author_id' => $admin->id,
+                'title' => 'Clean Camiguin: Repositioning Tourism After the Pandemic',
+                'excerpt' => 'A post-pandemic strategic framework guides Camiguin\'s tourism recovery through destination readiness, sustainability and a more resilient provincial tourism economy.',
+                'content' => '<p>The Clean Camiguin Pivot and Transformation plan provided a strategic platform for repositioning the province after the pandemic—strengthening destination readiness, improving competitiveness and building a more sustainable tourism economy.</p><p>It connected recovery priorities with longer-term transformation goals, giving Camiguin a clearer path for government, enterprises and communities to work together.</p><p><a href="/projects/clean-camiguin-pivot-transformation">View the Clean Camiguin Pivot and Transformation project</a></p>',
+                'featured_image_url' => Assets::url('/images/projects/clean-camiguin.png?v=16'),
+                'status' => 'published',
+                'is_featured' => true,
+                'reading_time' => 5,
+                'published_at' => now()->subDays(2),
+                'seo_title' => 'Clean Camiguin Post-Pandemic Tourism Transformation | Art Boncato',
+                'seo_description' => 'How Camiguin\'s Clean Camiguin plan supports post-pandemic tourism recovery and transformation.',
             ]
         );
     }

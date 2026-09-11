@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type ImgHTMLAttributes } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useRef, useState, type ImgHTMLAttributes } from 'react'
 import { cn } from '@/lib/utils'
 import { buildImageFallbackChain } from '@/lib/imageFallback'
 
@@ -6,7 +6,12 @@ interface LazyImageProps extends ImgHTMLAttributes<HTMLImageElement> {
   wrapperClassName?: string
 }
 
-export function LazyImage({ className, wrapperClassName, alt = '', src, ...props }: LazyImageProps) {
+function isImageReady(img: HTMLImageElement | null): boolean {
+  return Boolean(img && img.complete && img.naturalWidth > 0)
+}
+
+export function LazyImage({ className, wrapperClassName, alt = '', src, loading, ...props }: LazyImageProps) {
+  const imgRef = useRef<HTMLImageElement>(null)
   const fallbackChain = useMemo(() => buildImageFallbackChain(src), [src])
   const [index, setIndex] = useState(0)
   const [loaded, setLoaded] = useState(false)
@@ -18,6 +23,12 @@ export function LazyImage({ className, wrapperClassName, alt = '', src, ...props
 
   const currentSrc = fallbackChain[index]
   const exhausted = !currentSrc || index >= fallbackChain.length
+
+  useLayoutEffect(() => {
+    if (isImageReady(imgRef.current)) {
+      setLoaded(true)
+    }
+  }, [currentSrc, index])
 
   return (
     <div className={cn('relative overflow-hidden bg-navy/5', wrapperClassName)}>
@@ -33,10 +44,11 @@ export function LazyImage({ className, wrapperClassName, alt = '', src, ...props
         </div>
       ) : (
         <img
+          ref={imgRef}
           key={currentSrc}
           src={currentSrc}
           alt={alt}
-          loading="lazy"
+          loading={loading ?? 'lazy'}
           decoding="async"
           onLoad={() => setLoaded(true)}
           onError={() => {

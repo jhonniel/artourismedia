@@ -53,17 +53,17 @@ export function assetUrl(path: string): string {
   return ASSETS_BASE ? `${ASSETS_BASE}${normalized}` : normalized
 }
 
-/** CDN in production, local `/images/...` in dev. */
+/** Spaces/CDN when configured, otherwise same-origin `/images/...`. */
 export function localFirstAssetUrl(path: string): string {
   if (!path || path.startsWith('http://') || path.startsWith('https://')) {
     return path
   }
 
-  if (import.meta.env.DEV) {
-    return normalizeAssetPath(path)
+  if (ASSETS_BASE) {
+    return assetUrl(path)
   }
 
-  return assetUrl(path)
+  return normalizeAssetPath(path)
 }
 
 /** CDN first, then bundled same-origin copy, for resilient production loading. */
