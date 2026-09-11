@@ -4,13 +4,15 @@ import { buildImageFallbackChain } from '@/lib/imageFallback'
 
 interface LazyImageProps extends ImgHTMLAttributes<HTMLImageElement> {
   wrapperClassName?: string
+  /** Fill the wrapper (for absolute/ aspect-ratio containers). Default: natural image height. */
+  fill?: boolean
 }
 
 function isImageReady(img: HTMLImageElement | null): boolean {
   return Boolean(img && img.complete && img.naturalWidth > 0)
 }
 
-export function LazyImage({ className, wrapperClassName, alt = '', src, loading, ...props }: LazyImageProps) {
+export function LazyImage({ className, wrapperClassName, alt = '', src, loading, fill = false, ...props }: LazyImageProps) {
   const imgRef = useRef<HTMLImageElement>(null)
   const fallbackChain = useMemo(() => buildImageFallbackChain(src), [src])
   const [index, setIndex] = useState(0)
@@ -56,8 +58,15 @@ export function LazyImage({ className, wrapperClassName, alt = '', src, loading,
             setIndex((value) => value + 1)
           }}
           className={cn(
-            'h-full w-full object-cover transition-opacity duration-500',
+            fill ? 'absolute inset-0 size-full' : 'block h-full w-full',
+            'transition-opacity duration-500',
             loaded ? 'opacity-100' : 'opacity-0',
+            fill && !className?.includes('object-contain') && !className?.includes('object-cover')
+              ? 'object-cover'
+              : null,
+            !fill && !className?.includes('object-contain') && !className?.includes('object-cover')
+              ? 'object-cover'
+              : null,
             className,
           )}
           {...props}

@@ -201,6 +201,21 @@ function WhiteNavyWaveShape() {
   )
 }
 
+/** Wavy top edge for navy sections that follow white content — no white fill band. */
+export function NavySectionTopWave({ className }: DecorativeProps) {
+  return (
+    <svg
+      className={cn(WAVE_DIVIDER_CLASS, className)}
+      viewBox="0 0 1440 100"
+      preserveAspectRatio="none"
+      overflow="visible"
+      aria-hidden="true"
+    >
+      <path d={`${NAVY_TO_WHITE_WAVE} L1440,100 L0,100 Z`} fill="#0B2447" />
+    </svg>
+  )
+}
+
 /** Smooth top wave — explicit white above the curve so it blends with white sections. */
 export function FooterTopWave({ className }: DecorativeProps) {
   return (

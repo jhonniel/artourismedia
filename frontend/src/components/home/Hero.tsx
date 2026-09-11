@@ -94,9 +94,9 @@ function HeroLinkButton({
 
 function LandingHero({ content }: { content: HeroContent }) {
   return (
-    <section className="hero-offset relative flex min-h-0 w-full flex-col overflow-hidden bg-white">
+    <section className="hero-offset-full relative flex min-h-[100dvh] w-full flex-col overflow-hidden">
       {/* Mobile — image + bottom fade behind copy (no seam line) */}
-      <div className="hero-landing-mobile lg:hidden flex min-h-0 flex-1 flex-col bg-white">
+      <div className="hero-landing-mobile lg:hidden flex min-h-0 flex-1 flex-col">
         <div className="hero-mobile-stack relative min-h-0 flex-1 overflow-hidden">
           <div aria-hidden className="hero-mobile-photo">
             <HeroSlideshow
@@ -119,9 +119,8 @@ function LandingHero({ content }: { content: HeroContent }) {
         <div className="hero-media hero-landing-media">
           <HeroSlideshow
             className="hero-landing-slideshow absolute inset-0 z-0 h-full w-full"
-            imageClassName="object-cover object-[68%_center]"
+            imageClassName="object-cover object-[88%_center] lg:object-[93%_center] xl:object-[96%_center]"
           />
-          <div aria-hidden className="hero-landing-gradient-overlay pointer-events-none" />
         </div>
 
         <FadeIn className="hero-copy hero-landing-copy relative z-10 flex flex-col justify-center py-10 lg:py-0 xl:py-0">
@@ -142,11 +141,10 @@ function HeroContentBlock({
   showDecorations?: boolean
 }) {
   const isLanding = variant === 'landing'
+  const landingButtonClass =
+    'hero-btn-landing px-4 py-2.5 text-[0.6875rem] uppercase tracking-[0.1em] sm:px-5 sm:py-2.5 lg:px-5 lg:py-2.5'
   const buttonClass = cn(
-    'px-7 uppercase tracking-[0.12em] sm:px-8 lg:px-9 lg:py-4',
-    isLanding
-      ? 'hero-btn-landing'
-      : 'text-[10px] sm:text-[11px] md:text-xs',
+    isLanding ? landingButtonClass : 'px-7 uppercase tracking-[0.12em] sm:px-8 lg:px-9 lg:py-4 text-[10px] sm:text-[11px] md:text-xs',
   )
 
   return (
@@ -174,7 +172,7 @@ function HeroContentBlock({
         <p
           className={cn(
             isLanding
-              ? 'hero-subhead-landing mt-4 w-full max-w-none text-navy/80 sm:mt-6 lg:mt-7'
+              ? 'hero-subhead-landing mt-3 max-w-[26rem] text-navy/80 sm:mt-4 lg:mt-5 xl:max-w-[28rem]'
               : 'mt-4 max-w-[21rem] text-sm leading-[1.6] text-navy/70 sm:mt-5 md:text-[15px] lg:max-w-[23rem]',
           )}
         >
@@ -183,14 +181,14 @@ function HeroContentBlock({
       )}
 
       {(content.cta_text || content.secondary_cta_text) && (
-        <div className={cn('relative flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center', isLanding ? 'mt-6 sm:mt-7 lg:mt-8' : 'mt-6 sm:mt-7 md:mt-8')}>
+        <div className={cn('relative flex flex-col gap-2.5 sm:flex-row sm:flex-wrap sm:items-center', isLanding ? 'mt-5 sm:mt-6 lg:mt-7' : 'mt-6 sm:mt-7 md:mt-8')}>
           {content.cta_text && content.cta_url && (
             <HeroLinkButton
               href={content.cta_url}
               external={content.cta_url.startsWith('http')}
               className="inline-flex"
             >
-              <Button variant="primary" size="lg" className={buttonClass}>
+              <Button variant="primary" size={isLanding ? 'md' : 'lg'} className={buttonClass}>
                 {content.cta_text} →
               </Button>
             </HeroLinkButton>
@@ -200,11 +198,14 @@ function HeroContentBlock({
             <HeroLinkButton
               href={content.secondary_cta_url}
               external={content.secondary_cta_url.startsWith('http')}
-              className="hero-btn-landing inline-flex items-center gap-3 rounded-full border border-navy/15 bg-white px-5 py-3 font-bold uppercase tracking-[0.12em] text-navy transition-colors hover:border-teal hover:text-teal sm:px-6 lg:py-3.5"
+              className={cn(
+                landingButtonClass,
+                'inline-flex items-center gap-2 rounded-full border border-navy/15 bg-white font-bold text-navy transition-colors hover:border-teal hover:text-teal',
+              )}
             >
               {content.secondary_cta_text}
-              <span className="flex h-8 w-8 items-center justify-center rounded-full border border-navy/15 bg-white">
-                <svg viewBox="0 0 24 24" className="ml-0.5 h-3 w-3 fill-navy" aria-hidden="true">
+              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-navy/15 bg-white">
+                <svg viewBox="0 0 24 24" className="ml-0.5 h-2.5 w-2.5 fill-navy" aria-hidden="true">
                   <path d="M8 5v14l11-7z" />
                 </svg>
               </span>

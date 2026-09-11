@@ -25,7 +25,9 @@ function getLanAddresses() {
 }
 
 const lanAddresses = getLanAddresses()
+const primaryLanAddress = lanAddresses[0] ?? null
 const devPort = process.env.PORT ?? '5173'
+const adminPort = process.env.ADMIN_PORT ?? '5174'
 const backendUrl = process.env.BACKEND_URL ?? 'http://127.0.0.1:8000'
 
 function buildStatefulDomains(addresses) {
@@ -128,13 +130,19 @@ try {
   shutdown(1)
 }
 
-start('frontend', `npm run dev -- --port ${devPort} --host 0.0.0.0`, frontendDir, {
+const sharedFrontendEnv = {
   VITE_API_URL: '/api',
-})
+  VITE_DEV_PORT: devPort,
+  ...(primaryLanAddress ? { VITE_HMR_HOST: primaryLanAddress } : {}),
+}
 
-start('admin', 'npm run dev -- --port 5174 --host 0.0.0.0', adminDir, {
+start('frontend', `npm run dev -- --port ${devPort} --host 0.0.0.0`, frontendDir, sharedFrontendEnv)
+
+start('admin', `npm run dev -- --port ${adminPort} --host 0.0.0.0`, adminDir, {
   VITE_API_URL: '/api',
   VITE_ADMIN_BASE: '/admin/',
+  VITE_ADMIN_DEV_PORT: adminPort,
+  ...(primaryLanAddress ? { VITE_HMR_HOST: primaryLanAddress } : {}),
 })
 
 console.log('\nOpen one address:')
@@ -143,11 +151,17 @@ console.log(`  Admin    http://localhost:${devPort}/admin/`)
 console.log(`  API      ${backendUrl}/api/health`)
 
 if (lanAddresses.length > 0) {
-  console.log('\nNetwork (same Wi‑Fi):')
+  console.log('\nNetwork (same Wi‑Fi / LAN):')
   for (const address of lanAddresses) {
     console.log(`  Website  http://${address}:${devPort}/`)
     console.log(`  Admin    http://${address}:${devPort}/admin/`)
+    console.log(`  API      http://${address}:8000/api/health`)
   }
+
+  console.log('\nIf other devices cannot connect on Windows, run once as Administrator:')
+  console.log('  powershell -ExecutionPolicy Bypass -File scripts/open-network-firewall.ps1')
+} else {
+  console.log('\nNo LAN address detected. Wi‑Fi/Ethernet must be connected for network access.')
 }
 
 console.log('\nProduction-like local server after build: npm run start')

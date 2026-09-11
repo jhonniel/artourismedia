@@ -5,6 +5,8 @@
   "scripts": {
     "setup": "node scripts/setup-local.mjs",
     "dev": "node scripts/start-local.mjs",
+    "dev:network": "node scripts/start-local.mjs",
+    "network:firewall": "powershell -ExecutionPolicy Bypass -File scripts/open-network-firewall.ps1",
     "build": "node scripts/build-production.mjs",
     "build:production": "node scripts/build-production.mjs",
     "build:deploy": "node scripts/build-deploy.mjs",

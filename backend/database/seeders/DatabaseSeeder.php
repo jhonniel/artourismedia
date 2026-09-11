@@ -83,7 +83,7 @@ class DatabaseSeeder extends Seeder
             ['key' => 'site_tagline', 'value' => 'Tourism Consultancy', 'type' => 'string', 'group' => 'general'],
             ['key' => 'tagline', 'value' => 'Tourism Consultancy', 'type' => 'string', 'group' => 'general'],
             ['key' => 'contact_email', 'value' => 'atm@artourismedia.com', 'type' => 'string', 'group' => 'contact'],
-            ['key' => 'contact_phone', 'value' => '+63 917 123 4567', 'type' => 'string', 'group' => 'contact'],
+            ['key' => 'contact_phone', 'value' => '', 'type' => 'string', 'group' => 'contact'],
             ['key' => 'contact_address', 'value' => 'Philippines', 'type' => 'string', 'group' => 'contact'],
             ['key' => 'footer_text', 'value' => '© Art! Boncato Tourism Consultancy. Creating destinations people remember.', 'type' => 'string', 'group' => 'general'],
             ['key' => 'newsletter_title', 'value' => 'Stay Connected', 'type' => 'string', 'group' => 'general'],
@@ -92,7 +92,7 @@ class DatabaseSeeder extends Seeder
             ['key' => 'footer_tagline', 'value' => 'Creating destinations people remember.', 'type' => 'string', 'group' => 'footer'],
             ['key' => 'footer_copyright', 'value' => '© Art! Boncato Tourism Consultancy. All rights reserved.', 'type' => 'string', 'group' => 'footer'],
             ['key' => 'footer_email', 'value' => 'atm@artourismedia.com', 'type' => 'string', 'group' => 'footer'],
-            ['key' => 'footer_phone', 'value' => '+63 917 123 4567', 'type' => 'string', 'group' => 'footer'],
+            ['key' => 'footer_phone', 'value' => '', 'type' => 'string', 'group' => 'footer'],
             ['key' => 'footer_address', 'value' => 'Philippines', 'type' => 'string', 'group' => 'footer'],
             ['key' => 'primary_color', 'value' => '#078C95', 'type' => 'string', 'group' => 'branding'],
             ['key' => 'secondary_color', 'value' => '#FF5A1F', 'type' => 'string', 'group' => 'branding'],
@@ -168,10 +168,11 @@ class DatabaseSeeder extends Seeder
                 'title' => 'About',
                 'content' => [
                     'eyebrow' => 'About Art Boncato',
-                    'body' => '<p>For over 30 years, Art Boncato has shaped tourism and hospitality through strategic leadership, destination development, and national tourism initiatives—driving sustainable growth and creating opportunities for communities across the Philippines, especially Mindanao.</p>',
+                    'title' => 'A Career Built Around Tourism',
+                    'body' => '<p>Art Boncato, Jr. is a tourism and hospitality executive who continues to build on a career spanning 30 years.</p>',
                     'cta_text' => 'More About Art',
                     'cta_url' => '/about',
-                    'image_url' => Assets::url('/images/about/art-boncato-portrait.jpg'),
+                    'image_url' => Assets::url('/images/about/art-boncato-portrait.png?v=17'),
                     'image_alt' => 'Art Boncato professional portrait',
                 ],
                 'sort_order' => 3,
@@ -181,7 +182,7 @@ class DatabaseSeeder extends Seeder
                 'title' => 'Services',
                 'content' => [
                     'eyebrow' => 'Our Services',
-                    'title' => 'End-to-end solutions for',
+                    'title' => 'Offering solutions for',
                     'title_accent' => 'sustainable tourism growth.',
                     'description' => 'From master planning to campaign launch, we partner with you at every stage.',
                 ],
@@ -278,7 +279,7 @@ class DatabaseSeeder extends Seeder
                 'content' => '<p>We are guided by the Visitor, Industry, Community and Environment (VICE) framework, from the research process right through to every practical action on the ground.</p><h3>Projects and Experience:</h3><ul><li>Camiguin Tourism Development Plan 2025-2028</li><li>Mts. Timpoong- Hibok-Hibok National Monument (MTHNM) Ecotourism and Management Plan 2022</li><li>Island Garden City of Samal (IGACOS) Tourism Plans Review 2022</li><li>Camiguin Pivot and Transformation : A Tourism Recovery Plan 2021-2023</li><li>Mantigue Island Tourism Management Plan 2021</li><li>Implementing the Siargao Tourism Master Plan (STMP): Action Plan Recommendations 2021</li></ul>',
                 'category' => 'Planning',
                 'icon' => 'tourism-planning',
-                'image_url' => '/images/services/tourism-planning-development.png',
+                'image_url' => '/images/services/tourism-planning-development.jpg?v=4',
                 'sort_order' => 1,
             ],
             [
@@ -399,9 +400,9 @@ class DatabaseSeeder extends Seeder
                 'content' => '<p>A strategic framework developed to guide Camiguin\'s tourism sector through post-pandemic recovery and transformation. The plan provided a platform for repositioning the province, strengthening destination readiness and pursuing a more competitive, sustainable and resilient tourism economy.</p>',
                 'cover_image_url' => Assets::url('/images/projects/clean-camiguin.png?v=16'),
                 'category_label' => 'Strategy & Planning',
-                'is_featured' => true,
+                'is_featured' => false,
                 'is_published' => true,
-                'sort_order' => 1,
+                'sort_order' => 6,
                 'color' => '#078C95',
             ]
         );
@@ -449,7 +450,7 @@ class DatabaseSeeder extends Seeder
                 'category_label' => 'Strategy & Planning',
                 'is_featured' => true,
                 'is_published' => true,
-                'sort_order' => 4,
+                'sort_order' => 1,
                 'color' => '#078C95',
             ]
         );

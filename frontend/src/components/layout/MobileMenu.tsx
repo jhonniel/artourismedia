@@ -160,7 +160,7 @@ export function MobileMenu({
               to={ctaItem.url}
               target={ctaItem.target}
               onClick={onClose}
-              className="inline-flex min-h-12 w-full items-center justify-center rounded-full bg-orange px-6 py-3 text-[11px] font-extrabold uppercase tracking-[0.12em] text-white shadow-[0_10px_24px_rgba(255,90,31,0.28)] transition-[transform,background-color,box-shadow] duration-200 hover:bg-orange/90 active:scale-[0.98]"
+              className="inline-flex min-h-10 w-full items-center justify-center rounded-full bg-orange px-5 py-2.5 text-[10px] font-extrabold uppercase tracking-[0.1em] text-white shadow-[0_8px_20px_rgba(255,90,31,0.24)] transition-[transform,background-color,box-shadow] duration-200 hover:bg-orange/90 active:scale-[0.98]"
             >
               Schedule a Consultation →
             </Link>

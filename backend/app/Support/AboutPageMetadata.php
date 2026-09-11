@@ -8,16 +8,15 @@ class AboutPageMetadata
     {
         return [
             'eyebrow' => 'About Art Boncato',
-            'headline' => 'Three Decades of Leadership in Tourism, Hospitality & Destination Development',
-            'intro' => 'For over 30 years, Art Boncato has shaped tourism and hospitality through strategic leadership, destination development, and national tourism initiatives—driving sustainable growth and creating opportunities for communities across the Philippines, especially Mindanao.',
-            'portrait_url' => '/images/about/art-boncato-portrait.jpg?v=14',
+            'headline' => 'A Career Built Around Tourism',
+            'intro' => 'Art Boncato, Jr. is a tourism and hospitality executive who continues to build on a career spanning 30 years.',
+            'portrait_url' => '/images/about/art-boncato-portrait.png?v=17',
             'landscape_url' => '/images/hero/hero-slideshow-19-mountain-valley.jpg',
-            'signature_name' => 'Art Boncato, Jr.',
+            'signature_name' => 'Art Boncato',
             'signature_title' => 'Tourism & Hospitality Executive',
-            'quote' => 'Tourism creates opportunities, connects people, and builds stronger communities.',
-            'career_heading' => 'A Career Built Around Tourism',
-            'career_body' => '<p>Art Boncato, Jr. is a tourism and hospitality executive who continues to build on a career spanning 30 years.</p>'
-                .'<p>He has spent the past 10 years in several senior leadership roles as the Group General Manager of Megaworld Hotels and Resorts; Executive Vice President and Chief Operating Officer of the World Trade Center Metro Manila; Regional Director, Assistant Secretary, and Undersecretary of the Philippine Department of Tourism; and Assistant Secretary of the Department of Trade and Industry seconded to the Department of Finance to organize the 51st Asian Development Bank Summit in Manila.</p>'
+            'quote' => 'Sustainable tourism is the name of our game in the strategic of our Philippine destination',
+            'career_heading' => '',
+            'career_body' => '<p>Art spent the past 10 years in several senior leadership roles as the Group General Manager of Megaworld Hotels and Resorts; Executive Vice President and Chief Operating Officer of the World Trade Center Metro Manila; Regional Director, Assistant Secretary, and Undersecretary of the Philippine Department of Tourism; and Assistant Secretary of the Department of Trade and Industry seconded to the Department of Finance to organize the 51st Asian Development Bank Summit in Manila.</p>'
                 .'<p>He is now steering ArTourisMedia, a team that delivers bespoke tourism solutions for planning and development, branding and marketing, learning and development, MICE execution, and a partner in advocating tourism growth in Mindanao.</p>',
             'leadership' => [
                 ['title' => 'Group General Manager', 'organization' => 'Megaworld Hotels and Resorts'],

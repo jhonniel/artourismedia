@@ -18,6 +18,13 @@ export default defineConfig(({ mode }) => {
     server: {
       host: true,
       port: 5174,
+      strictPort: true,
+      hmr: process.env.VITE_HMR_HOST
+        ? {
+            host: process.env.VITE_HMR_HOST,
+            clientPort: Number(process.env.VITE_ADMIN_DEV_PORT ?? 5174),
+          }
+        : undefined,
       proxy: {
         '/api': {
           target: 'http://127.0.0.1:8000',

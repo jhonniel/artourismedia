@@ -83,12 +83,6 @@ export default function Contact() {
                     </a>
                   </li>
                 )}
-                {settings?.contact_phone && (
-                  <li>
-                    <span className="block text-xs uppercase tracking-wider text-teal">Phone</span>
-                    {settings.contact_phone}
-                  </li>
-                )}
                 {settings?.contact_address && (
                   <li>
                     <span className="block text-xs uppercase tracking-wider text-teal">Address</span>

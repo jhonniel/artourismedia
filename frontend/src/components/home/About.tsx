@@ -37,14 +37,14 @@ export function About({ section, socialLinks = [] }: AboutProps) {
   return (
     <section className="relative overflow-hidden bg-white py-16 md:py-20 lg:py-24">
       <Container className="relative">
-        <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-12 xl:gap-16">
-          <FadeIn>
+        <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,0.85fr)_1.15fr] lg:gap-8 xl:gap-10">
+          <FadeIn className="lg:flex lg:justify-end">
             {content.image_url && (
               <LazyImage
                 src={content.image_url}
                 alt={content.image_alt ?? ''}
-                wrapperClassName="aspect-[4/5] w-full overflow-hidden rounded-[1.25rem] sm:rounded-[1.5rem] lg:rounded-[1.75rem]"
-                className="h-full w-full object-cover object-[center_18%]"
+                wrapperClassName="mx-auto w-full max-w-[14rem] bg-transparent sm:max-w-[16rem] lg:ml-auto lg:mr-0 lg:max-w-[18rem]"
+                className="!h-auto !w-full !object-contain !object-bottom"
               />
             )}
           </FadeIn>
@@ -52,20 +52,20 @@ export function About({ section, socialLinks = [] }: AboutProps) {
           <FadeIn delay={80}>
             <div className="max-w-xl lg:max-w-none">
               {content.eyebrow && (
-                <p className="mb-4 text-sm font-bold uppercase tracking-[0.16em] text-teal md:text-base">
+                <p className="mb-3 text-xs font-bold uppercase tracking-[0.16em] text-teal md:text-sm">
                   {content.eyebrow}
                 </p>
               )}
 
               {headline && (
-                <h2 className="font-serif text-[1.85rem] font-normal leading-[1.15] text-navy sm:text-[2.1rem] lg:text-[2.35rem] xl:text-[2.5rem]">
+                <h2 className="font-serif text-[1.5rem] font-normal leading-[1.2] text-navy sm:text-[1.65rem] lg:text-[1.85rem] xl:text-[2rem]">
                   {headline}
                 </h2>
               )}
 
               {content.body && (
                 <div
-                  className="prose-content mt-5 text-lg leading-[1.65] text-navy/75 md:text-xl"
+                  className="prose-content mt-4 text-base leading-[1.6] text-navy/75 md:text-[1.0625rem]"
                   dangerouslySetInnerHTML={{ __html: content.body }}
                 />
               )}

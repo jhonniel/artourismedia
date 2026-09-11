@@ -4,7 +4,7 @@ import { Container } from '@/components/ui/Container'
 import { Input } from '@/components/ui/Input'
 import { SocialIcon } from '@/components/ui/SocialIcon'
 import { BrandLogo } from '@/components/ui/BrandLogo'
-import { FooterTopWave } from '@/components/ui/Decorative'
+import { NavySectionTopWave } from '@/components/ui/Decorative'
 import { useNewsletterMutation } from '@/hooks/useMutations'
 import type { FooterData, SocialLink } from '@/types'
 import { cn } from '@/lib/utils'
@@ -66,8 +66,8 @@ export function Footer({ footer, socialLinks, siteName, logoUrl }: FooterProps) 
   }
 
   return (
-    <footer className="relative mt-0 w-full overflow-hidden">
-      <FooterTopWave className="relative z-10 h-12 sm:h-16 md:h-20 lg:h-24" />
+    <footer className="relative -mt-px w-full overflow-hidden">
+      <NavySectionTopWave className="relative z-10 h-12 sm:h-16 md:h-20 lg:h-24" />
 
       <div className="relative bg-navy pb-[max(0.5rem,env(safe-area-inset-bottom,0px))] text-white">
         <Container className="relative z-10 pt-10 pb-2 sm:pt-12 sm:pb-3 lg:py-16">
@@ -147,12 +147,6 @@ export function Footer({ footer, socialLinks, siteName, logoUrl }: FooterProps) 
                       </a>
                     </li>
                   )}
-                  {footer.contact_phone && (
-                    <li className="flex items-start gap-3">
-                      <FooterContactIcon type="phone" />
-                      <span>{footer.contact_phone}</span>
-                    </li>
-                  )}
                   {footer.contact_address && (
                     <li className="flex items-start gap-3">
                       <FooterContactIcon type="location" />
@@ -179,20 +173,22 @@ export function Footer({ footer, socialLinks, siteName, logoUrl }: FooterProps) 
               ) : (
                 <form
                   onSubmit={handleSubmit}
-                  className="mx-auto mt-4 max-w-xs space-y-2.5 lg:mx-0 lg:max-w-none lg:flex lg:items-stretch lg:gap-0 lg:space-y-0"
+                  className="mt-4 flex w-full max-w-md flex-col gap-2.5 sm:max-w-lg lg:mx-0 lg:max-w-none xl:flex-row xl:items-stretch xl:gap-0"
                 >
-                  <Input
-                    type="email"
-                    placeholder="Your email address"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                    className="h-9 w-full rounded-full border-white/15 bg-white/10 text-sm text-white placeholder:text-white/45 lg:h-11 lg:rounded-r-none lg:border-r-0 lg:px-5"
-                  />
+                  <div className="min-w-0 xl:flex-1">
+                    <Input
+                      type="email"
+                      placeholder="Your email address"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      required
+                      className="h-10 w-full min-w-0 rounded-full border-white/15 bg-white/10 text-sm text-white placeholder:text-white/45 xl:h-11 xl:rounded-r-none xl:border-r-0 xl:px-5"
+                    />
+                  </div>
                   <button
                     type="submit"
                     disabled={newsletter.isPending}
-                    className="inline-flex h-9 w-full shrink-0 items-center justify-center rounded-full bg-orange px-5 text-[10px] font-bold uppercase tracking-[0.1em] text-white transition-colors hover:bg-orange/90 disabled:opacity-60 lg:h-11 lg:w-auto lg:rounded-l-none lg:rounded-r-full lg:px-6 lg:text-xs"
+                    className="inline-flex h-10 w-full shrink-0 items-center justify-center rounded-full bg-orange px-5 text-[10px] font-bold uppercase tracking-[0.1em] text-white transition-colors hover:bg-orange/90 disabled:opacity-60 xl:h-11 xl:w-auto xl:rounded-l-none xl:rounded-r-full xl:px-6 xl:text-xs"
                   >
                     Subscribe →
                   </button>

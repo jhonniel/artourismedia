@@ -48,6 +48,8 @@ export function Header({ navigation, settings, socialLinks = [] }: HeaderProps) 
     }
   }, [mobileOpen, scrolled])
 
+  const isHome = location.pathname === '/'
+  const overlay = isHome && !scrolled && !mobileOpen
   const navItems = [...navigation].sort((a, b) => a.sort_order - b.sort_order)
   const ctaItem = navItems.find((item) => item.is_cta)
   const regularItems = navItems.filter((item) => !item.is_cta)
@@ -57,11 +59,12 @@ export function Header({ navigation, settings, socialLinks = [] }: HeaderProps) 
       <header
         ref={headerRef}
         className={cn(
-          'fixed inset-x-0 top-0 transition-[background-color,box-shadow,padding] duration-300',
+          'fixed inset-x-0 top-0 transition-[background-color,box-shadow,padding,backdrop-filter] duration-300',
           mobileOpen ? 'z-[101] bg-white py-3 shadow-none lg:shadow-soft' : 'z-50',
-          !mobileOpen && scrolled
+          !mobileOpen && overlay && 'bg-transparent py-4 md:py-5 lg:py-6 xl:py-7',
+          !mobileOpen && !overlay && scrolled
             ? 'bg-white/95 py-3 shadow-soft backdrop-blur-sm lg:py-4 xl:py-5'
-            : !mobileOpen && 'bg-white py-4 md:py-5 lg:py-6 xl:py-7',
+            : !mobileOpen && !overlay && 'bg-white py-4 md:py-5 lg:py-6 xl:py-7',
         )}
       >
         <div className="mx-auto flex h-11 w-full max-w-[90rem] items-center justify-between gap-3 px-4 sm:h-auto sm:gap-4 sm:px-6 lg:grid lg:grid-cols-[1fr_auto_1fr] lg:items-center lg:gap-6 lg:px-8 xl:gap-8 xl:px-10 2xl:px-12">
@@ -89,7 +92,7 @@ export function Header({ navigation, settings, socialLinks = [] }: HeaderProps) 
               <Link
                 to={ctaItem.url}
                 target={ctaItem.target}
-                className="hidden whitespace-nowrap rounded-full bg-orange px-4 py-2.5 text-[10px] font-extrabold uppercase tracking-[0.08em] text-white transition-colors hover:bg-orange/90 lg:inline-flex lg:px-6 lg:py-3.5 lg:text-xs xl:px-7 xl:py-4 xl:text-[13px] 2xl:px-8 2xl:py-4 2xl:text-sm"
+                className="hidden whitespace-nowrap rounded-full bg-orange px-3 py-2 text-[9px] font-extrabold uppercase tracking-[0.08em] text-white transition-colors hover:bg-orange/90 lg:inline-flex lg:px-4 lg:py-2 lg:text-[10px] xl:px-5 xl:py-2.5 xl:text-[11px]"
               >
                 Schedule a Consultation →
               </Link>
