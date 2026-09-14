@@ -72,7 +72,7 @@ export function About({ section, socialLinks = [] }: AboutProps) {
               )}
 
               {sortedSocial.length > 0 && (
-                <ul className="mt-6 flex flex-wrap gap-3">
+                <ul className="mt-5 flex flex-wrap gap-x-4 gap-y-2.5">
                   {sortedSocial.map((link) => {
                     const styles = getSocialStyles(link.platform)
 
@@ -82,19 +82,19 @@ export function About({ section, socialLinks = [] }: AboutProps) {
                           href={link.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="group flex items-center gap-2.5 text-navy/85 transition-colors hover:text-teal"
+                          className="group flex items-center gap-2 text-navy/85 transition-colors hover:text-teal"
                           title={link.username}
                         >
                           <span
                             className={cn(
-                              'flex h-11 w-11 items-center justify-center rounded-full shadow-soft',
+                              'flex h-8 w-8 shrink-0 items-center justify-center rounded-full shadow-soft sm:h-9 sm:w-9',
                               styles.bg,
                               styles.text,
                             )}
                           >
-                            <SocialIcon platform={link.platform} className="h-4 w-4" />
+                            <SocialIcon platform={link.platform} className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                           </span>
-                          <span className="text-sm font-medium">{link.username}</span>
+                          <span className="text-xs font-medium sm:text-sm">{link.username}</span>
                         </a>
                       </li>
                     )
