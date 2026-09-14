@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { Container } from '@/components/ui/Container'
 import { LazyImage } from '@/components/ui/LazyImage'
 import { FadeIn } from '@/components/ui/FadeIn'
+import { RichContent } from '@/components/ui/RichContent'
 import { SocialIcon } from '@/components/ui/SocialIcon'
 import { Button } from '@/components/ui/Button'
 import { parseContent } from '@/lib/utils'
@@ -64,9 +65,9 @@ export function About({ section, socialLinks = [] }: AboutProps) {
               )}
 
               {content.body && (
-                <div
+                <RichContent
+                  html={content.body}
                   className="prose-content mt-4 text-base leading-[1.6] text-navy/75 md:text-[1.0625rem]"
-                  dangerouslySetInnerHTML={{ __html: content.body }}
                 />
               )}
 

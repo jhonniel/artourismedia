@@ -89,3 +89,18 @@ export function buildAssetFallbackChain(path?: string | null): string[] {
 
   return [...new Set(chain.filter(Boolean))]
 }
+
+/** Rewrite inline `/images/...` paths in CMS HTML for production CDN loading. */
+export function rewriteContentAssetUrls(html: string): string {
+  if (!html || !ASSETS_BASE) return html
+
+  return html
+    .replace(
+      /(\s(?:src|href)=["'])(\/images\/[^"']+)(["'])/gi,
+      (_, prefix, assetPath, suffix) => `${prefix}${assetUrl(assetPath)}${suffix}`,
+    )
+    .replace(
+      /url\(\s*(["']?)(\/images\/[^"')]+)\1\s*\)/gi,
+      (_, quote, assetPath) => `url(${quote}${assetUrl(assetPath)}${quote})`,
+    )
+}

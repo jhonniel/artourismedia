@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { ServiceHeroImage } from '@/components/services/ServiceHeroImage'
 import { FadeIn } from '@/components/ui/FadeIn'
+import { RichContent } from '@/components/ui/RichContent'
 import { useQuery } from '@tanstack/react-query'
 import { endpoints } from '@/api/endpoints'
 import { getServiceHeroOverrides } from '@/lib/serviceHeroConfig'
@@ -82,9 +83,9 @@ export default function ServicePreview() {
                     <p className="mt-4 text-lg text-navy/70 leading-relaxed">{data.description}</p>
                   )}
                   {data.content && (
-                    <div
+                    <RichContent
+                      html={data.content}
                       className="prose-content prose-content-service mt-8"
-                      dangerouslySetInnerHTML={{ __html: data.content }}
                     />
                   )}
                   {data.cta_text && data.cta_url && (

@@ -6,6 +6,7 @@ import { LoadingSpinner } from '@/components/ui/LoadingSpinner'
 import { ErrorMessage } from '@/components/ui/ErrorMessage'
 import { SEO } from '@/components/ui/SEO'
 import { FadeIn } from '@/components/ui/FadeIn'
+import { RichContent } from '@/components/ui/RichContent'
 import { canonicalUrl, serviceJsonLd } from '@/lib/structuredData'
 import { useService } from '@/hooks'
 import { getServiceHeroOverrides } from '@/lib/serviceHeroConfig'
@@ -70,9 +71,9 @@ export default function ServiceDetail() {
                     <p className="mt-4 text-lg text-navy/70 leading-relaxed">{data.description}</p>
                   )}
                   {data.content && (
-                    <div
+                    <RichContent
+                      html={data.content}
                       className="prose-content prose-content-service mt-8"
-                      dangerouslySetInnerHTML={{ __html: data.content }}
                     />
                   )}
                   {data.cta_text && data.cta_url && (

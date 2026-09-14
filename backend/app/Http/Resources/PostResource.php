@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Support\Assets;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -14,7 +15,12 @@ class PostResource extends JsonResource
             'slug' => $this->slug,
             'title' => $this->title,
             'excerpt' => $this->excerpt,
-            'content' => $this->when($request->route('slug') || $request->is('api/admin/*'), $this->content),
+            'content' => $this->when(
+                $request->route('slug') || $request->is('api/admin/*'),
+                fn () => $request->is('api/admin/*')
+                    ? $this->content
+                    : Assets::rewriteContentHtml($this->content)
+            ),
             'featured_image_url' => $this->featured_image_url,
             'thumbnail_url' => $this->thumbnail_url,
             'status' => $this->when($request->is('api/admin/*'), $this->status),

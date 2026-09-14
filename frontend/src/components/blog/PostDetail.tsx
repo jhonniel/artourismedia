@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
 import { PostCard } from '@/components/blog/PostCard'
 import { FadeIn } from '@/components/ui/FadeIn'
+import { RichContent } from '@/components/ui/RichContent'
 import { formatDate, getShareUrl } from '@/lib/utils'
 import { useNewsletterMutation } from '@/hooks/useMutations'
 import type { Post } from '@/types'
@@ -82,10 +83,7 @@ export function PostDetailView({ post, related = [], previous = null, next = nul
         <FadeIn>
           <div className="mx-auto max-w-3xl">
             {post.content && (
-              <div
-                className="prose-content text-lg"
-                dangerouslySetInnerHTML={{ __html: post.content }}
-              />
+              <RichContent html={post.content} className="prose-content text-lg" />
             )}
 
             {post.tags && post.tags.length > 0 && (

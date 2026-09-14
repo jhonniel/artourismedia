@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { HeroSlideshow } from '@/components/home/HeroSlideshow'
 import { Container } from '@/components/ui/Container'
 import { FadeIn } from '@/components/ui/FadeIn'
+import { RichContent } from '@/components/ui/RichContent'
 import { MindanaoBrand } from '@/components/about/MindanaoBrand'
 import { LazyImage } from '@/components/ui/LazyImage'
 import {
@@ -100,9 +101,9 @@ export function AboutPageView({ metadata }: AboutPageViewProps) {
                   <h2 className="text-2xl font-bold text-navy sm:text-3xl">{metadata.career_heading}</h2>
                 )}
                 {metadata.career_body && (
-                  <div
+                  <RichContent
+                    html={metadata.career_body}
                     className="prose-content mt-6 space-y-4 text-base leading-relaxed text-navy/75 sm:text-lg"
-                    dangerouslySetInnerHTML={{ __html: metadata.career_body }}
                   />
                 )}
               </div>

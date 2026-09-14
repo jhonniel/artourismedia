@@ -4,6 +4,7 @@ import { LoadingSpinner } from '@/components/ui/LoadingSpinner'
 import { ErrorMessage } from '@/components/ui/ErrorMessage'
 import { SEO } from '@/components/ui/SEO'
 import { FadeIn } from '@/components/ui/FadeIn'
+import { RichContent } from '@/components/ui/RichContent'
 import { canonicalUrl, webPageJsonLd } from '@/lib/structuredData'
 import { usePage } from '@/hooks'
 
@@ -43,10 +44,7 @@ export default function CmsPage() {
           <div className="mx-auto max-w-3xl">
             <h1 className="text-4xl font-bold md:text-5xl">{data.title}</h1>
             {data.content && (
-              <div
-                className="prose-content mt-8 text-lg"
-                dangerouslySetInnerHTML={{ __html: data.content }}
-              />
+              <RichContent html={data.content} className="prose-content mt-8 text-lg" />
             )}
           </div>
         </FadeIn>

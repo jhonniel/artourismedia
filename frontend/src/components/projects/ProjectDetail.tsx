@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/Button'
 import { LazyImage } from '@/components/ui/LazyImage'
 import { ProjectCard } from '@/components/projects/ProjectCard'
 import { FadeIn } from '@/components/ui/FadeIn'
+import { RichContent } from '@/components/ui/RichContent'
 import type { Project } from '@/types'
 
 interface ProjectDetailViewProps {
@@ -41,9 +42,9 @@ export function ProjectDetailView({ project, related = [] }: ProjectDetailViewPr
               {project.title}
             </h1>
             {project.content ? (
-              <div
+              <RichContent
+                html={project.content}
                 className="prose-content mt-6 text-base leading-relaxed text-navy/75 sm:text-lg"
-                dangerouslySetInnerHTML={{ __html: project.content }}
               />
             ) : (
               project.excerpt && (
