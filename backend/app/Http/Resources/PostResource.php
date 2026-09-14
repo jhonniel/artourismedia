@@ -21,8 +21,12 @@ class PostResource extends JsonResource
                     ? $this->content
                     : Assets::rewriteContentHtml($this->content)
             ),
-            'featured_image_url' => $this->featured_image_url,
-            'thumbnail_url' => $this->thumbnail_url,
+            'featured_image_url' => $request->is('api/admin/*')
+                ? $this->featured_image_url
+                : Assets::imageUrl($this->featured_image_url),
+            'thumbnail_url' => $request->is('api/admin/*')
+                ? $this->thumbnail_url
+                : Assets::imageUrl($this->thumbnail_url),
             'status' => $this->when($request->is('api/admin/*'), $this->status),
             'is_featured' => $this->is_featured,
             'reading_time' => $this->reading_time,

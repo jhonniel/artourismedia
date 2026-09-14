@@ -25,7 +25,9 @@ class ServiceResource extends JsonResource
                     : Assets::rewriteContentHtml($this->content)
             ),
             'icon' => $this->icon,
-            'image_url' => $this->image_url,
+            'image_url' => $request->is('api/admin/*')
+                ? $this->image_url
+                : Assets::imageUrl($this->image_url),
             'cta_text' => $this->cta_text,
             'cta_url' => $this->cta_url,
             'category' => $this->category,

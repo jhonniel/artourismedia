@@ -1,9 +1,9 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { localFirstAssetUrl } from '@/lib/assets'
+import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
+import { buildAssetFallbackChain } from '@/lib/assets'
 import { cn } from '@/lib/utils'
 import { HERO_SLIDESHOW_PATHS } from '@/data/heroSlideshow'
 
-export const HERO_SLIDESHOW_IMAGES = HERO_SLIDESHOW_PATHS.map(localFirstAssetUrl)
+export const HERO_SLIDESHOW_IMAGES = [...HERO_SLIDESHOW_PATHS]
 
 const FADE_MS = 1800
 const HOLD_MS = 5200
@@ -15,33 +15,91 @@ interface HeroSlideshowProps {
   imageClassName?: string
 }
 
-function preloadImage(src: string): Promise<void> {
+interface SlideshowLayerImageProps {
+  path: string
+  className?: string
+  style?: CSSProperties
+  loading?: 'eager' | 'lazy'
+  fetchPriority?: 'high' | 'low' | 'auto'
+}
+
+function SlideshowLayerImage({
+  path,
+  className,
+  style,
+  loading = 'lazy',
+  fetchPriority = 'auto',
+}: SlideshowLayerImageProps) {
+  const chain = useMemo(() => buildAssetFallbackChain(path), [path])
+  const [index, setIndex] = useState(0)
+
+  useEffect(() => {
+    setIndex(0)
+  }, [path])
+
+  const src = chain[index]
+
+  if (!src) return null
+
+  return (
+    <img
+      src={src}
+      alt=""
+      loading={loading}
+      decoding="async"
+      fetchPriority={fetchPriority}
+      onError={() => {
+        setIndex((value) => (value + 1 < chain.length ? value + 1 : value))
+      }}
+      className={className}
+      style={style}
+    />
+  )
+}
+
+function preloadImage(path: string): Promise<void> {
+  const chain = buildAssetFallbackChain(path)
+  if (chain.length === 0) return Promise.resolve()
+
   return new Promise((resolve) => {
     const img = new Image()
     img.decoding = 'async'
-    const finish = () => resolve()
-    img.onload = finish
-    img.onerror = finish
-    img.src = src
+    let index = 0
+
+    const tryNext = () => {
+      if (index >= chain.length) {
+        resolve()
+        return
+      }
+
+      img.onload = () => resolve()
+      img.onerror = () => {
+        index += 1
+        tryNext()
+      }
+      img.src = chain[index]!
+    }
+
+    tryNext()
   })
 }
 
 export function HeroSlideshow({
-  images = HERO_SLIDESHOW_IMAGES,
+  images = HERO_SLIDESHOW_PATHS,
   className,
   imageClassName,
 }: HeroSlideshowProps) {
-  const resolvedImages = useMemo(
-    () => images.map((src) => (src.startsWith('/') ? localFirstAssetUrl(src) : src)),
+  const resolvedPaths = useMemo(
+    () => images.map((src) => (src.startsWith('/') ? src : src)),
     [images],
   )
 
   const [reduceMotion, setReduceMotion] = useState(false)
   const [currentIndex, setCurrentIndex] = useState(0)
   const [topLayer, setTopLayer] = useState<0 | 1>(0)
-  const [layerSources, setLayerSources] = useState<[string, string]>(() => [
-    resolvedImages[0] ?? '',
-    resolvedImages[1] ?? resolvedImages[0] ?? '',
+  const [layerPaths, setLayerPaths] = useState<[string, string]>(() => [
+    resolvedPaths[0] ?? '',
+    resolvedPaths[1] ?? resolvedPaths[0] ?? '',
   ])
   const [isFading, setIsFading] = useState(false)
   const [revealed, setRevealed] = useState(false)
@@ -61,18 +119,18 @@ export function HeroSlideshow({
   }, [topLayer])
 
   useEffect(() => {
-    if (resolvedImages.length === 0) return
+    if (resolvedPaths.length === 0) return
 
     setCurrentIndex(0)
     setTopLayer(0)
     setIsFading(false)
     setRevealed(false)
     isTransitioningRef.current = false
-    setLayerSources([
-      resolvedImages[0]!,
-      resolvedImages[1] ?? resolvedImages[0]!,
+    setLayerPaths([
+      resolvedPaths[0]!,
+      resolvedPaths[1] ?? resolvedPaths[0]!,
     ])
-  }, [resolvedImages])
+  }, [resolvedPaths])
 
   useEffect(() => {
     const media = window.matchMedia('(prefers-reduced-motion: reduce)')
@@ -94,18 +152,18 @@ export function HeroSlideshow({
   }, [])
 
   const advanceSlide = useCallback(async () => {
-    if (isTransitioningRef.current || resolvedImages.length <= 1 || reduceMotion) return
+    if (isTransitioningRef.current || resolvedPaths.length <= 1 || reduceMotion) return
 
-    const nextIndex = (currentIndexRef.current + 1) % resolvedImages.length
+    const nextIndex = (currentIndexRef.current + 1) % resolvedPaths.length
     const incomingLayer: 0 | 1 = topLayerRef.current === 0 ? 1 : 0
-    const nextSrc = resolvedImages[nextIndex]!
+    const nextPath = resolvedPaths[nextIndex]!
 
     isTransitioningRef.current = true
-    await preloadImage(nextSrc)
+    await preloadImage(nextPath)
 
-    setLayerSources((prev) => {
+    setLayerPaths((prev) => {
       const next: [string, string] = [...prev]
-      next[incomingLayer] = nextSrc
+      next[incomingLayer] = nextPath
       return next
     })
     setIsFading(true)
@@ -126,10 +184,10 @@ export function HeroSlideshow({
       setRevealed(false)
       isTransitioningRef.current = false
     }, FADE_MS)
-  }, [reduceMotion, resolvedImages])
+  }, [reduceMotion, resolvedPaths])
 
   useEffect(() => {
-    if (resolvedImages.length <= 1 || reduceMotion) return
+    if (resolvedPaths.length <= 1 || reduceMotion) return
 
     const interval = window.setInterval(advanceSlide, HOLD_MS + FADE_MS)
     return () => {
@@ -137,24 +195,24 @@ export function HeroSlideshow({
       clearFadeTimers()
       isTransitioningRef.current = false
     }
-  }, [advanceSlide, clearFadeTimers, reduceMotion, resolvedImages.length])
+  }, [advanceSlide, clearFadeTimers, reduceMotion, resolvedPaths.length])
 
   useEffect(() => () => clearFadeTimers(), [clearFadeTimers])
 
   useEffect(() => {
-    if (resolvedImages.length <= 1) return
+    if (resolvedPaths.length <= 1) return
 
-    const preloadIndex = (currentIndexRef.current + 1) % resolvedImages.length
-    void preloadImage(resolvedImages[preloadIndex]!)
-  }, [currentIndex, resolvedImages])
+    const preloadIndex = (currentIndexRef.current + 1) % resolvedPaths.length
+    void preloadImage(resolvedPaths[preloadIndex]!)
+  }, [currentIndex, resolvedPaths])
 
-  if (resolvedImages.length === 0) return null
+  if (resolvedPaths.length === 0) return null
 
   const incomingLayer: 0 | 1 = topLayer === 0 ? 1 : 0
 
   return (
     <div className={cn('isolate overflow-hidden', className)} aria-hidden="true">
-      {layerSources.map((src, index) => {
+      {layerPaths.map((path, index) => {
         const layer = index as 0 | 1
         const isTop = layer === topLayer
         const opacity = isFading
@@ -162,12 +220,10 @@ export function HeroSlideshow({
           : (isTop ? 1 : 0)
 
         return (
-          <img
-            key={layer}
-            src={src}
-            alt=""
+          <SlideshowLayerImage
+            key={`${layer}-${path}`}
+            path={path}
             loading={isTop ? 'eager' : 'lazy'}
-            decoding="async"
             fetchPriority={isTop ? 'high' : 'auto'}
             className={cn(
               'absolute inset-0 h-full w-full object-cover will-change-[opacity]',

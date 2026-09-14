@@ -48,42 +48,9 @@ function shouldSkip(relPath) {
     return true
   }
 
-  // Static images are served from DigitalOcean Spaces — not bundled in deploy.
-  // Exception: brand logo is bundled so header/footer always work.
+  // Include the full static image bundle for same-origin fallback in production.
   if (parts.includes('public') && parts.includes('images')) {
-    if (base === 'images' || base === 'brand') {
-      return false
-    }
-
-    if (parts.includes('brand') && (base === 'artourismedia-logo.png' || base === 'artourismedia-logo-dark.png')) {
-      return false
-    }
-
-    if (
-      parts.includes('services')
-      && (
-        base === 'tourism-planning-development.png'
-        || base === 'destination-branding-marketing.png'
-        || base === 'mice-management.png'
-        || base === 'thought-leadership-learning-development.png'
-        || base === 'mindanao-connect.png'
-      )
-    ) {
-      return false
-    }
-
-    if (
-      parts.includes('about')
-      && (base === 'art-boncato-portrait.png' || base === 'art-boncato-portrait.jpg')
-    ) {
-      return false
-    }
-
-    if (parts.includes('posts') || parts.includes('projects')) {
-      return false
-    }
-
-    return true
+    return false
   }
 
   if (relPath.includes('storage' + path.sep + 'logs')) {

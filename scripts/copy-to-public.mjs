@@ -6,6 +6,7 @@ const rootDir = path.join(path.dirname(fileURLToPath(import.meta.url)), '..')
 const publicDir = path.join(rootDir, 'backend', 'public')
 const frontendDist = path.join(rootDir, 'frontend', 'dist')
 const adminDist = path.join(rootDir, 'admin', 'dist')
+const frontendImagesDir = path.join(rootDir, 'frontend', 'public', 'images')
 
 const preserved = new Set([
   '.htaccess',
@@ -19,65 +20,25 @@ const preserved = new Set([
 
 const removableRoots = ['index.html', 'assets', 'admin', 'images', 'favicon.svg', 'favicon.png']
 
-const bundledAssets = [
-  {
-    sourceDir: path.join(rootDir, 'frontend', 'public', 'images', 'brand'),
-    targetDir: path.join(publicDir, 'images', 'brand'),
-    names: ['artourismedia-logo.png', 'artourismedia-logo-dark.png'],
-  },
-  {
-    sourceDir: path.join(rootDir, 'frontend', 'public', 'images', 'services'),
-    targetDir: path.join(publicDir, 'images', 'services'),
-    names: [
-      'tourism-planning-development.png',
-      'destination-branding-marketing.png',
-      'mice-management.png',
-      'thought-leadership-learning-development.png',
-      'mindanao-connect.png',
-    ],
-  },
-  {
-    sourceDir: path.join(rootDir, 'frontend', 'public', 'images', 'about'),
-    targetDir: path.join(publicDir, 'images', 'about'),
-    names: ['art-boncato-portrait.png', 'art-boncato-portrait.jpg', 'art-boncato-portrait-card.png'],
-  },
-]
+/** Copy the full static image tree for same-origin production fallback. */
+export function copySiteImagesToPublic() {
+  if (!fs.existsSync(frontendImagesDir)) {
+    throw new Error(`Missing frontend images directory: ${frontendImagesDir}`)
+  }
 
-/** Whole folders copied into backend/public for production same-origin fallback. */
-const bundledAssetDirs = [
-  {
-    sourceDir: path.join(rootDir, 'frontend', 'public', 'images', 'posts'),
-    targetDir: path.join(publicDir, 'images', 'posts'),
-  },
-  {
-    sourceDir: path.join(rootDir, 'frontend', 'public', 'images', 'projects'),
-    targetDir: path.join(publicDir, 'images', 'projects'),
-  },
-]
+  const targetDir = path.join(publicDir, 'images')
 
+  fs.mkdirSync(path.dirname(targetDir), { recursive: true })
+  if (fs.existsSync(targetDir)) {
+    fs.rmSync(targetDir, { recursive: true, force: true })
+  }
+
+  fs.cpSync(frontendImagesDir, targetDir, { recursive: true })
+}
+
+/** @deprecated Use copySiteImagesToPublic */
 export function copyBrandAssetsToPublic() {
-  for (const { sourceDir, targetDir, names } of bundledAssets) {
-    fs.mkdirSync(targetDir, { recursive: true })
-
-    for (const name of names) {
-      const source = path.join(sourceDir, name)
-
-      if (!fs.existsSync(source)) {
-        throw new Error(`Missing bundled asset: ${source}`)
-      }
-
-      fs.copyFileSync(source, path.join(targetDir, name))
-    }
-  }
-
-  for (const { sourceDir, targetDir } of bundledAssetDirs) {
-    if (!fs.existsSync(sourceDir)) {
-      throw new Error(`Missing bundled asset directory: ${sourceDir}`)
-    }
-
-    fs.mkdirSync(path.dirname(targetDir), { recursive: true })
-    fs.cpSync(sourceDir, targetDir, { recursive: true })
-  }
+  copySiteImagesToPublic()
 }
 
 export function copyBuildsToPublic() {
@@ -108,11 +69,12 @@ export function copyBuildsToPublic() {
 
   fs.cpSync(adminDist, path.join(publicDir, 'admin'), { recursive: true })
 
-  copyBrandAssetsToPublic()
+  copySiteImagesToPublic()
 
   console.log('\nUnified web root ready:')
   console.log(`- ${publicDir}`)
   console.log('  /           public website')
   console.log('  /admin/     admin panel')
   console.log('  /api/       Laravel API')
+  console.log('  /images/    full static image bundle')
 }

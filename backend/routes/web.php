@@ -18,5 +18,5 @@ if (file_exists(public_path('index.html'))) {
             'Content-Type' => 'text/html; charset=UTF-8',
             'Cache-Control' => 'no-cache, no-store, must-revalidate',
         ]);
-    })->where('path', '^(?!api(?:/|$)|sanctum(?:/|$)|storage(?:/|$)|assets(?:/|$)|build(?:/|$)|up$).*')->name('spa');
+    })->where('path', '^(?!api(?:/|$)|sanctum(?:/|$)|storage(?:/|$)|assets(?:/|$)|build(?:/|$)|images(?:/|$)|fonts(?:/|$)|up$).*')->name('spa');
 }

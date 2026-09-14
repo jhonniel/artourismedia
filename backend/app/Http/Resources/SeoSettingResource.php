@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Support\Assets;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -15,7 +16,9 @@ class SeoSettingResource extends JsonResource
             'title' => $this->title,
             'description' => $this->description,
             'keywords' => $this->keywords,
-            'og_image_url' => $this->og_image_url,
+            'og_image_url' => $request->is('api/admin/*')
+                ? $this->og_image_url
+                : Assets::imageUrl($this->og_image_url),
             'canonical_url' => $this->canonical_url,
         ];
     }

@@ -2,16 +2,13 @@ import { Container } from '@/components/ui/Container'
 import { FadeIn } from '@/components/ui/FadeIn'
 import { CountUp } from '@/components/ui/CountUp'
 import { CmsIcon } from '@/components/ui/CmsIcon'
+import { LazyImage } from '@/components/ui/LazyImage'
 import type { HomepageSection, Statistic } from '@/types'
 
 interface StatisticsProps {
   section: HomepageSection
   statistics: Statistic[]
 }
-
-import { assetUrl } from '@/lib/assets'
-
-const STAT_BG = assetUrl('/images/projects/camiguin.png')
 
 export function Statistics({ section, statistics }: StatisticsProps) {
   const sorted = [...statistics].sort((a, b) => a.sort_order - b.sort_order)
@@ -20,11 +17,14 @@ export function Statistics({ section, statistics }: StatisticsProps) {
 
   return (
     <section className="relative overflow-hidden py-14 md:py-16">
-      <img
-        src={STAT_BG}
+      <LazyImage
+        src="/images/projects/camiguin.png"
         alt=""
         aria-hidden
-        className="absolute inset-0 h-full w-full object-cover"
+        fill
+        priority
+        wrapperClassName="absolute inset-0"
+        className="object-cover"
       />
       <div className="absolute inset-0 bg-navy/78" aria-hidden="true" />
 

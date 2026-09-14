@@ -21,7 +21,9 @@ class ProjectResource extends JsonResource
                     ? $this->content
                     : Assets::rewriteContentHtml($this->content)
             ),
-            'cover_image_url' => $this->cover_image_url,
+            'cover_image_url' => $request->is('api/admin/*')
+                ? $this->cover_image_url
+                : Assets::imageUrl($this->cover_image_url),
             'category_label' => $this->category_label,
             'category' => ProjectCategoryResource::make($this->whenLoaded('category')),
             'cta_text' => $this->cta_text,

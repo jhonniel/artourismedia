@@ -16,6 +16,19 @@ class Assets
         return $base.$path;
     }
 
+    public static function imageUrl(?string $path): ?string
+    {
+        if ($path === null || $path === '') {
+            return $path;
+        }
+
+        if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) {
+            return $path;
+        }
+
+        return self::url($path);
+    }
+
     public static function rewriteContentHtml(?string $html): ?string
     {
         if ($html === null || $html === '') {

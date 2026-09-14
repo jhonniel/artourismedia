@@ -6,7 +6,7 @@ const CATEGORY_FALLBACKS: Record<string, string> = {
   brand: assetUrl('/images/brand/artourismedia-logo.png'),
   projects: assetUrl('/images/projects/camiguin.svg'),
   posts: assetUrl('/images/posts/sustainable-tourism.svg'),
-  services: assetUrl('/images/services/tourism-planning-development.jpg'),
+  services: assetUrl('/images/services/tourism-planning-development.png'),
   team: assetUrl('/images/team/maria-santos.png'),
 }
 
