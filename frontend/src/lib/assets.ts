@@ -78,8 +78,13 @@ export function buildAssetFallbackChain(path?: string | null): string[] {
   }
 
   if (relative.startsWith('/')) {
-    chain.push(assetUrl(relative))
-    chain.push(sameOriginAssetUrl(relative))
+    if (import.meta.env.DEV) {
+      chain.push(sameOriginAssetUrl(relative))
+      chain.push(assetUrl(relative))
+    } else {
+      chain.push(assetUrl(relative))
+      chain.push(sameOriginAssetUrl(relative))
+    }
   }
 
   return [...new Set(chain.filter(Boolean))]

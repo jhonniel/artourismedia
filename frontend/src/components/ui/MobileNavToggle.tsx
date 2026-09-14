@@ -28,34 +28,18 @@ export function MobileNavToggle({ open = false, onClick, label, className }: Mob
         strokeLinecap="round"
         aria-hidden="true"
       >
-        <g
-          style={{ transformBox: 'fill-box', transformOrigin: '12px 6px' }}
-          className={cn(
-            'transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]',
-            open && 'translate-y-[6px] rotate-45',
-          )}
-        >
-          <path d="M5 6h14" />
-        </g>
-
-        <g
-          className={cn(
-            'transition-opacity duration-200 ease-out',
-            open ? 'opacity-0' : 'opacity-100',
-          )}
-        >
-          <path d="M5 12h14" />
-        </g>
-
-        <g
-          style={{ transformBox: 'fill-box', transformOrigin: '12px 18px' }}
-          className={cn(
-            'transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]',
-            open && '-translate-y-[6px] -rotate-45',
-          )}
-        >
-          <path d="M5 18h14" />
-        </g>
+        {open ? (
+          <>
+            <path d="M6 6l12 12" />
+            <path d="M18 6L6 18" />
+          </>
+        ) : (
+          <>
+            <path d="M5 7h14" />
+            <path d="M5 12h14" />
+            <path d="M5 17h14" />
+          </>
+        )}
       </svg>
     </button>
   )

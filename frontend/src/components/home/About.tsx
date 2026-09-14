@@ -43,7 +43,7 @@ export function About({ section, socialLinks = [] }: AboutProps) {
               <LazyImage
                 src={content.image_url}
                 alt={content.image_alt ?? ''}
-                wrapperClassName="mx-auto w-full max-w-[14rem] bg-transparent sm:max-w-[16rem] lg:ml-auto lg:mr-0 lg:max-w-[18rem]"
+                wrapperClassName="mx-auto w-full max-w-[18.25rem] bg-transparent sm:max-w-[20.75rem] lg:ml-auto lg:mr-0 lg:max-w-[18rem]"
                 className="!h-auto !w-full !object-contain !object-bottom"
               />
             )}
@@ -58,7 +58,7 @@ export function About({ section, socialLinks = [] }: AboutProps) {
               )}
 
               {headline && (
-                <h2 className="font-serif text-[1.5rem] font-normal leading-[1.2] text-navy sm:text-[1.65rem] lg:text-[1.85rem] xl:text-[2rem]">
+                <h2 className="break-words font-serif text-[1.5rem] font-normal leading-relaxed text-navy sm:text-[1.65rem] lg:text-[1.85rem] xl:text-[2rem]">
                   {headline}
                 </h2>
               )}
@@ -105,13 +105,13 @@ export function About({ section, socialLinks = [] }: AboutProps) {
                 <div className="mt-7">
                   {content.cta_url.startsWith('http') ? (
                     <a href={content.cta_url}>
-                      <Button size="lg" className="w-full px-6 text-xs uppercase tracking-[0.1em] sm:w-auto">
+                      <Button size="sm" className="w-full px-5 py-2.5 text-[10px] uppercase tracking-[0.1em] sm:w-auto">
                         {content.cta_text} →
                       </Button>
                     </a>
                   ) : (
                     <Link to={content.cta_url}>
-                      <Button size="lg" className="w-full px-6 text-xs uppercase tracking-[0.1em] sm:w-auto">
+                      <Button size="sm" className="w-full px-5 py-2.5 text-[10px] uppercase tracking-[0.1em] sm:w-auto">
                         {content.cta_text} →
                       </Button>
                     </Link>

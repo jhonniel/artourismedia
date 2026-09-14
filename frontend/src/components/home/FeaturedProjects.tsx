@@ -21,7 +21,7 @@ const LOGO_COVER_SLUGS = new Set(['clean-camiguin-pivot-transformation'])
 
 /** Per-card crop so photo covers fill consistently. */
 const COVER_OBJECT_POSITION: Partial<Record<string, string>> = {
-  'mounts-timpoong-hibok-hibok-ecotourism-plan': 'object-[center_35%]',
+  'mounts-timpoong-hibok-hibok-ecotourism-plan': 'object-[center_40%]',
 }
 
 export function FeaturedProjects({ section, projects }: FeaturedProjectsProps) {
@@ -33,7 +33,7 @@ export function FeaturedProjects({ section, projects }: FeaturedProjectsProps) {
 
   return (
     <section className="relative bg-navy pt-0">
-      <NavySectionTopWave className="relative z-10 h-10 sm:h-12 md:h-14" />
+      <NavySectionTopWave topFill="white" className="relative z-10 h-10 sm:h-12 md:h-14" />
 
       <Container className="pt-10 pb-10 md:pt-12 md:pb-12">
         <FadeIn>
@@ -76,23 +76,25 @@ export function FeaturedProjects({ section, projects }: FeaturedProjectsProps) {
                           COVER_OBJECT_POSITION[project.slug],
                         )}
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-navy from-25% via-navy/70 via-60% to-transparent" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-navy from-20% via-navy/85 via-50% to-transparent" />
                     </>
                   )}
 
-                  {(project.category_label || project.category?.name) && (
-                    <span
-                      className={`absolute left-5 top-[48%] z-10 inline-block rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.16em] shadow-soft sm:left-6 sm:top-[46%] ${TAG_STYLES[index % TAG_STYLES.length]}`}
-                    >
-                      {project.category_label ?? project.category?.name}
-                    </span>
-                  )}
-
-                  <div className="absolute inset-x-0 bottom-0 top-[54%] z-10 flex flex-col p-5 sm:top-[52%] sm:p-6">
-                    <h3 className="line-clamp-3 font-serif text-xl font-normal leading-snug text-white sm:text-2xl">
+                  <div className="absolute inset-x-0 bottom-0 z-10 flex flex-col justify-end bg-gradient-to-t from-navy from-30% via-navy/90 via-70% to-transparent p-5 pt-16 sm:p-6 sm:pt-20">
+                    {(project.category_label || project.category?.name) && (
+                      <span
+                        className={cn(
+                          'mb-3 inline-block w-fit max-w-full rounded-lg px-2.5 py-1.5 text-[9px] font-bold uppercase leading-relaxed tracking-[0.1em] shadow-soft sm:text-[10px]',
+                          TAG_STYLES[index % TAG_STYLES.length],
+                        )}
+                      >
+                        {project.category_label ?? project.category?.name}
+                      </span>
+                    )}
+                    <h3 className="break-words font-serif text-lg font-normal leading-relaxed text-white sm:text-xl lg:text-[1.35rem]">
                       {project.title}
                     </h3>
-                    <span className="mt-auto inline-flex items-center gap-2 pt-4 text-xs font-bold uppercase tracking-[0.1em] text-orange">
+                    <span className="mt-3 inline-flex items-center gap-2 pt-1 text-xs font-bold uppercase tracking-[0.1em] text-orange sm:mt-4">
                       View project →
                     </span>
                   </div>

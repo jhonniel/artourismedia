@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useLayoutEffect, useRef } from 'react'
 import { cn } from '@/lib/utils'
 import type { NavigationItem, SiteSettings, SocialLink } from '@/types'
 import { MobileMenu } from '@/components/layout/MobileMenu'
@@ -19,16 +19,32 @@ export function Header({ navigation, settings, socialLinks = [] }: HeaderProps) 
   const location = useLocation()
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20)
+    const onScroll = () => {
+      const scrollY = window.scrollY
+      setScrolled(scrollY > 20)
+
+      if (location.pathname === '/') {
+        const fadeEnd = 72
+        const opacity = Math.max(0, 1 - scrollY / fadeEnd)
+        document.documentElement.style.setProperty('--header-blur-opacity', opacity.toFixed(3))
+      } else {
+        document.documentElement.style.removeProperty('--header-blur-opacity')
+      }
+    }
+
+    onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      document.documentElement.style.removeProperty('--header-blur-opacity')
+    }
+  }, [location.pathname])
 
   useEffect(() => {
     setMobileOpen(false)
   }, [location.pathname])
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const header = headerRef.current
     if (!header) return
 
@@ -49,7 +65,8 @@ export function Header({ navigation, settings, socialLinks = [] }: HeaderProps) 
   }, [mobileOpen, scrolled])
 
   const isHome = location.pathname === '/'
-  const overlay = isHome && !scrolled && !mobileOpen
+  const heroOverlay = isHome && !mobileOpen
+  const overlay = heroOverlay && !scrolled
   const navItems = [...navigation].sort((a, b) => a.sort_order - b.sort_order)
   const ctaItem = navItems.find((item) => item.is_cta)
   const regularItems = navItems.filter((item) => !item.is_cta)
@@ -59,22 +76,29 @@ export function Header({ navigation, settings, socialLinks = [] }: HeaderProps) 
       <header
         ref={headerRef}
         className={cn(
-          'fixed inset-x-0 top-0 transition-[background-color,box-shadow,padding,backdrop-filter] duration-300',
-          mobileOpen ? 'z-[101] bg-white py-3 shadow-none lg:shadow-soft' : 'z-50',
-          !mobileOpen && overlay && 'bg-transparent py-4 md:py-5 lg:py-6 xl:py-7',
+          'fixed inset-x-0 top-0 duration-300',
+          mobileOpen
+            ? 'z-[101] bg-white py-3 shadow-none transition-[background-color,box-shadow] lg:shadow-soft'
+            : 'z-50 transition-[background-color,box-shadow,padding,backdrop-filter]',
+          !mobileOpen && heroOverlay && 'header-hero-overlay',
+          !mobileOpen && overlay && 'header-at-hero-top bg-transparent py-4 lg:py-6 xl:py-7',
           !mobileOpen && !overlay && scrolled
             ? 'bg-white/95 py-3 shadow-soft backdrop-blur-sm lg:py-4 xl:py-5'
             : !mobileOpen && !overlay && 'bg-white py-4 md:py-5 lg:py-6 xl:py-7',
         )}
       >
-        <div className="mx-auto flex h-11 w-full max-w-[90rem] items-center justify-between gap-3 px-4 sm:h-auto sm:gap-4 sm:px-6 lg:grid lg:grid-cols-[1fr_auto_1fr] lg:items-center lg:gap-6 lg:px-8 xl:gap-8 xl:px-10 2xl:px-12">
+        <div className="relative z-10 mx-auto flex h-11 w-full max-w-[90rem] items-center justify-between gap-3 px-4 sm:h-auto sm:gap-4 sm:px-6 lg:grid lg:grid-cols-[1fr_auto_1fr] lg:items-center lg:gap-6 lg:px-8 xl:gap-8 xl:px-10 2xl:px-12">
           <div className="flex min-w-0 flex-1 justify-start lg:flex-none">
             <Link
               to="/"
               className="block min-w-0 max-w-[calc(100vw-4.5rem)] sm:max-w-none"
               onClick={() => mobileOpen && setMobileOpen(false)}
             >
-              <HeaderLogo logoUrl={settings.logo_url} siteName={settings.site_name} />
+              <HeaderLogo
+                logoUrl={settings.logo_url}
+                siteName={settings.site_name}
+                className="header-logo"
+              />
             </Link>
           </div>
 
@@ -102,6 +126,7 @@ export function Header({ navigation, settings, socialLinks = [] }: HeaderProps) 
               open={mobileOpen}
               onClick={() => setMobileOpen((current) => !current)}
               label={mobileOpen ? 'Close menu' : 'Open menu'}
+              className="header-nav-toggle"
             />
           </div>
         </div>

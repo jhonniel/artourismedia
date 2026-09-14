@@ -90,7 +90,7 @@ class DatabaseSeeder extends Seeder
             ['key' => 'newsletter_description', 'value' => 'Get destination strategy insights delivered to your inbox.', 'type' => 'string', 'group' => 'general'],
             ['key' => 'footer_description', 'value' => 'We partner with governments, communities, and investors to design tourism experiences that leave lasting impressions.', 'type' => 'string', 'group' => 'footer'],
             ['key' => 'footer_tagline', 'value' => 'Creating destinations people remember.', 'type' => 'string', 'group' => 'footer'],
-            ['key' => 'footer_copyright', 'value' => '© Art! Boncato Tourism Consultancy. All rights reserved.', 'type' => 'string', 'group' => 'footer'],
+            ['key' => 'footer_copyright', 'value' => '© '.date('Y').' Art! Boncato Tourism Consultancy. All rights reserved.', 'type' => 'string', 'group' => 'footer'],
             ['key' => 'footer_email', 'value' => 'atm@artourismedia.com', 'type' => 'string', 'group' => 'footer'],
             ['key' => 'footer_phone', 'value' => '', 'type' => 'string', 'group' => 'footer'],
             ['key' => 'footer_address', 'value' => 'Philippines', 'type' => 'string', 'group' => 'footer'],
@@ -289,7 +289,7 @@ class DatabaseSeeder extends Seeder
                 'content' => '<p>We underline the significance of stakeholder buy-in as an essential step in the process.</p><h3>Projects and Experience:</h3><ul><li>Isle Be There Marketing Plan 2024, 2025, 2026</li><li>Camiguin Isle Be There Branding 2024</li><li>Clean Camiguin Marketing Plan 2021, 2022, 2023</li><li>Clean Camiguin Branding 2021</li></ul>',
                 'category' => 'Marketing',
                 'icon' => 'destination-branding',
-                'image_url' => '/images/services/destination-branding-marketing.png',
+                'image_url' => '/images/services/destination-branding-marketing.jpg?v=2',
                 'sort_order' => 2,
             ],
             [
@@ -299,7 +299,7 @@ class DatabaseSeeder extends Seeder
                 'content' => '<p>This main service also includes consulting and actual facility management and specialist manufacturing for exhibits.</p><h3>Projects and Experience:</h3><ul><li>Camiguin International Convention Center (conceptual stage)</li><li>ASEAN Tourism Forum (ATF) and ASEAN Summit Opening Ceremonies 2026 at The Mactan Expo (coordination team member for Megaworld Hotels and Resorts)</li><li>World Trade Center Metro Manila (senior leadership) 2022-2024</li><li>Iloilo MICE Situation Report and Marketing Plan (for the Department of Tourism) 2019</li><li>50th Asian Development Bank Summit 2018 (official Philippine government lead organizer with the ADB)</li><li>Kadayawan Festival 2016 (Co-chairman of Mayor Sara Duterte-Carpio)</li><li>ASEAN Tourism Forum (ATF) 2006 (Co-Chairman of Mayor Rodrigo R. Duterte, Davao Organizing Committee)</li><li>Conventions and Events Organizers, Inc. 1995-2001 (organized at least 70 local and regional MICE projects as lone Mindanao Professional Convention Organizer accredited by the Philippine Convention and Visitors Corporation now named Tourism Promotions Board)</li></ul>',
                 'category' => 'MICE',
                 'icon' => 'mice-events',
-                'image_url' => '/images/services/mice-management.png',
+                'image_url' => '/images/services/mice-management.jpg?v=2',
                 'sort_order' => 3,
             ],
             [
@@ -309,7 +309,7 @@ class DatabaseSeeder extends Seeder
                 'content' => '<p>This is accomplished by creating and utilizing tools that deal with problems affecting a skilled workforce in the hospitality sector.</p><h3>Projects and Experience</h3><ul><li>Camiguin Roundtable on Sustainable Island Destination Governance (September 2026)</li><li>Camiguin Tourism Training Institute (conceptual stage)</li></ul>',
                 'category' => 'Learning',
                 'icon' => 'learning-leadership',
-                'image_url' => '/images/services/thought-leadership-learning-development.png',
+                'image_url' => '/images/services/thought-leadership-learning-development.jpg?v=2',
                 'sort_order' => 4,
             ],
             [
@@ -319,7 +319,7 @@ class DatabaseSeeder extends Seeder
                 'content' => '<p>Make Mindanao your next greenfield. Let us help you in this.</p><h3>Projects and Experience</h3><ul><li>Mindanao Tourism Situation Report ( for crafting haha)</li><li>Mindanao Roadtrip with Art videos</li><li>Mindanao Fun 101 magazine digital file</li></ul>',
                 'category' => 'Regional',
                 'icon' => 'mindanao-connect',
-                'image_url' => '/images/services/mindanao-connect.png',
+                'image_url' => '/images/services/mindanao-connect.jpg?v=2',
                 'sort_order' => 5,
             ],
         ];
@@ -430,7 +430,7 @@ class DatabaseSeeder extends Seeder
                 'title' => 'Mounts Timpoong and Hibok-Hibok Ecotourism Management and Investment Plan',
                 'excerpt' => 'An integrated ecotourism framework for the sustainable development and management of the Mounts Timpoong–Hibok-Hibok landscape. The engagement combined conservation, visitor experience, community participation, site management and investment planning to support responsible tourism within an environmentally sensitive destination.',
                 'content' => '<p>An integrated ecotourism framework for the sustainable development and management of the Mounts Timpoong–Hibok-Hibok landscape. The engagement combined conservation, visitor experience, community participation, site management and investment planning to support responsible tourism within an environmentally sensitive destination.</p>',
-                'cover_image_url' => Assets::url('/images/projects/mounts-timpoong-hibok-hibok.png'),
+                'cover_image_url' => Assets::url('/images/projects/mounts-timpoong-hibok-hibok.jpg?v=1'),
                 'category_label' => 'Ecotourism & Conservation',
                 'is_featured' => true,
                 'is_published' => true,
@@ -497,7 +497,6 @@ class DatabaseSeeder extends Seeder
         }
 
         $strategyCategory = PostCategory::query()->where('slug', 'strategy')->first();
-        $marketingCategory = PostCategory::query()->where('slug', 'marketing')->first();
         $mediaCategory = PostCategory::query()->where('slug', 'media')->first();
         $brandingTag = Tag::query()->where('slug', 'branding')->first();
         $digitalTag = Tag::query()->where('slug', 'digital-marketing')->first();
@@ -523,38 +522,6 @@ class DatabaseSeeder extends Seeder
         if ($brandingTag && $digitalTag) {
             $post->tags()->sync([$brandingTag->id, $digitalTag->id]);
         }
-
-        Post::query()->updateOrCreate(
-            ['slug' => 'building-destination-brands-that-last'],
-            [
-                'post_category_id' => $marketingCategory?->id,
-                'author_id' => $admin->id,
-                'title' => 'Building Destination Brands That Last',
-                'excerpt' => 'In a crowded tourism market, the destinations that win are the ones with a narrative visitors can feel—not just see.',
-                'content' => '<p>Story-led destination branding creates emotional connection before the first booking. We explore how to craft authentic narratives rooted in local culture and community pride.</p>',
-                'featured_image_url' => Assets::url('/images/posts/destination-brands.png'),
-                'status' => 'published',
-                'is_featured' => true,
-                'reading_time' => 7,
-                'published_at' => now()->subDays(10),
-            ]
-        );
-
-        Post::query()->updateOrCreate(
-            ['slug' => 'power-of-storytelling-in-tourism'],
-            [
-                'post_category_id' => $mediaCategory?->id,
-                'author_id' => $admin->id,
-                'title' => 'The Power of Storytelling in Tourism',
-                'excerpt' => 'Why compelling media and authentic stories are essential tools for destination marketers in the digital age.',
-                'content' => '<p>From drone footage to community voices, we outline how tourism boards can use media production to create emotional connection and drive visitation.</p>',
-                'featured_image_url' => Assets::url('/images/posts/storytelling-tourism.png'),
-                'status' => 'published',
-                'is_featured' => true,
-                'reading_time' => 5,
-                'published_at' => now()->subDays(14),
-            ]
-        );
 
         Post::query()->updateOrCreate(
             ['slug' => 'camiguin-tourism-development-plan-2026-2028'],
@@ -611,24 +578,6 @@ class DatabaseSeeder extends Seeder
         );
 
         Post::query()->updateOrCreate(
-            ['slug' => 'dof-dti-adb-meeting-manila-2018'],
-            [
-                'post_category_id' => $mediaCategory?->id,
-                'author_id' => $admin->id,
-                'title' => 'DOF, DTI to team-up in hosting ADB meeting in Manila next yr.',
-                'excerpt' => 'The Department of Finance tapped the Department of Trade and Industry—and Trade Assistant Secretary Arturo Boncato Jr.—to help organize the 51st annual meeting of the Asian Development Bank board of governors in Manila.',
-                'content' => '<p>The Department of Finance (DOF) on Monday said it has tapped the expertise of the Department of Trade and Industry (DTI) in organizing the 51st annual meeting of the Asian Development Bank (ADB) board of governors.</p><p>Trade Assistant Secretary Arturo Boncato Jr., head of the DTI Competitiveness and Ease of Doing Business Group and a marketing and communications expert, will help the DOF organize the ADB Board of Governors meeting in Manila on May 3 to 6, 2018.</p><p>Finance Secretary Carlos G. Dominguez III was appointed chairman of the ADB Board of Governors in May, succeeding Japan Deputy Prime Minister and Finance Minister Taro Aso who chaired the 50th Annual Meeting in Yokohama.</p><p>Under the administration of former President Benigno Aquino III, Boncato was assistant secretary at the Department of Tourism and was in charge of handling special projects for Mindanao.</p><p><em>— Jon Viktor Cabuenas/VDS, GMA News</em></p><p><a href="https://www.gmanetwork.com/news/money/companies/616783/dof-dti-to-team-up-in-hosting-adb-meeting-in-manila-next-yr/story/" target="_blank" rel="noopener noreferrer">Read the full article on GMA News</a></p>',
-                'featured_image_url' => Assets::url('/images/services/mice-management.jpg'),
-                'status' => 'published',
-                'is_featured' => true,
-                'reading_time' => 3,
-                'published_at' => now(),
-                'seo_title' => 'DOF, DTI Host ADB Meeting Manila 2018 | Art Boncato | GMA News',
-                'seo_description' => 'GMA News reports on Arturo Boncato Jr. supporting DOF and DTI in organizing the 51st Asian Development Bank board of governors meeting in Manila.',
-            ]
-        );
-
-        Post::query()->updateOrCreate(
             ['slug' => 'atf-2006-davao-asean-tourism-showcase'],
             [
                 'post_category_id' => $mediaCategory?->id,
@@ -640,7 +589,7 @@ class DatabaseSeeder extends Seeder
                 'status' => 'published',
                 'is_featured' => true,
                 'reading_time' => 5,
-                'published_at' => now(),
+                'published_at' => now()->subHour(),
                 'seo_title' => 'ATF 2006 Davao ASEAN Tourism Forum | Art Boncato',
                 'seo_description' => 'How Davao City hosted ASEAN Tourism Forum 2006, showcasing ASEAN tourism products and leadership from Art Boncato and Mayor Rodrigo Duterte.',
             ]
@@ -658,9 +607,117 @@ class DatabaseSeeder extends Seeder
                 'status' => 'published',
                 'is_featured' => true,
                 'reading_time' => 6,
-                'published_at' => now(),
+                'published_at' => now()->subHours(2),
                 'seo_title' => 'Philippines Muslim-Friendly Destination Recognition | Arab News | Art Boncato',
                 'seo_description' => 'Arab News reports on the Philippines\' rising Muslim-friendly destination status and Megaworld Hotels & Resorts\' award at the Halal in Travel Global Summit.',
+            ]
+        );
+
+        Post::query()->updateOrCreate(
+            ['slug' => 'dof-dti-adb-meeting-manila-2018'],
+            [
+                'post_category_id' => $mediaCategory?->id,
+                'author_id' => $admin->id,
+                'title' => 'DOF, DTI to team-up in hosting ADB meeting in Manila next yr.',
+                'excerpt' => 'The Department of Finance tapped the Department of Trade and Industry—and Trade Assistant Secretary Arturo Boncato Jr.—to help organize the 51st annual meeting of the Asian Development Bank board of governors in Manila.',
+                'content' => '<p>The Department of Finance (DOF) on Monday said it has tapped the expertise of the Department of Trade and Industry (DTI) in organizing the 51st annual meeting of the Asian Development Bank (ADB) board of governors.</p><p>Trade Assistant Secretary Arturo Boncato Jr., head of the DTI Competitiveness and Ease of Doing Business Group and a marketing and communications expert, will help the DOF organize the ADB Board of Governors meeting in Manila on May 3 to 6, 2018.</p><p>Finance Secretary Carlos G. Dominguez III was appointed chairman of the ADB Board of Governors in May, succeeding Japan Deputy Prime Minister and Finance Minister Taro Aso who chaired the 50th Annual Meeting in Yokohama.</p><p>Under the administration of former President Benigno Aquino III, Boncato was assistant secretary at the Department of Tourism and was in charge of handling special projects for Mindanao.</p><p><em>— Jon Viktor Cabuenas/VDS, GMA News</em></p><p><em>Originally published July 4, 2017 on <a href="https://www.gmanetwork.com/news/money/companies/616783/dof-dti-to-team-up-in-hosting-adb-meeting-in-manila-next-yr/story/" target="_blank" rel="noopener noreferrer">GMA News</a>.</em></p><p><a href="https://www.gmanetwork.com/news/money/companies/616783/dof-dti-to-team-up-in-hosting-adb-meeting-in-manila-next-yr/story/" target="_blank" rel="noopener noreferrer">Read the full article on GMA News</a></p>',
+                'featured_image_url' => Assets::url('/images/services/mice-management.jpg?v=2'),
+                'status' => 'published',
+                'is_featured' => true,
+                'reading_time' => 3,
+                'published_at' => now()->subHour(),
+                'seo_title' => 'DOF, DTI Host ADB Meeting Manila 2018 | Art Boncato | GMA News',
+                'seo_description' => 'GMA News reports on Arturo Boncato Jr. supporting DOF and DTI in organizing the 51st Asian Development Bank board of governors meeting in Manila.',
+            ]
+        );
+
+        Post::query()->updateOrCreate(
+            ['slug' => 'dof-taps-dti-marketing-expert-adb-manila-2018'],
+            [
+                'post_category_id' => $mediaCategory?->id,
+                'author_id' => $admin->id,
+                'title' => 'DOF taps DTI marketing expert for 2018 ADB meeting in Manila',
+                'excerpt' => 'The Department of Finance tapped DTI Assistant Secretary Arturo Boncato Jr.—a marketing and communications expert with a record in major Mindanao tourism projects—to help prepare Manila\'s hosting of the 51st ADB Board of Governors meeting.',
+                'content' => '<p>A marketing and communications expert at the Department of Trade and Industry (DTI) with a sterling record in handling major tourism projects in Mindanao is working closely with the Department of Finance (DOF) in handling the preparations for the 2018 annual meeting of the Asian Development Bank (ADB) Board of Governors to be held in Manila.</p><p>Finance Secretary Carlos Dominguez III has tapped DTI Assistant Secretary Arturo Boncato Jr. as a key resource person of the DOF for Manila\'s hosting of the 51st Annual Meeting of the ADB Board of Governors on May 3–6 next year.</p><p>Boncato, who heads the DTI\'s Competitiveness and Ease of Doing Business Group, was formerly Assistant Secretary of the Department of Tourism in the Aquino administration in charge of handling special projects for Mindanao, such as the Philippine Halal Tourism Project. He was at that time also the tourism department\'s alternate spokesperson.</p><p>He had also chaired the Brunei, Indonesia Malaysia, the Philippines-East ASEAN Growth Area (BIMP-EAGA) Tourism Cluster and was Representative to the Bangsamoro Transition Committee.</p><p>Boncato is currently the supervising executive of the DTI\'s Competitiveness Bureau, E-Commerce, and BIMP-EAGA teams.</p><p>A former entrepreneur and hotelier, Boncato holds a Bachelor of Arts Degree in Mass Communications from the University of the Philippines.</p><p>Dominguez chairs the ADB Board of Governors.</p><p>The ADB is headquartered at the Ortigas Business Center in Mandaluyong City.</p><p><em>— Department of Finance</em></p><p><em>Originally published July 5, 2017 on the <a href="https://www.dof.gov.ph/dof-taps-dti-marketing-expert-for-2018-adb-meeting-in-manila/" target="_blank" rel="noopener noreferrer">Department of Finance</a>.</em></p><p><a href="https://www.dof.gov.ph/dof-taps-dti-marketing-expert-for-2018-adb-meeting-in-manila/" target="_blank" rel="noopener noreferrer">Read the full article on DOF.gov.ph</a></p>',
+                'featured_image_url' => Assets::url('/images/services/mice-management.jpg?v=2'),
+                'status' => 'published',
+                'is_featured' => true,
+                'reading_time' => 3,
+                'published_at' => now()->subMinutes(15),
+                'seo_title' => 'DOF Taps DTI Marketing Expert for 2018 ADB Meeting | Art Boncato',
+                'seo_description' => 'Department of Finance announcement on Arturo Boncato Jr. supporting preparations for the 2018 ADB Board of Governors meeting in Manila.',
+            ]
+        );
+
+        Post::query()->updateOrCreate(
+            ['slug' => 'art-boncato-jr-world-trade-center-metro-manila-2023'],
+            [
+                'post_category_id' => $mediaCategory?->id,
+                'author_id' => $admin->id,
+                'title' => 'Art Boncato, Jr moves to World Trade Center Metro Manila',
+                'excerpt' => 'Art Boncato Jr. has joined World Trade Center Metro Manila as chief operating officer and executive vice president, following his tenure as Department of Tourism undersecretary.',
+                'content' => '<p>Art Boncato, Jr has joined the World Trade Center Metro Manila as chief operating officer and executive vice president.</p><p>He was previously the Philippine Department of Tourism undersecretary for tourism regulation, coordination and resource generation.</p><p><em>— TTGmice</em></p><p><em>Originally published March 20, 2023 on <a href="https://www.ttgmice.com/2023/03/20/art-boncato-jr-moves-to-world-trade-center-metro-manila/" target="_blank" rel="noopener noreferrer">TTGmice</a>.</em></p><p><a href="https://www.ttgmice.com/2023/03/20/art-boncato-jr-moves-to-world-trade-center-metro-manila/" target="_blank" rel="noopener noreferrer">Read the full article on TTGmice</a></p>',
+                'featured_image_url' => Assets::url('/images/posts/art-boncato-wtcmm-appointment.png'),
+                'status' => 'published',
+                'is_featured' => true,
+                'reading_time' => 2,
+                'published_at' => now()->subMinutes(5),
+                'seo_title' => 'Art Boncato Jr Joins World Trade Center Metro Manila | TTGmice',
+                'seo_description' => 'TTGmice reports on Art Boncato Jr.\'s appointment as COO and executive vice president of World Trade Center Metro Manila.',
+            ]
+        );
+
+        Post::query()->updateOrCreate(
+            ['slug' => 'megaworld-hotels-resorts-new-appointments-2024'],
+            [
+                'post_category_id' => $mediaCategory?->id,
+                'author_id' => $admin->id,
+                'title' => 'Megaworld Hotels and Resorts announces new appointments',
+                'excerpt' => 'Megaworld Hotels and Resorts has named Art Boncato Jr as group general manager, following his tenure as executive vice president and chief operating officer of World Trade Center Metro Manila.',
+                'content' => '<p>Megaworld Hotels and Resorts has named Art Boncato Jr as group general manager. Boncato used to be executive vice president and chief operating officer of World Trade Center Metro Manila.</p><p>Joe Fijardo is now general manager of 1,500-key Grand Westside Hotel Manila which is opening in June. Oliver Esguerra replaced Fijardo as general manager of Kingsford Hotel Manila.</p><p>Maia Israel has taken over from Elmar Lima as general manager of Belmont Boracay. She worked under various capacities in Song Saa Private Island in Cambodia, Courtyard by Marriott Philippines, Laucala Island in Fiji and Radisson Blu Fiji.</p><p><em>— TTGmice</em></p><p><em>Originally published April 2, 2024 on <a href="https://www.ttgmice.com/2024/04/02/megaworld-hotels-and-resorts-announces-new-appointments/" target="_blank" rel="noopener noreferrer">TTGmice</a>.</em></p><p><a href="https://www.ttgmice.com/2024/04/02/megaworld-hotels-and-resorts-announces-new-appointments/" target="_blank" rel="noopener noreferrer">Read the full article on TTGmice</a></p>',
+                'featured_image_url' => Assets::url('/images/posts/megaworld-art-boncato-appointment.png'),
+                'status' => 'published',
+                'is_featured' => true,
+                'reading_time' => 2,
+                'published_at' => now()->subMinutes(5),
+                'seo_title' => 'Megaworld Hotels and Resorts Appointments | Art Boncato | TTGmice',
+                'seo_description' => 'TTGmice reports on Art Boncato Jr\'s appointment as group general manager of Megaworld Hotels and Resorts.',
+            ]
+        );
+
+        Post::query()->updateOrCreate(
+            ['slug' => 'northern-mindanao-philippine-tourism-awards-2025'],
+            [
+                'post_category_id' => $strategyCategory?->id,
+                'author_id' => $admin->id,
+                'title' => 'Northern Mindanao shines at 1st Philippine Tourism Awards',
+                'excerpt' => 'Northern Mindanao stood out at the inaugural Philippine Tourism Awards at Okada Manila, with Camiguin, Proforg, The VIP Hotel, De Luxe Hotel, and Chali Resort and Conference Center bringing home national honors.',
+                'content' => '<p><strong>PROGRESS WATCH: Metro Cagayan de Oro and Northern Mindanao</strong></p><figure class="my-8 overflow-hidden rounded-2xl"><img src="/images/posts/philippine-tourism-awards-collage.jpg" alt="Northern Mindanao awardees at the 1st Philippine Tourism Awards" class="w-full" loading="lazy" /></figure><p>Northern Mindanao proudly stood out at the 1st Philippine Tourism Awards held on September 8, 2025, at Okada Manila, as several homegrown names brought home prestigious recognitions. Among the awardees were the Province of Camiguin, Professional Organizers Unlimited, VIP Hotel, De Luxe Hotel, and Chali Beach Resort, each honored in their respective categories. These accolades reaffirm the region\'s rising reputation as a prime destination for leisure, business, and sustainable travel in the Philippines. Congratulations to all awardees!</p><p>The Province of Camiguin received the Ecotourism Destination Award for Mantigue Island, solidifying its reputation as one of the country\'s premier nature destinations. Camiguin Provincial Tourism Officer Candice Dael is shown with the award.</p><figure class="my-8 overflow-hidden rounded-2xl"><img src="/images/posts/philippine-tourism-awards-camiguin-mantigue.jpg" alt="Camiguin Provincial Tourism Officer Candice Dael receives the Ecotourism Destination Award for Mantigue Island" class="w-full" loading="lazy" /></figure><p>Cagayan de Oro-based Professional Organizers Unlimited, Inc. (Proforg) was also honored with the Tourism Excellence Award for MICE Organizer, highlighting its contribution to business events and conferences in the region. Proforg Managing Director Helen Uy (2nd from right) is shown receiving the award.</p><figure class="my-8 overflow-hidden rounded-2xl"><img src="/images/posts/philippine-tourism-awards-group-stage.png" alt="Professional Organizers Unlimited receives the Tourism Excellence Award for MICE Organizer" class="w-full" loading="lazy" /></figure><p>For the Tourism Pillar Award – Enterprise, three iconic Cagayan de Oro hotels and resorts—The VIP Hotel, De Luxe Hotel, and Chali Resort and Conference Center—were recognized for their decades of service. Receiving their respective awards were The VIP Hotel General Manager, De Luxe Hotel General Manager Jeffrey Limbonhai, and Chali Resort General Manager Ging Chaves.</p><figure class="my-8 overflow-hidden rounded-2xl"><img src="/images/posts/philippine-tourism-awards-hotels.png" alt="Tourism Pillar Award recipients from Cagayan de Oro hotels and resorts" class="w-full" loading="lazy" /></figure><figure class="my-8 overflow-hidden rounded-2xl"><img src="/images/posts/philippine-tourism-awards-group-finale.png" alt="Northern Mindanao awardees with Tourism Regional Director Marie Elaine Salvaña Unchuan" class="w-full" loading="lazy" /></figure><p>The awardees from Northern Mindanao pose together with Tourism Regional Director Marie Elaine Salvaña Unchuan.</p><p><em>Photos by the Department of Tourism.</em></p><p><em>Originally published September 9, 2025 on <a href="https://metrocdodev.com/2025/09/09/northern-mindanao-shines-at-1st-philippine-tourism-awards/" target="_blank" rel="noopener noreferrer">MetroCDODev.com</a>.</em></p><p><a href="https://metrocdodev.com/2025/09/09/northern-mindanao-shines-at-1st-philippine-tourism-awards/" target="_blank" rel="noopener noreferrer">Read the full article on MetroCDODev.com</a></p>',
+                'featured_image_url' => Assets::url('/images/posts/philippine-tourism-awards-collage.jpg'),
+                'status' => 'published',
+                'is_featured' => true,
+                'reading_time' => 4,
+                'published_at' => now()->subMinutes(5),
+                'seo_title' => 'Northern Mindanao Philippine Tourism Awards 2025 | Art Boncato',
+                'seo_description' => 'Camiguin, Cagayan de Oro hotels, and Proforg honored at the 1st Philippine Tourism Awards in Okada Manila.',
+            ]
+        );
+
+        Post::query()->updateOrCreate(
+            ['slug' => 'camiguin-isle-be-there-tourism-campaign'],
+            [
+                'post_category_id' => $strategyCategory?->id,
+                'author_id' => $admin->id,
+                'title' => 'Camiguin launches \'Isle be There\' tourism campaign',
+                'excerpt' => 'Camiguin rolled out its "Isle be There" rebranding theme to welcome tourists with a fresh post-pandemic start, backed by Smart Tourism, a PHP250-million Mantigue Island plan, and updated visitor guidelines.',
+                'content' => '<figure class="my-8 overflow-hidden rounded-2xl"><img src="/images/posts/camiguin-isle-be-there-campaign.png" alt="Camiguin Isle be There tourism campaign branding" class="w-full max-w-md mx-auto" loading="lazy" /></figure><p><strong>CAGAYAN DE ORO CITY</strong> – The Camiguin provincial government rolled out Friday its "Isle be There" rebranding theme to welcome tourists with a fresh start from the coronavirus disease 2019 pandemic.</p><p>Gov. Xavier Jesus Romualdo said the new tourism slogan is part of the provincial government\'s transformation and development plans, with communities and establishments cooperating for its success.</p><p>"We are also going for the digitalization, to have \'Smart Tourism\' where tourists can enjoy the island (with ease)," Romualdo said during the opening program.</p><p>With the use of technology, the governor said visitors can be given ample service and security throughout their stay in the island province.</p><p>Since January, the governor said the province has received 800,000 tourists and expects to reach a million by 2025.</p><p>Romualdo also bared the PHP250-million worth Mantigue Island Tourism Plan, which aims to improve the facilities for water and power, waste management, docking and mooring, guest services and amenities, safety and security and emergency response.</p><p>Another highlight of Camiguin\'s tourism campaign is the lowering of restrictions on tourists who have not availed of Covid-19 vaccines.</p><p>Under the new directives, unvaccinated tourists can visit the island provided that they present a negative Covid-19 test taken in the last two days from a Department of Health-accredited clinic or testing center.</p><p>Unvaccinated minors aged 11 and below are no longer requested for test results.</p><p><em>— Nef Luczon, Philippine News Agency</em></p><p><em>Originally published March 17, 2023 on the <a href="https://www.pna.gov.ph/articles/1197643" target="_blank" rel="noopener noreferrer">Philippine News Agency</a>.</em></p><p><a href="https://www.pna.gov.ph/articles/1197643" target="_blank" rel="noopener noreferrer">Read the full article on PNA.gov.ph</a></p>',
+                'featured_image_url' => Assets::url('/images/posts/camiguin-isle-be-there-campaign.png'),
+                'status' => 'published',
+                'is_featured' => true,
+                'reading_time' => 3,
+                'published_at' => now(),
+                'seo_title' => 'Camiguin Isle be There Tourism Campaign | Philippine News Agency',
+                'seo_description' => 'Camiguin launches its Isle be There tourism rebranding with Smart Tourism, Mantigue Island development, and post-pandemic visitor guidelines.',
             ]
         );
     }

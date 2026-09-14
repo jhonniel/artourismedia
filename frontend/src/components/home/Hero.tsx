@@ -30,7 +30,7 @@ function HeroHeadline({
         : content.headline_accent
 
       return (
-        <h1 className="hero-headline-landing font-serif font-normal tracking-[-0.02em] text-balance">
+        <h1 className="hero-headline-landing break-words font-serif font-normal tracking-[-0.02em] text-balance">
           <span className="block text-navy">
             {content.headline_prefix} {content.headline_highlight}
           </span>
@@ -94,19 +94,18 @@ function HeroLinkButton({
 
 function LandingHero({ content }: { content: HeroContent }) {
   return (
-    <section className="hero-offset-full relative flex min-h-[100dvh] w-full flex-col overflow-hidden">
+    <section className="hero-offset-full relative flex min-h-[100dvh] w-full flex-col overflow-x-clip bg-cream">
       {/* Mobile — image + bottom fade behind copy (no seam line) */}
       <div className="hero-landing-mobile lg:hidden flex min-h-0 flex-1 flex-col">
-        <div className="hero-mobile-stack relative min-h-0 flex-1 overflow-hidden">
+        <div className="hero-mobile-stack flex min-h-0 flex-1 flex-col">
           <div aria-hidden className="hero-mobile-photo">
             <HeroSlideshow
               className="hero-mobile-slideshow absolute inset-0 z-0 size-full"
               imageClassName="object-cover object-[center_28%]"
             />
-            <div className="hero-mobile-fade pointer-events-none absolute inset-x-0 bottom-0 z-[1]" />
           </div>
 
-          <Container className="hero-mobile-copy-wrap relative z-10 pb-[max(1.25rem,env(safe-area-inset-bottom))]">
+          <Container className="hero-mobile-copy-wrap pb-[max(1.25rem,env(safe-area-inset-bottom))]">
             <FadeIn className="hero-copy">
               <HeroContentBlock content={content} variant="landing" />
             </FadeIn>
@@ -123,7 +122,7 @@ function LandingHero({ content }: { content: HeroContent }) {
           />
         </div>
 
-        <FadeIn className="hero-copy hero-landing-copy relative z-10 flex flex-col justify-center py-10 lg:py-0 xl:py-0">
+        <FadeIn className="hero-copy hero-landing-copy hero-landing-readable relative z-10 flex flex-col justify-center py-10 lg:py-0 xl:py-0">
           <HeroContentBlock content={content} variant="landing" />
         </FadeIn>
       </div>
@@ -172,7 +171,7 @@ function HeroContentBlock({
         <p
           className={cn(
             isLanding
-              ? 'hero-subhead-landing mt-3 max-w-[26rem] text-navy/80 sm:mt-4 lg:mt-5 xl:max-w-[28rem]'
+              ? 'hero-subhead-landing mt-3 max-w-[26rem] text-navy sm:mt-4 lg:mt-5 xl:max-w-[28rem]'
               : 'mt-4 max-w-[21rem] text-sm leading-[1.6] text-navy/70 sm:mt-5 md:text-[15px] lg:max-w-[23rem]',
           )}
         >
@@ -181,12 +180,17 @@ function HeroContentBlock({
       )}
 
       {(content.cta_text || content.secondary_cta_text) && (
-        <div className={cn('relative flex flex-col gap-2.5 sm:flex-row sm:flex-wrap sm:items-center', isLanding ? 'mt-5 sm:mt-6 lg:mt-7' : 'mt-6 sm:mt-7 md:mt-8')}>
+        <div
+          className={cn(
+            'relative flex w-full flex-col items-start gap-2.5 sm:flex-row sm:flex-wrap sm:items-center',
+            isLanding ? 'mt-5 sm:mt-6 lg:mt-7' : 'mt-6 sm:mt-7 md:mt-8',
+          )}
+        >
           {content.cta_text && content.cta_url && (
             <HeroLinkButton
               href={content.cta_url}
               external={content.cta_url.startsWith('http')}
-              className="inline-flex"
+              className="inline-flex w-fit max-w-full"
             >
               <Button variant="primary" size={isLanding ? 'md' : 'lg'} className={buttonClass}>
                 {content.cta_text} →
@@ -198,17 +202,25 @@ function HeroContentBlock({
             <HeroLinkButton
               href={content.secondary_cta_url}
               external={content.secondary_cta_url.startsWith('http')}
-              className={cn(
-                landingButtonClass,
-                'inline-flex items-center gap-2 rounded-full border border-navy/15 bg-white font-bold text-navy transition-colors hover:border-teal hover:text-teal',
-              )}
+              className="inline-flex w-fit max-w-full"
             >
-              {content.secondary_cta_text}
-              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-navy/15 bg-white">
-                <svg viewBox="0 0 24 24" className="ml-0.5 h-2.5 w-2.5 fill-navy" aria-hidden="true">
-                  <path d="M8 5v14l11-7z" />
-                </svg>
-              </span>
+              <Button
+                variant="outline"
+                size="sm"
+                className={cn(
+                  isLanding
+                    ? 'hero-btn-landing gap-1.5 border px-3.5 py-1.5 text-[0.625rem] uppercase tracking-[0.08em]'
+                    : buttonClass,
+                  'font-bold',
+                )}
+              >
+                {content.secondary_cta_text}
+                <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-navy/15 bg-white">
+                  <svg viewBox="0 0 24 24" className="ml-px h-2 w-2 fill-current" aria-hidden="true">
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                </span>
+              </Button>
             </HeroLinkButton>
           )}
         </div>

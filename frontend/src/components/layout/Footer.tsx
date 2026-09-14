@@ -1,13 +1,12 @@
 import { useState, type FormEvent } from 'react'
 import { Link } from 'react-router-dom'
 import { Container } from '@/components/ui/Container'
-import { Input } from '@/components/ui/Input'
 import { SocialIcon } from '@/components/ui/SocialIcon'
 import { BrandLogo } from '@/components/ui/BrandLogo'
 import { NavySectionTopWave } from '@/components/ui/Decorative'
 import { useNewsletterMutation } from '@/hooks/useMutations'
 import type { FooterData, SocialLink } from '@/types'
-import { cn } from '@/lib/utils'
+import { cn, formatFooterCopyright } from '@/lib/utils'
 
 interface FooterProps {
   footer: FooterData
@@ -77,6 +76,7 @@ export function Footer({ footer, socialLinks, siteName, logoUrl }: FooterProps) 
               <BrandLogo
                 logoUrl={logoUrl}
                 siteName={siteName}
+                variant="onDark"
                 className="h-[4.5rem] w-auto max-w-[20rem] sm:h-16 sm:max-w-[22rem] lg:h-16 lg:max-w-[18rem]"
               />
             </div>
@@ -173,22 +173,20 @@ export function Footer({ footer, socialLinks, siteName, logoUrl }: FooterProps) 
               ) : (
                 <form
                   onSubmit={handleSubmit}
-                  className="mt-4 flex w-full max-w-md flex-col gap-2.5 sm:max-w-lg lg:mx-0 lg:max-w-none xl:flex-row xl:items-stretch xl:gap-0"
+                  className="mt-4 flex h-10 w-full max-w-md items-stretch overflow-hidden rounded-full border border-white/25 bg-white/15 sm:h-11 sm:max-w-lg lg:mx-0 lg:max-w-none"
                 >
-                  <div className="min-w-0 xl:flex-1">
-                    <Input
-                      type="email"
-                      placeholder="Your email address"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      required
-                      className="h-10 w-full min-w-0 rounded-full border-white/15 bg-white/10 text-sm text-white placeholder:text-white/45 xl:h-11 xl:rounded-r-none xl:border-r-0 xl:px-5"
-                    />
-                  </div>
+                  <input
+                    type="email"
+                    placeholder="Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    className="min-w-0 flex-1 border-0 bg-transparent px-4 text-sm text-white caret-white placeholder:text-white/75 outline-none focus:ring-0 sm:px-5"
+                  />
                   <button
                     type="submit"
                     disabled={newsletter.isPending}
-                    className="inline-flex h-10 w-full shrink-0 items-center justify-center rounded-full bg-orange px-5 text-[10px] font-bold uppercase tracking-[0.1em] text-white transition-colors hover:bg-orange/90 disabled:opacity-60 xl:h-11 xl:w-auto xl:rounded-l-none xl:rounded-r-full xl:px-6 xl:text-xs"
+                    className="inline-flex shrink-0 items-center justify-center bg-orange px-4 text-[10px] font-bold uppercase tracking-[0.1em] text-white transition-colors hover:bg-orange/90 disabled:opacity-60 sm:px-5 sm:text-xs"
                   >
                     Subscribe →
                   </button>
@@ -204,7 +202,7 @@ export function Footer({ footer, socialLinks, siteName, logoUrl }: FooterProps) 
 
         <div className="relative z-20 border-t border-white/15 bg-navy">
           <Container className="flex flex-row flex-wrap items-center justify-between gap-x-4 gap-y-2 py-3 text-xs text-white/55 sm:py-4">
-            <p className="min-w-0 shrink">{footer.copyright ?? `© ${new Date().getFullYear()} ${siteName}. All rights reserved.`}</p>
+            <p className="min-w-0 shrink">{formatFooterCopyright(footer.copyright, siteName)}</p>
             {(footer.legal_links ?? []).length > 0 && (
               <div className="flex shrink-0 flex-wrap gap-4 md:gap-6">
                 {footer.legal_links!.map((link) => (

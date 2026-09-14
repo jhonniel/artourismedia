@@ -4,6 +4,16 @@ interface DecorativeProps {
   className?: string
 }
 
+interface WaveDividerProps extends DecorativeProps {
+  /** Background above the wave curve — match the section it transitions from. */
+  topFill?: 'white' | 'cream'
+}
+
+const WAVE_TOP_FILL = {
+  white: '#FFFFFF',
+  cream: '#F8F4EC',
+} as const
+
 export function DestinationsArrow({ className }: DecorativeProps) {
   return (
     <svg className={className} viewBox="0 0 48 16" fill="none" aria-hidden="true">
@@ -192,17 +202,17 @@ const NAVY_TO_WHITE_WAVE =
 
 const WAVE_DIVIDER_CLASS = 'block w-full leading-none -mt-px -mb-px'
 
-function WhiteNavyWaveShape() {
+function NavyWaveShape({ topFill = 'cream' }: { topFill?: 'white' | 'cream' }) {
   return (
     <>
-      <rect width="1440" height="100" fill="#FFFFFF" />
+      <rect width="1440" height="100" fill={WAVE_TOP_FILL[topFill]} />
       <path d={`${NAVY_TO_WHITE_WAVE} L1440,102 L0,102 Z`} fill="#0B2447" />
     </>
   )
 }
 
-/** Wavy top edge for navy sections that follow white content — no white fill band. */
-export function NavySectionTopWave({ className }: DecorativeProps) {
+/** Wavy top edge for navy sections that follow page content. */
+export function NavySectionTopWave({ className, topFill = 'cream' }: WaveDividerProps) {
   return (
     <svg
       className={cn(WAVE_DIVIDER_CLASS, className)}
@@ -211,13 +221,13 @@ export function NavySectionTopWave({ className }: DecorativeProps) {
       overflow="visible"
       aria-hidden="true"
     >
-      <path d={`${NAVY_TO_WHITE_WAVE} L1440,100 L0,100 Z`} fill="#0B2447" />
+      <NavyWaveShape topFill={topFill} />
     </svg>
   )
 }
 
-/** Smooth top wave — explicit white above the curve so it blends with white sections. */
-export function FooterTopWave({ className }: DecorativeProps) {
+/** Smooth top wave — cream or white above the curve to match the section above. */
+export function FooterTopWave({ className, topFill = 'cream' }: WaveDividerProps) {
   return (
     <svg
       className={cn(WAVE_DIVIDER_CLASS, className)}
@@ -226,13 +236,13 @@ export function FooterTopWave({ className }: DecorativeProps) {
       overflow="visible"
       aria-hidden="true"
     >
-      <WhiteNavyWaveShape />
+      <NavyWaveShape topFill={topFill} />
     </svg>
   )
 }
 
-/** Smooth bottom wave — exact vertical mirror of FooterTopWave. */
-export function NavyToWhiteWave({ className }: DecorativeProps) {
+/** Smooth bottom wave — transitions navy into cream or white content below. */
+export function NavyToWhiteWave({ className, topFill = 'cream' }: WaveDividerProps) {
   return (
     <svg
       className={cn(WAVE_DIVIDER_CLASS, className)}
@@ -242,7 +252,7 @@ export function NavyToWhiteWave({ className }: DecorativeProps) {
       aria-hidden="true"
     >
       <g transform="translate(0, 100) scale(1, -1)">
-        <WhiteNavyWaveShape />
+        <NavyWaveShape topFill={topFill} />
       </g>
     </svg>
   )

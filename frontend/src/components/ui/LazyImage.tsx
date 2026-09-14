@@ -6,13 +6,25 @@ interface LazyImageProps extends ImgHTMLAttributes<HTMLImageElement> {
   wrapperClassName?: string
   /** Fill the wrapper (for absolute/ aspect-ratio containers). Default: natural image height. */
   fill?: boolean
+  /** Eager load with high fetch priority (hero / above-the-fold images). */
+  priority?: boolean
 }
 
 function isImageReady(img: HTMLImageElement | null): boolean {
   return Boolean(img && img.complete && img.naturalWidth > 0)
 }
 
-export function LazyImage({ className, wrapperClassName, alt = '', src, loading, fill = false, ...props }: LazyImageProps) {
+export function LazyImage({
+  className,
+  wrapperClassName,
+  alt = '',
+  src,
+  loading,
+  fill = false,
+  priority = false,
+  fetchPriority,
+  ...props
+}: LazyImageProps) {
   const imgRef = useRef<HTMLImageElement>(null)
   const fallbackChain = useMemo(() => buildImageFallbackChain(src), [src])
   const [index, setIndex] = useState(0)
@@ -50,8 +62,9 @@ export function LazyImage({ className, wrapperClassName, alt = '', src, loading,
           key={currentSrc}
           src={currentSrc}
           alt={alt}
-          loading={loading ?? 'lazy'}
-          decoding="async"
+          loading={loading ?? (priority ? 'eager' : 'lazy')}
+          fetchPriority={fetchPriority ?? (priority ? 'high' : undefined)}
+          decoding={priority ? 'sync' : 'async'}
           onLoad={() => setLoaded(true)}
           onError={() => {
             setLoaded(false)

@@ -130,9 +130,14 @@ try {
   shutdown(1)
 }
 
+const assetsBaseUrl =
+  process.env.VITE_ASSETS_BASE_URL
+  ?? 'https://infosoft.sgp1.digitaloceanspaces.com/tingog/reports/static'
+
 const sharedFrontendEnv = {
   VITE_API_URL: '/api',
   VITE_DEV_PORT: devPort,
+  VITE_ASSETS_BASE_URL: assetsBaseUrl,
   ...(primaryLanAddress ? { VITE_HMR_HOST: primaryLanAddress } : {}),
 }
 

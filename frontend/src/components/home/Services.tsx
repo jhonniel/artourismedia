@@ -49,11 +49,11 @@ export function ServicesSection({ section, services }: ServicesSectionProps) {
                       className={serviceIconImageClass(service.slug, service.icon, 'home')}
                     />
                   </div>
-                  <h3 className="text-base font-bold leading-snug text-navy transition-colors group-hover:text-teal sm:text-lg">
+                  <h3 className="break-words text-base font-bold leading-relaxed text-navy transition-colors group-hover:text-teal sm:text-lg">
                     {service.title}
                   </h3>
                   {service.description && (
-                    <p className="mt-2.5 flex-1 text-sm leading-relaxed text-navy/60 line-clamp-4 sm:mt-3">
+                    <p className="mt-2.5 flex-1 text-sm leading-relaxed text-navy/60 sm:mt-3">
                       {service.description}
                     </p>
                   )}

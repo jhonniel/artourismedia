@@ -1,90 +1,137 @@
-import { useState } from 'react'
-import { Container } from '@/components/ui/Container'
-import { SectionHeading } from '@/components/ui/SectionHeading'
-import { Button } from '@/components/ui/Button'
-import { SEO } from '@/components/ui/SEO'
-import { FadeIn } from '@/components/ui/FadeIn'
-import { SearchFilter } from '@/components/blog/SearchFilter'
-import { PostList } from '@/components/blog/PostList'
-import { usePosts, usePostCategories } from '@/hooks'
-
-export default function Insights() {
-  const [page, setPage] = useState(1)
-  const [search, setSearch] = useState('')
-  const [category, setCategory] = useState('')
-  const [query, setQuery] = useState({ search: '', category: '' })
-
-  const { data: categories } = usePostCategories()
-  const { data, isLoading, isError, refetch } = usePosts({
-    page,
-    per_page: 9,
-    search: query.search || undefined,
-    category: query.category || undefined,
-  })
-
-  const handleSearch = () => {
-    setPage(1)
-    setQuery({ search, category })
-  }
-
-  return (
-    <>
-      <SEO title="Insights" description="Latest insights on tourism development and destination strategy." />
-      <Container className="py-16 md:py-24">
-        <FadeIn>
-          <SectionHeading
-            eyebrow="Blog"
-            title="Latest"
-            accent="Insights"
-            description="Thought leadership, trends, and strategies shaping the future of tourism."
-            align="center"
-          />
-        </FadeIn>
-
-        <FadeIn delay={100}>
-          <SearchFilter
-            search={search}
-            category={category}
-            categories={categories ?? []}
-            onSearchChange={setSearch}
-            onCategoryChange={setCategory}
-            onSubmit={handleSearch}
-          />
-        </FadeIn>
-
-        <div className="mt-10">
-          <PostList
-            posts={data?.items ?? []}
-            isLoading={isLoading}
-            isError={isError}
-            onRetry={() => refetch()}
-          />
-        </div>
-
-        {data && data.meta.last_page > 1 && (
-          <div className="mt-12 flex items-center justify-center gap-4">
-            <Button
-              variant="outline"
-              size="sm"
-              disabled={page <= 1}
-              onClick={() => setPage((p) => p - 1)}
-            >
-              Previous
-            </Button>
-            <span className="text-sm text-navy/60">
-              Page {data.meta.current_page} of {data.meta.last_page}
-            </span>
-            <Button
-              variant="outline"
-              size="sm"
-              disabled={page >= data.meta.last_page}
-              onClick={() => setPage((p) => p + 1)}
-            >
-              Next
-            </Button>
-          </div>
-        )}
-      </Container>
-    </>
-  )
-}
+import { useState } from 'react'
+import { Container } from '@/components/ui/Container'
+import { Button } from '@/components/ui/Button'
+import { SEO } from '@/components/ui/SEO'
+import { FadeIn } from '@/components/ui/FadeIn'
+import { SectionHeading } from '@/components/ui/SectionHeading'
+import { SearchFilter } from '@/components/blog/SearchFilter'
+import { PostList } from '@/components/blog/PostList'
+import { usePosts, usePostCategories } from '@/hooks'
+
+export default function Insights() {
+  const [page, setPage] = useState(1)
+  const [search, setSearch] = useState('')
+  const [category, setCategory] = useState('')
+  const [query, setQuery] = useState({ search: '', category: '' })
+
+  const { data: categories } = usePostCategories()
+  const { data, isLoading, isError, refetch } = usePosts({
+    page,
+    per_page: 9,
+    search: query.search || undefined,
+    category: query.category || undefined,
+  })
+
+  const hasActiveFilters = Boolean(query.search || query.category)
+  const showLead = page === 1 && !hasActiveFilters
+
+  const applyFilters = (next: { search?: string; category?: string }) => {
+    const nextSearch = next.search ?? search
+    const nextCategory = next.category ?? category
+    setSearch(nextSearch)
+    setCategory(nextCategory)
+    setPage(1)
+    setQuery({ search: nextSearch, category: nextCategory })
+  }
+
+  const handleSearch = () => applyFilters({})
+
+  const handleCategoryChange = (value: string) => applyFilters({ category: value })
+
+  const clearFilters = () => {
+    setSearch('')
+    setCategory('')
+    setPage(1)
+    setQuery({ search: '', category: '' })
+  }
+
+  return (
+    <>
+      <SEO title="Insights" description="Latest insights on tourism development and destination strategy." />
+      <section className="bg-cream py-16 md:py-24">
+        <Container>
+          <FadeIn>
+            <SectionHeading
+              eyebrow="Latest Insights"
+              title="Thought leadership for"
+              accent="destination builders"
+              description="Strategy, marketing, and media insights for sustainable tourism growth."
+              align="center"
+              tone="landing"
+            />
+          </FadeIn>
+
+          <FadeIn delay={100}>
+            <SearchFilter
+              search={search}
+              category={category}
+              categories={categories ?? []}
+              onSearchChange={setSearch}
+              onCategoryChange={handleCategoryChange}
+              onSubmit={handleSearch}
+              onClear={clearFilters}
+              hasActiveFilters={hasActiveFilters}
+            />
+          </FadeIn>
+
+          {data && !isLoading && (
+            <FadeIn delay={150}>
+              <p className="mt-8 text-sm font-medium text-navy/50">
+                {hasActiveFilters ? (
+                  <>
+                    Showing {data.items.length} of {data.meta.total}{' '}
+                    {data.meta.total === 1 ? 'article' : 'articles'}
+                  </>
+                ) : (
+                  <>
+                    {data.meta.total} {data.meta.total === 1 ? 'article' : 'articles'}
+                  </>
+                )}
+              </p>
+            </FadeIn>
+          )}
+
+          <div className="mt-6">
+            <PostList
+              posts={data?.items ?? []}
+              isLoading={isLoading}
+              isError={isError}
+              onRetry={() => refetch()}
+              layout="magazine"
+              showLead={showLead}
+            />
+          </div>
+
+          {data && data.meta.last_page > 1 && (
+            <nav
+              aria-label="Insights pagination"
+              className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-navy/10 pt-10 sm:flex-row"
+            >
+              <p className="text-sm text-navy/50">
+                Page {data.meta.current_page} of {data.meta.last_page}
+              </p>
+              <div className="flex items-center gap-3">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  disabled={page <= 1}
+                  onClick={() => setPage((p) => p - 1)}
+                >
+                  Previous
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  disabled={page >= data.meta.last_page}
+                  onClick={() => setPage((p) => p + 1)}
+                >
+                  Next
+                </Button>
+              </div>
+            </nav>
+          )}
+        </Container>
+      </section>
+    </>
+  )
+}

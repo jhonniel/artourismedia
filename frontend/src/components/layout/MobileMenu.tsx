@@ -12,7 +12,7 @@ interface MobileMenuProps {
   socialLinks?: SocialLink[]
 }
 
-const MENU_TRANSITION_MS = 320
+const MENU_TRANSITION_MS = 360
 
 function getSocialStyles(platform: string): { bg: string; text: string } {
   const p = platform.toLowerCase()
@@ -47,7 +47,9 @@ export function MobileMenu({
   useEffect(() => {
     if (open) {
       setMounted(true)
-      const frame = window.requestAnimationFrame(() => setVisible(true))
+      const frame = window.requestAnimationFrame(() => {
+        window.requestAnimationFrame(() => setVisible(true))
+      })
       return () => window.cancelAnimationFrame(frame)
     }
 
@@ -104,7 +106,7 @@ export function MobileMenu({
 
       <div
         className={cn(
-          'mobile-menu-panel fixed inset-x-0 bottom-0 z-[100] flex flex-col overflow-y-auto overscroll-contain bg-white lg:hidden',
+          'mobile-menu-panel fixed z-[100] flex flex-col overflow-y-auto overscroll-contain bg-white lg:hidden',
           'pb-[env(safe-area-inset-bottom,0px)]',
           visible && 'is-open',
         )}
@@ -112,7 +114,8 @@ export function MobileMenu({
         aria-modal="true"
         aria-label="Mobile navigation"
       >
-        <nav className="px-5 py-2 sm:px-6" aria-label="Mobile site navigation">
+        <div className={cn('mobile-menu-body flex min-h-0 flex-1 flex-col', visible && 'is-open')}>
+        <nav className="flex-1 px-5 pt-0 pb-2 sm:px-6" aria-label="Mobile site navigation">
           <ul className="divide-y divide-navy/6">
             {regularItems.map((item, index) => {
               const isExternal = item.url.startsWith('http')
@@ -126,11 +129,7 @@ export function MobileMenu({
               )
 
               return (
-                <li
-                  key={item.uuid}
-                  className="mobile-menu-item"
-                  style={{ transitionDelay: visible ? `${80 + index * 45}ms` : '0ms' }}
-                >
+                <li key={item.uuid}>
                   {isExternal ? (
                     <a href={item.url} target={item.target} rel="noopener noreferrer" className={className}>
                       {item.label}
@@ -152,22 +151,21 @@ export function MobileMenu({
         </nav>
 
         <div
-          className="mobile-menu-footer mt-2 shrink-0 rounded-t-[1.5rem] border-t border-navy/8 bg-cream px-5 py-5 shadow-[0_-12px_32px_rgba(11,36,71,0.06)] sm:px-6"
-          style={{ transitionDelay: visible ? `${80 + regularItems.length * 45}ms` : '0ms' }}
+          className="mt-auto shrink-0 rounded-t-[1.75rem] border-t border-navy/8 bg-cream px-5 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-6 shadow-[0_-12px_32px_rgba(11,36,71,0.06)] sm:px-6"
         >
           {ctaItem && (
             <Link
               to={ctaItem.url}
               target={ctaItem.target}
               onClick={onClose}
-              className="inline-flex min-h-10 w-full items-center justify-center rounded-full bg-orange px-5 py-2.5 text-[10px] font-extrabold uppercase tracking-[0.1em] text-white shadow-[0_8px_20px_rgba(255,90,31,0.24)] transition-[transform,background-color,box-shadow] duration-200 hover:bg-orange/90 active:scale-[0.98]"
+              className="inline-flex min-h-11 w-full items-center justify-center rounded-full bg-orange px-5 py-3 text-[10px] font-extrabold uppercase tracking-[0.1em] text-white shadow-[0_8px_20px_rgba(255,90,31,0.24)] transition-[transform,background-color,box-shadow] duration-200 hover:bg-orange/90 active:scale-[0.98]"
             >
-              Schedule a Consultation →
+              {ctaItem.label} →
             </Link>
           )}
 
           {(settings.contact_email || sortedSocial.length > 0) && (
-            <div className={cn('flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between', ctaItem && 'mt-4')}>
+            <div className={cn('flex flex-col items-center gap-5 text-center', ctaItem && 'mt-5')}>
               {settings.contact_email && (
                 <a
                   href={`mailto:${settings.contact_email}`}
@@ -178,7 +176,7 @@ export function MobileMenu({
               )}
 
               {sortedSocial.length > 0 && (
-                <div className="flex gap-2.5">
+                <div className="flex flex-wrap items-center justify-center gap-3">
                   {sortedSocial.map((link) => {
                     const styles = getSocialStyles(link.platform)
 
@@ -203,6 +201,7 @@ export function MobileMenu({
               )}
             </div>
           )}
+        </div>
         </div>
       </div>
     </>
