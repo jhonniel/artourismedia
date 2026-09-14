@@ -117,7 +117,7 @@ export function MobileMenu({
         <div className={cn('mobile-menu-body flex min-h-0 flex-1 flex-col', visible && 'is-open')}>
         <nav className="flex-1 px-5 pt-0 pb-2 sm:px-6" aria-label="Mobile site navigation">
           <ul className="divide-y divide-navy/6">
-            {regularItems.map((item, index) => {
+            {regularItems.map((item) => {
               const isExternal = item.url.startsWith('http')
               const isActive =
                 location.pathname === item.url ||
