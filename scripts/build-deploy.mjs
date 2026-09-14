@@ -79,6 +79,10 @@ function shouldSkip(relPath) {
       return false
     }
 
+    if (parts.includes('posts') || parts.includes('projects')) {
+      return false
+    }
+
     return true
   }
 

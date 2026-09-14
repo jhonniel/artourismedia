@@ -378,6 +378,85 @@ export function AboutPalmAccent({ className }: DecorativeProps) {
   )
 }
 
+export function ServiceExperienceLeafAccent({ className }: DecorativeProps) {
+  return (
+    <svg className={className} viewBox="0 0 420 520" fill="none" aria-hidden="true">
+      <path
+        d="M330 40 C360 95 350 165 320 225 C290 285 250 335 205 385 C185 405 165 425 145 445"
+        stroke="#A2D2DF"
+        strokeWidth="2"
+        opacity="0.55"
+      />
+      <path
+        d="M350 95 C375 145 365 210 335 260 C305 310 265 350 220 395"
+        stroke="#B8E6E6"
+        strokeWidth="1.5"
+        opacity="0.45"
+      />
+      <path
+        d="M285 120 C300 155 295 195 275 230 C255 265 225 295 195 330"
+        stroke="#A2D2DF"
+        strokeWidth="1.75"
+        opacity="0.35"
+      />
+      <path
+        d="M250 180 C270 220 260 270 230 310 C200 350 160 385 120 420"
+        fill="#CFE8E8"
+        opacity="0.22"
+      />
+      <path
+        d="M300 250 C315 285 305 325 280 360 C255 395 220 425 180 455"
+        stroke="#078C95"
+        strokeWidth="1.25"
+        opacity="0.18"
+      />
+    </svg>
+  )
+}
+
+export function ProjectDetailLeafAccent({ className }: DecorativeProps) {
+  return (
+    <svg className={className} viewBox="0 0 360 520" fill="none" aria-hidden="true">
+      <path
+        d="M300 24 C340 88 332 168 292 228 C252 288 208 332 168 372"
+        stroke="#C8BDB0"
+        strokeWidth="1.75"
+        opacity="0.45"
+      />
+      <path
+        d="M318 72 C348 128 338 196 302 248 C266 300 224 342 188 388"
+        stroke="#D8CEC2"
+        strokeWidth="1.25"
+        opacity="0.35"
+      />
+      <path
+        d="M248 108 C268 148 262 196 236 236 C210 276 178 308 148 344"
+        stroke="#C8BDB0"
+        strokeWidth="1.5"
+        opacity="0.28"
+      />
+      <path
+        d="M92 420 C72 360 88 292 128 236 C168 180 214 142 262 118"
+        stroke="#C8BDB0"
+        strokeWidth="1.75"
+        opacity="0.38"
+      />
+      <path
+        d="M118 468 C104 418 118 362 152 312 C186 262 228 226 276 204"
+        stroke="#D8CEC2"
+        strokeWidth="1.25"
+        opacity="0.32"
+      />
+      <path
+        d="M188 452 C176 404 188 352 218 308 C248 264 286 232 328 212"
+        stroke="#C8BDB0"
+        strokeWidth="1.5"
+        opacity="0.24"
+      />
+    </svg>
+  )
+}
+
 export function BlobShape({ className }: DecorativeProps) {
   return (
     <svg className={className} viewBox="0 0 200 200" aria-hidden="true">

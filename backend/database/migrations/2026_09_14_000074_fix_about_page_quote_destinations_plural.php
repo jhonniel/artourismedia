@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
+    private const QUOTE = 'Sustainable tourism is the name of our game in the strategic of our Philippine destinations';
+
     public function up(): void
     {
         $page = DB::table('pages')->where('slug', 'about')->first();
@@ -19,7 +21,7 @@ return new class extends Migration
             return;
         }
 
-        $metadata['quote'] = 'Sustainable tourism is the name of our game in the strategic of our Philippine destinations';
+        $metadata['quote'] = self::QUOTE;
 
         DB::table('pages')
             ->where('slug', 'about')
@@ -43,7 +45,7 @@ return new class extends Migration
             return;
         }
 
-        $metadata['quote'] = 'Tourism creates opportunities, connects people, and builds stronger communities.';
+        $metadata['quote'] = 'Sustainable tourism is the name of our game in the strategic of our Philippine destination';
 
         DB::table('pages')
             ->where('slug', 'about')

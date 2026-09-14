@@ -81,7 +81,7 @@ export function Header({ navigation, settings, socialLinks = [] }: HeaderProps) 
             ? 'z-[101] bg-white py-3 shadow-none transition-[background-color,box-shadow] lg:shadow-soft'
             : 'z-50 transition-[background-color,box-shadow,padding,backdrop-filter]',
           !mobileOpen && heroOverlay && 'header-hero-overlay',
-          !mobileOpen && overlay && 'header-at-hero-top bg-transparent py-4 lg:py-6 xl:py-7',
+          !mobileOpen && overlay && 'header-at-hero-top py-4 lg:py-6 xl:py-7',
           !mobileOpen && !overlay && scrolled
             ? 'bg-white/95 py-3 shadow-soft backdrop-blur-sm lg:py-4 xl:py-5'
             : !mobileOpen && !overlay && 'bg-white py-4 md:py-5 lg:py-6 xl:py-7',

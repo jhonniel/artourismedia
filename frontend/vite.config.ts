@@ -1,13 +1,28 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import tailwindcss from '@tailwindcss/vite'
+import { execFileSync } from 'node:child_process'
 import path from 'path'
 import { fileURLToPath } from 'url'
+import { defineConfig, type Plugin } from 'vite'
+import react from '@vitejs/plugin-react'
+import tailwindcss from '@tailwindcss/vite'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
+const copyScript = path.join(__dirname, '../scripts/copy-frontend-to-public.mjs')
+
+function copyFrontendToPublicPlugin(): Plugin | null {
+  if (process.env.COPY_TO_PUBLIC !== '1') {
+    return null
+  }
+
+  return {
+    name: 'copy-frontend-to-public',
+    closeBundle() {
+      execFileSync(process.execPath, [copyScript], { stdio: 'inherit' })
+    },
+  }
+}
 
 export default defineConfig({
-  plugins: [react(), tailwindcss()],
+  plugins: [react(), tailwindcss(), copyFrontendToPublicPlugin()].filter(Boolean),
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),

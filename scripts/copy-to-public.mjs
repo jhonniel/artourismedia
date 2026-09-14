@@ -39,7 +39,19 @@ const bundledAssets = [
   {
     sourceDir: path.join(rootDir, 'frontend', 'public', 'images', 'about'),
     targetDir: path.join(publicDir, 'images', 'about'),
-    names: ['art-boncato-portrait.png', 'art-boncato-portrait.jpg'],
+    names: ['art-boncato-portrait.png', 'art-boncato-portrait.jpg', 'art-boncato-portrait-card.png'],
+  },
+]
+
+/** Whole folders copied into backend/public for production same-origin fallback. */
+const bundledAssetDirs = [
+  {
+    sourceDir: path.join(rootDir, 'frontend', 'public', 'images', 'posts'),
+    targetDir: path.join(publicDir, 'images', 'posts'),
+  },
+  {
+    sourceDir: path.join(rootDir, 'frontend', 'public', 'images', 'projects'),
+    targetDir: path.join(publicDir, 'images', 'projects'),
   },
 ]
 
@@ -56,6 +68,15 @@ export function copyBrandAssetsToPublic() {
 
       fs.copyFileSync(source, path.join(targetDir, name))
     }
+  }
+
+  for (const { sourceDir, targetDir } of bundledAssetDirs) {
+    if (!fs.existsSync(sourceDir)) {
+      throw new Error(`Missing bundled asset directory: ${sourceDir}`)
+    }
+
+    fs.mkdirSync(path.dirname(targetDir), { recursive: true })
+    fs.cpSync(sourceDir, targetDir, { recursive: true })
   }
 }
 

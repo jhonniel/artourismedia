@@ -259,9 +259,17 @@ export interface AboutStat {
   label: string
 }
 
+export type LeadershipIconKey =
+  | 'hotel'
+  | 'convention-center'
+  | 'government-tourism'
+  | 'trade-industry'
+  | 'tourism-media'
+
 export interface AboutLeadershipItem {
   title: string
   organization: string
+  icon?: LeadershipIconKey
 }
 
 export interface AboutExpertiseItem {

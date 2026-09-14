@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
+    private const PORTRAIT = '/images/about/art-boncato-portrait-card.png?v=2';
+
     public function up(): void
     {
         $page = DB::table('pages')->where('slug', 'about')->first();
@@ -19,7 +21,7 @@ return new class extends Migration
             return;
         }
 
-        $metadata['quote'] = 'Sustainable tourism is the name of our game in the strategic of our Philippine destinations';
+        $metadata['portrait_url'] = self::PORTRAIT;
 
         DB::table('pages')
             ->where('slug', 'about')
@@ -43,7 +45,7 @@ return new class extends Migration
             return;
         }
 
-        $metadata['quote'] = 'Tourism creates opportunities, connects people, and builds stronger communities.';
+        $metadata['portrait_url'] = '/images/about/art-boncato-portrait-card.png?v=1';
 
         DB::table('pages')
             ->where('slug', 'about')

@@ -1,65 +1,41 @@
-import { useState, type FormEvent, type ReactNode } from 'react'
+import { useState, type FormEvent } from 'react'
 import { Container } from '@/components/ui/Container'
-import { SectionHeading } from '@/components/ui/SectionHeading'
 import { Input } from '@/components/ui/Input'
-import { Textarea } from '@/components/ui/Textarea'
 import { Button } from '@/components/ui/Button'
 import { SEO } from '@/components/ui/SEO'
 import { FadeIn } from '@/components/ui/FadeIn'
-import { SocialIcon } from '@/components/ui/SocialIcon'
+import { ContactSidebar } from '@/components/contact/ContactSidebar'
 import { canonicalUrl, contactPageJsonLd } from '@/lib/structuredData'
 import { useContactMutation } from '@/hooks/useMutations'
 import { useSite } from '@/hooks'
 import { cn } from '@/lib/utils'
 import type { ContactFormData } from '@/types'
 
-const CONSULTATION_STEPS = [
-  {
-    title: 'Share your brief',
-    description: 'Tell us about your destination, organization, or tourism initiative.',
-  },
-  {
-    title: 'We review your goals',
-    description: 'Our team assesses scope, priorities, and how we can best support you.',
-  },
-  {
-    title: 'We follow up promptly',
-    description: 'Expect a thoughtful response to explore next steps together.',
-  },
-] as const
+const MESSAGE_MAX = 500
 
-function ContactDetail({
-  label,
-  icon,
-  children,
-}: {
-  label: string
-  icon: ReactNode
-  children: ReactNode
-}) {
+function FormHeaderIcon() {
   return (
-    <li className="flex items-start gap-3">
-      <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white/10 text-white/80">
-        {icon}
-      </span>
-      <div className="min-w-0">
-        <span className="block text-[10px] font-bold uppercase tracking-[0.14em] text-teal">{label}</span>
-        <div className="mt-1 text-sm leading-relaxed text-white/80">{children}</div>
-      </div>
-    </li>
+    <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-teal/10 text-navy">
+      <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <rect x="4" y="5" width="16" height="15" rx="2" stroke="currentColor" strokeWidth="1.75" />
+        <path d="M8 3v4M16 3v4M4 10h16" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
+        <circle cx="15" cy="15" r="2.5" stroke="currentColor" strokeWidth="1.5" />
+        <path d="M17 17l2 2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      </svg>
+    </span>
   )
 }
 
-function ContactIcon({ type }: { type: 'email' | 'phone' | 'location' }) {
-  const paths = {
-    email: 'M4 6h16a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2Zm0 2 8 5 8-5',
-    phone: 'M8 3h2l1 4-2 1a11 11 0 0 0 5 5l1-2 4 1v2a2 2 0 0 1-2 2A15 15 0 0 1 6 5a2 2 0 0 1 2-2Z',
-    location: 'M12 21s7-5.4 7-11a7 7 0 1 0-14 0c0 5.6 7 11 7 11Zm0-9a2 2 0 1 1 0-4 2 2 0 0 1 0 4Z',
-  }
-
+function ShieldIcon() {
   return (
-    <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <path d={paths[type]} stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+    <svg className="h-4 w-4 shrink-0 text-teal" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path
+        d="M12 3 5 6v6c0 4.2 3 7.8 7 9 4-1.2 7-4.8 7-9V6l-7-3Z"
+        stroke="currentColor"
+        strokeWidth="1.75"
+        strokeLinejoin="round"
+      />
+      <path d="M9.5 12 11 13.5 14.5 10" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
     </svg>
   )
 }
@@ -73,24 +49,23 @@ export default function Contact() {
     email: '',
     company: '',
     phone: '',
-    subject: 'Schedule a Consultation',
+    subject: '',
     message: '',
   })
   const [errors, setErrors] = useState<Partial<Record<keyof ContactFormData, string>>>({})
 
   const settings = site?.settings
   const footer = site?.footer
-  const socialLinks = [...(site?.social_links ?? [])].sort((a, b) => a.sort_order - b.sort_order)
 
   const contactEmail = footer?.contact_email ?? settings?.contact_email
-  const contactPhone = footer?.contact_phone ?? settings?.contact_phone
-  const contactAddress = footer?.contact_address ?? settings?.contact_address
+  const contactAddress = footer?.contact_address ?? settings?.contact_address ?? 'Philippines'
 
   const validate = (): boolean => {
     const next: Partial<Record<keyof ContactFormData, string>> = {}
     if (!form.name.trim()) next.name = 'Name is required'
     if (!form.email.trim()) next.email = 'Email is required'
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) next.email = 'Invalid email'
+    if (!form.subject?.trim()) next.subject = 'Subject is required'
     if (!form.message.trim()) next.message = 'Message is required'
     setErrors(next)
     return Object.keys(next).length === 0
@@ -103,13 +78,21 @@ export default function Contact() {
     try {
       await contact.mutateAsync(form)
       setSubmitted(true)
-      setForm({ name: '', email: '', company: '', phone: '', subject: 'Schedule a Consultation', message: '' })
+      setForm({
+        name: '',
+        email: '',
+        company: '',
+        phone: '',
+        subject: '',
+        message: '',
+      })
     } catch {
       // handled by mutation state
     }
   }
 
   const pageUrl = canonicalUrl('/contact')
+  const fieldClassName = 'rounded-xl border-navy/10 py-2.5 text-sm'
 
   return (
     <>
@@ -119,174 +102,190 @@ export default function Contact() {
         url={pageUrl}
         jsonLd={contactPageJsonLd(settings ?? {}, pageUrl)}
       />
-      <section className="bg-cream py-16 md:py-24">
+
+      <section className="bg-cream py-10 md:py-14 lg:py-16">
         <Container>
-          <FadeIn>
-            <SectionHeading
-              eyebrow="Schedule a Consultation"
-              title="Let's start a"
-              accent="conversation"
-              description="Tell us about your destination or tourism project — we'll review your request and get back to you."
-              align="center"
-              tone="landing"
-            />
-          </FadeIn>
-
-          <div className="mx-auto grid max-w-6xl items-start gap-6 lg:grid-cols-5 lg:gap-8">
-            <FadeIn delay={100} className="flex w-full flex-col gap-4 lg:col-span-2">
-              <div className="rounded-[1.5rem] bg-navy p-5 text-white shadow-elevated sm:p-6">
-                <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-teal">Contact</p>
-                <ul className="mt-4 space-y-4">
-                  {contactEmail && (
-                    <ContactDetail label="Email" icon={<ContactIcon type="email" />}>
-                      <a href={`mailto:${contactEmail}`} className="break-all transition-colors hover:text-white">
-                        {contactEmail}
-                      </a>
-                    </ContactDetail>
-                  )}
-                  {contactPhone && (
-                    <ContactDetail label="Phone" icon={<ContactIcon type="phone" />}>
-                      <a href={`tel:${contactPhone}`} className="transition-colors hover:text-white">
-                        {contactPhone}
-                      </a>
-                    </ContactDetail>
-                  )}
-                  {contactAddress && (
-                    <ContactDetail label="Location" icon={<ContactIcon type="location" />}>
-                      {contactAddress}
-                    </ContactDetail>
-                  )}
-                </ul>
-                {socialLinks.length > 0 && (
-                  <div className="mt-5 border-t border-white/10 pt-4">
-                    <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-white/45">Follow us</p>
-                    <div className="mt-2.5 flex flex-wrap gap-2">
-                      {socialLinks.map((link) => (
-                        <a
-                          key={link.uuid}
-                          href={link.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-white/10 text-white transition-colors hover:bg-white/20"
-                          aria-label={link.platform}
-                        >
-                          <SocialIcon platform={link.platform} className="h-4 w-4" />
-                        </a>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              <div className="rounded-[1.5rem] border border-navy/8 bg-white p-5 shadow-soft sm:p-6">
-                <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-teal">What to expect</p>
-                <ol className="mt-4 space-y-4">
-                  {CONSULTATION_STEPS.map((step, index) => (
-                    <li key={step.title} className="flex gap-3">
-                      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-teal/10 text-xs font-bold text-teal">
-                        {index + 1}
-                      </span>
-                      <div>
-                        <p className="font-semibold text-navy">{step.title}</p>
-                        <p className="mt-1 text-sm leading-relaxed text-navy/65">{step.description}</p>
-                      </div>
-                    </li>
-                  ))}
-                </ol>
-              </div>
-            </FadeIn>
-
-            <FadeIn delay={200} className="lg:col-span-3">
-              {submitted ? (
-                <div className="flex min-h-full flex-col items-center justify-center rounded-[1.5rem] border border-teal/20 bg-white px-6 py-14 text-center shadow-soft sm:px-10">
-                  <span className="flex h-16 w-16 items-center justify-center rounded-full bg-teal/10 text-2xl text-teal">
-                    ✓
+          <div className="grid items-start gap-8 lg:grid-cols-12 lg:gap-x-10 xl:gap-x-12">
+            <div className="lg:col-span-5">
+              <FadeIn>
+                <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-teal sm:text-xs">
+                  Schedule a Consultation
+                </p>
+                <h1 className="mt-3 max-w-md font-serif text-[1.85rem] font-normal leading-[1.12] text-navy sm:text-[2.15rem] lg:text-[2.35rem]">
+                  <span className="block">Let&apos;s plan your</span>
+                  <span className="mt-1 block font-display text-[2rem] leading-[1.05] text-teal sm:text-[2.35rem] lg:text-[2.5rem]">
+                    next destination
                   </span>
-                  <h3 className="mt-6 font-serif text-3xl font-normal text-navy">Request received</h3>
-                  <p className="mt-3 max-w-md text-base leading-relaxed text-navy/70">
-                    Thank you for reaching out. We&apos;ll review your consultation request and respond soon.
+                </h1>
+                <p className="mt-4 max-w-md text-sm leading-relaxed text-navy/65 sm:text-base">
+                  Tell us about your destination or tourism project — we&apos;ll review your request and get back to you.
+                </p>
+              </FadeIn>
+
+              <FadeIn delay={80} className="mt-8">
+                <ContactSidebar
+                  contactEmail={contactEmail}
+                  contactAddress={contactAddress}
+                  socialLinks={site?.social_links ?? []}
+                />
+              </FadeIn>
+            </div>
+
+            <div className="lg:col-span-7">
+              <FadeIn delay={120}>
+                <div className="mb-5 flex justify-center">
+                  <p
+                    className="rotate-[4deg] text-center font-display text-[1.35rem] leading-[1.2] text-navy/85 sm:text-[1.45rem] xl:text-[1.5rem]"
+                    aria-hidden
+                  >
+                    <span className="block">Turning Places into</span>
+                    <span className="mt-0.5 block">
+                      Meaningful{' '}
+                      <span className="text-teal underline decoration-teal/45 underline-offset-[5px]">
+                        Experiences
+                      </span>
+                    </span>
                   </p>
-                  <Button variant="outline" className="mt-8" onClick={() => setSubmitted(false)}>
-                    Send another message
-                  </Button>
                 </div>
-              ) : (
-                <form
-                  onSubmit={handleSubmit}
-                  className="rounded-[1.5rem] border border-navy/8 bg-white p-5 shadow-soft sm:p-8"
-                >
-                  <div className="border-b border-navy/8 pb-5">
-                    <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-teal">Consultation request</p>
-                    <h2 className="mt-2 font-serif text-2xl font-normal text-navy">Share your project details</h2>
-                    <p className="mt-2 text-sm leading-relaxed text-navy/65">
-                      Complete the form below and our team will be in touch to discuss how we can help.
+
+                {submitted ? (
+                  <div className="flex min-h-[28rem] flex-col items-center justify-center rounded-[1.25rem] border border-teal/20 bg-white px-6 py-14 text-center shadow-elevated sm:rounded-[1.5rem] sm:px-10">
+                    <span className="flex h-16 w-16 items-center justify-center rounded-full bg-teal/10 text-2xl text-teal">
+                      ✓
+                    </span>
+                    <h2 className="mt-6 font-serif text-3xl font-normal text-navy">Request received</h2>
+                    <p className="mt-3 max-w-md text-base leading-relaxed text-navy/70">
+                      Thank you for reaching out. We&apos;ll review your consultation request and respond soon.
                     </p>
+                    <Button variant="outline" className="mt-8" onClick={() => setSubmitted(false)}>
+                      Send another message
+                    </Button>
                   </div>
-
-                  <input type="hidden" name="subject" value={form.subject} />
-
-                  <div className="mt-6 space-y-5">
-                    <div className="grid gap-5 sm:grid-cols-2">
-                      <Input
-                        label="Full name *"
-                        value={form.name}
-                        onChange={(e) => setForm({ ...form, name: e.target.value })}
-                        error={errors.name}
-                        placeholder="Your name"
-                      />
-                      <Input
-                        label="Email address *"
-                        type="email"
-                        value={form.email}
-                        onChange={(e) => setForm({ ...form, email: e.target.value })}
-                        error={errors.email}
-                        placeholder="you@organization.com"
-                      />
-                    </div>
-                    <div className="grid gap-5 sm:grid-cols-2">
-                      <Input
-                        label="Organization"
-                        value={form.company ?? ''}
-                        onChange={(e) => setForm({ ...form, company: e.target.value })}
-                        placeholder="Company or destination"
-                      />
-                      <Input
-                        label="Phone"
-                        type="tel"
-                        value={form.phone ?? ''}
-                        onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                        placeholder="+63 ..."
-                      />
-                    </div>
-                    <Textarea
-                      label="How can we help? *"
-                      value={form.message}
-                      onChange={(e) => setForm({ ...form, message: e.target.value })}
-                      error={errors.message}
-                      placeholder="Briefly describe your destination, goals, timeline, or the challenge you'd like to address."
-                      rows={6}
-                    />
-                    {contact.isError && (
-                      <p className="rounded-2xl bg-orange/10 px-4 py-3 text-sm text-orange">{contact.error.message}</p>
-                    )}
-                    <div className="flex flex-col gap-4 border-t border-navy/8 pt-5 sm:flex-row sm:items-center sm:justify-between">
-                      <p className="text-xs leading-relaxed text-navy/50">
-                        By submitting, you agree to be contacted about your consultation request.
+                ) : (
+                  <form
+                    onSubmit={handleSubmit}
+                    className="rounded-[1.25rem] border border-navy/8 bg-white p-5 shadow-elevated sm:rounded-[1.5rem] sm:p-7 lg:p-8"
+                  >
+                    <div className="flex flex-col items-center border-b border-navy/8 pb-5 text-center">
+                      <FormHeaderIcon />
+                      <h2 className="mt-3 font-serif text-xl font-normal text-navy sm:text-[1.65rem]">
+                        Schedule a Consultation
+                      </h2>
+                      <p className="mt-1 max-w-md text-sm leading-relaxed text-navy/60">
+                        Fill out the form below and we&apos;ll be in touch shortly.
                       </p>
-                      <Button
-                        type="submit"
-                        variant="orange"
-                        size="lg"
-                        disabled={contact.isPending}
-                        className={cn('w-full shrink-0 sm:w-auto', contact.isPending && 'opacity-80')}
-                      >
-                        {contact.isPending ? 'Sending…' : 'Schedule Consultation →'}
-                      </Button>
                     </div>
-                  </div>
-                </form>
-              )}
-            </FadeIn>
+
+                    <div className="mt-6 space-y-4">
+                      <div className="grid gap-4 sm:grid-cols-2">
+                        <Input
+                          label="Name *"
+                          value={form.name}
+                          onChange={(e) => setForm({ ...form, name: e.target.value })}
+                          error={errors.name}
+                          placeholder="Your full name"
+                          className={fieldClassName}
+                        />
+                        <Input
+                          label="Email *"
+                          type="email"
+                          value={form.email}
+                          onChange={(e) => setForm({ ...form, email: e.target.value })}
+                          error={errors.email}
+                          placeholder="you@example.com"
+                          className={fieldClassName}
+                        />
+                      </div>
+
+                      <div className="grid gap-4 sm:grid-cols-2">
+                        <Input
+                          label="Company / Organization"
+                          value={form.company ?? ''}
+                          onChange={(e) => setForm({ ...form, company: e.target.value })}
+                          placeholder="Company name"
+                          className={fieldClassName}
+                        />
+                        <Input
+                          label="Phone"
+                          type="tel"
+                          value={form.phone ?? ''}
+                          onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                          placeholder="+63 9XX XXX XXXX"
+                          className={fieldClassName}
+                        />
+                      </div>
+
+                      <Input
+                        label="Subject *"
+                        value={form.subject ?? ''}
+                        onChange={(e) => setForm({ ...form, subject: e.target.value })}
+                        error={errors.subject}
+                        placeholder="Schedule a Consultation"
+                        className={fieldClassName}
+                      />
+
+                      <div className="w-full">
+                        <label htmlFor="contact-message" className="mb-2 block text-sm font-semibold text-navy">
+                          Message *
+                        </label>
+                        <div className="relative">
+                          <textarea
+                            id="contact-message"
+                            value={form.message}
+                            maxLength={MESSAGE_MAX}
+                            onChange={(e) => setForm({ ...form, message: e.target.value })}
+                            placeholder="Tell us about your destination or tourism project..."
+                            rows={5}
+                            className={cn(
+                              'w-full resize-y rounded-xl border border-navy/10 bg-white px-4 py-3 text-sm text-navy',
+                              'placeholder:text-navy/40 transition-colors duration-200',
+                              'focus:border-teal focus:outline-none focus:ring-2 focus:ring-teal/20',
+                              errors.message && 'border-orange focus:border-orange focus:ring-orange/20',
+                            )}
+                          />
+                          <span className="pointer-events-none absolute bottom-3 right-3 text-[11px] text-navy/40">
+                            {form.message.length}/{MESSAGE_MAX}
+                          </span>
+                        </div>
+                        {errors.message && <p className="mt-1.5 text-sm text-orange">{errors.message}</p>}
+                      </div>
+
+                      {contact.isError && (
+                        <p className="rounded-xl bg-orange/10 px-4 py-3 text-sm text-orange">{contact.error.message}</p>
+                      )}
+
+                      <div className="flex flex-col gap-4 border-t border-navy/8 pt-5 lg:flex-row lg:items-center lg:justify-between">
+                        <p className="flex max-w-sm items-start gap-2 text-xs leading-relaxed text-navy/55">
+                          <ShieldIcon />
+                          Your information is secure and will only be used to process your consultation request.
+                        </p>
+                        <Button
+                          type="submit"
+                          variant="orange"
+                          size="sm"
+                          disabled={contact.isPending}
+                          className={cn(
+                            'w-full shrink-0 gap-1.5 rounded-xl px-5 py-2.5 text-sm lg:w-auto',
+                            contact.isPending && 'opacity-80',
+                          )}
+                        >
+                          <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <path
+                              d="M22 3 11 14M22 3l-7 18-4-7-7-4 18-7Z"
+                              stroke="currentColor"
+                              strokeWidth="1.75"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </svg>
+                          {contact.isPending ? 'Sending…' : 'Send'}
+                        </Button>
+                      </div>
+                    </div>
+                  </form>
+                )}
+              </FadeIn>
+            </div>
           </div>
         </Container>
       </section>

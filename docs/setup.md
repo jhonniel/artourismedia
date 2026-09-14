@@ -12,9 +12,13 @@ npm run dev     # starts backend, frontend, and admin together
 
 | App | URL |
 |-----|-----|
-| Public site | http://localhost:5173 |
-| Admin panel | http://localhost:5174 |
+| Public site | http://localhost:8000 |
+| Admin panel | http://localhost:8000/admin/ |
 | API | http://localhost:8000/api |
+
+`npm run dev` builds the website and admin into `backend/public/`, then serves everything from port **8000** — one address, same as production.
+
+Optional hot-reload mode: `DEV_HMR=1 npm run dev` (website on 5173, API still on 8000).
 
 Default admin: `admin@destinationstudio.test` / `password`
 
@@ -75,8 +79,8 @@ ADMIN_NAME="Destination Studio Admin"
 ### CORS
 
 Allowed origins are configured in `config/cors.php`:
-- `http://localhost:5173` (public site)
-- `http://localhost:5174` (admin)
+- `http://localhost:8000` (unified local site)
+- `http://localhost:5173` / `http://localhost:5174` (only when using `DEV_HMR=1`)
 
 Update `FRONTEND_URL` and `ADMIN_URL` in `.env` for production.
 
@@ -89,7 +93,7 @@ cp .env.example .env
 npm run dev
 ```
 
-The Vite dev server proxies `/api` requests to `http://localhost:8000`.
+In unified mode, the website is served from `backend/public/` on port 8000. With `DEV_HMR=1`, the Vite dev server on 5173 proxies `/api` to port 8000.
 
 ## Admin Setup
 

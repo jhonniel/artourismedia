@@ -6,6 +6,7 @@ interface ServiceHeroImageProps {
   src: string
   alt: string
   fit?: 'cover' | 'contain'
+  surface?: 'cream' | 'white'
   imageClassName?: string
   imageWrapperClassName?: string
   gradientClassName?: string
@@ -20,12 +21,14 @@ export function ServiceHeroImage({
   src,
   alt,
   fit = 'cover',
+  surface = 'cream',
   imageClassName,
   imageWrapperClassName,
   gradientClassName,
   gradientStyle,
   hideGradient = false,
 }: ServiceHeroImageProps) {
+  const surfaceClass = surface === 'white' ? 'bg-transparent' : 'bg-cream'
   const gradient = !hideGradient ? (
     <div
       className={cn(
@@ -39,12 +42,12 @@ export function ServiceHeroImage({
 
   if (fit === 'contain') {
     return (
-      <div className="relative h-full min-h-[inherit] w-full overflow-hidden bg-cream">
-        <div className={cn('flex h-full w-full justify-end bg-cream', imageWrapperClassName)}>
+      <div className={cn('relative h-full min-h-[inherit] w-full overflow-hidden', surfaceClass)}>
+        <div className={cn('flex h-full w-full justify-end', surfaceClass, imageWrapperClassName)}>
           <LazyImage
             src={src}
             alt={alt}
-            wrapperClassName="flex h-full max-w-full bg-cream"
+            wrapperClassName={cn('flex h-full max-w-full', surfaceClass)}
             className={cn('h-full w-auto max-w-full object-contain object-right-top', imageClassName)}
           />
         </div>
@@ -54,13 +57,13 @@ export function ServiceHeroImage({
   }
 
   return (
-    <div className="relative h-full min-h-[inherit] w-full overflow-hidden bg-cream">
-      <div className={cn('absolute inset-0 bg-cream', imageWrapperClassName)}>
+    <div className={cn('relative h-full min-h-[inherit] w-full overflow-hidden', surfaceClass)}>
+      <div className={cn('absolute inset-0', surfaceClass, imageWrapperClassName)}>
         <LazyImage
           src={src}
           alt={alt}
           fill
-          wrapperClassName="absolute inset-0 size-full bg-cream"
+          wrapperClassName={cn('absolute inset-0 size-full', surfaceClass)}
           className={cn(
             'min-h-full min-w-full scale-[1.02] object-cover object-left-top',
             imageClassName,

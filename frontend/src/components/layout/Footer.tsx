@@ -66,7 +66,7 @@ export function Footer({ footer, socialLinks, siteName, logoUrl }: FooterProps) 
 
   return (
     <footer className="relative -mt-px w-full overflow-hidden">
-      <NavySectionTopWave className="relative z-10 h-12 sm:h-16 md:h-20 lg:h-24" />
+      <NavySectionTopWave topFill="white" className="relative z-10 h-12 sm:h-16 md:h-20 lg:h-24" />
 
       <div className="relative bg-navy pb-[max(0.5rem,env(safe-area-inset-bottom,0px))] text-white">
         <Container className="relative z-10 pt-10 pb-2 sm:pt-12 sm:pb-3 lg:py-16">

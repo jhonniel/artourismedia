@@ -27,9 +27,13 @@ npm run dev
 
 | URL | App |
 |-----|-----|
-| http://localhost:5173/ | Website |
-| http://localhost:5173/admin/ | Admin |
+| http://localhost:8000/ | Website |
+| http://localhost:8000/admin/ | Admin |
 | http://localhost:8000/api/health | API |
+
+Everything runs on **one port** (same as production). UI changes rebuild automatically — refresh the browser after saving.
+
+Optional hot-reload dev mode: `DEV_HMR=1 npm run dev` (uses port 5173 for the website).
 
 Admin (from seeder): `admin@destinationstudio.test` / `password`
 

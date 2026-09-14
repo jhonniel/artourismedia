@@ -21,14 +21,14 @@ export function PostCard({ post, variant = 'grid', index = 0, priority = false }
     return (
       <Link to={`/insights/${post.slug}`} className="group block h-full">
         <article className="flex h-full flex-col overflow-hidden rounded-[1.5rem] bg-white shadow-card transition-shadow duration-300 hover:shadow-elevated lg:rounded-[1.75rem]">
-          <div className="relative aspect-[16/10] overflow-hidden sm:aspect-[16/9]">
+          <div className="relative h-[11rem] overflow-hidden sm:h-[12.5rem] md:h-[14rem] lg:h-[15rem]">
             <LazyImage
               src={imageSrc}
               alt={post.title}
               fill
               priority={priority}
               wrapperClassName="absolute inset-0 size-full"
-              className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+              className="object-cover object-center transition-transform duration-500 group-hover:scale-[1.02]"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-navy/50 via-transparent to-transparent" />
             {post.category && (

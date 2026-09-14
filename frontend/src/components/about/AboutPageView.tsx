@@ -3,8 +3,9 @@ import { HeroSlideshow } from '@/components/home/HeroSlideshow'
 import { Container } from '@/components/ui/Container'
 import { FadeIn } from '@/components/ui/FadeIn'
 import { RichContent } from '@/components/ui/RichContent'
+import { AboutHero } from '@/components/about/AboutHero'
+import { LeadershipRoleIcon } from '@/components/about/LeadershipRoleIcon'
 import { MindanaoBrand } from '@/components/about/MindanaoBrand'
-import { LazyImage } from '@/components/ui/LazyImage'
 import {
   ServiceIcon,
   serviceIconImageClass,
@@ -19,77 +20,7 @@ interface AboutPageViewProps {
 export function AboutPageView({ metadata }: AboutPageViewProps) {
   return (
     <div className="bg-white">
-      {/* Hero */}
-      <section className="border-b border-navy/8 bg-cream/40 py-12 md:py-16 lg:py-20">
-        <Container>
-          <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-12 xl:gap-16">
-            <FadeIn>
-              <div className="max-w-xl">
-                {metadata.eyebrow && (
-                  <p className="text-xs font-bold uppercase tracking-[0.2em] text-orange sm:text-[13px]">
-                    {metadata.eyebrow}
-                  </p>
-                )}
-                {metadata.headline && (
-                  <h1 className="mt-4 text-[1.85rem] font-bold leading-[1.12] text-navy sm:text-4xl lg:text-[2.65rem] xl:text-[2.85rem]">
-                    {metadata.headline}
-                  </h1>
-                )}
-                {metadata.intro && (
-                  <p className="mt-5 text-base leading-relaxed text-navy/75 sm:text-lg">{metadata.intro}</p>
-                )}
-              </div>
-            </FadeIn>
-
-            <FadeIn delay={80}>
-              <div className="relative lg:justify-self-end">
-                <div
-                  className="pointer-events-none absolute left-[8%] top-[4%] -z-10 h-52 w-52 rounded-full bg-orange/25 sm:left-[12%] sm:h-64 sm:w-64 lg:left-[10%] lg:h-72 lg:w-72"
-                  aria-hidden="true"
-                />
-
-                <div className="grid items-end gap-8 sm:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] sm:gap-6 lg:gap-8">
-                  <div className="relative mx-auto w-full max-w-[18rem] sm:mx-0 sm:max-w-none">
-                    {metadata.portrait_url && (
-                      <LazyImage
-                        src={metadata.portrait_url}
-                        alt={metadata.signature_name ?? 'Art Boncato'}
-                        wrapperClassName="mx-auto w-full max-w-[18rem] bg-transparent sm:mx-0 sm:max-w-[20rem] lg:max-w-[24rem] xl:max-w-[28rem]"
-                        className="!h-auto !w-full !object-contain !object-bottom"
-                      />
-                    )}
-                  </div>
-
-                  <div className="space-y-5 pb-1 sm:pb-3 lg:pb-4">
-                    <div>
-                      {metadata.signature_name && (
-                        <p className="font-display text-[2rem] leading-none text-navy sm:text-[2.35rem] lg:text-4xl xl:text-[2.75rem]">
-                          {metadata.signature_name}
-                        </p>
-                      )}
-                      {metadata.signature_title && (
-                        <p className="mt-2 text-[11px] font-bold uppercase tracking-[0.18em] text-navy/55 sm:text-xs">
-                          {metadata.signature_title}
-                        </p>
-                      )}
-                    </div>
-
-                    {metadata.quote && (
-                      <blockquote className="rounded-[1.25rem] border border-navy/8 bg-white p-5 shadow-card sm:p-6">
-                        <span className="font-display text-4xl leading-none text-navy/15" aria-hidden="true">
-                          “
-                        </span>
-                        <p className="mt-1 text-sm leading-relaxed text-navy/80 sm:text-base">{metadata.quote}</p>
-                        <div className="mt-4 h-1 w-10 rounded-full bg-orange" aria-hidden="true" />
-                      </blockquote>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </FadeIn>
-          </div>
-        </Container>
-      </section>
+      <AboutHero metadata={metadata} />
 
       {/* Career + Leadership */}
       <section className="bg-white py-12 md:py-16 lg:py-20">
@@ -111,17 +42,18 @@ export function AboutPageView({ metadata }: AboutPageViewProps) {
 
             {metadata.leadership && metadata.leadership.length > 0 && (
               <FadeIn delay={80}>
-                <div className="rounded-[1.25rem] border border-orange/15 bg-orange/[0.08] p-6 shadow-soft sm:p-7">
-                  <h3 className="text-lg font-bold text-navy">Leadership experience in the past decades</h3>
-                  <ul className="mt-5 space-y-4">
+                <div className="rounded-[1.25rem] border-2 border-orange/30 bg-orange/[0.16] p-6 shadow-card sm:rounded-[1.5rem] sm:p-7 lg:shadow-elevated">
+                  <div>
+                    <h3 className="text-lg font-bold text-navy sm:text-xl">
+                      Leadership experience in the past decades
+                    </h3>
+                    <div className="mt-3 h-1 w-12 rounded-full bg-orange" aria-hidden="true" />
+                  </div>
+                  <ul className="mt-6 space-y-5">
                     {metadata.leadership.map((item) => (
-                      <li key={`${item.title}-${item.organization}`} className="flex gap-3">
-                        <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-white text-navy shadow-soft">
-                          <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M3 21h18M6 21V7l6-4 6 4v14M10 10h4v11h-4V10z" />
-                          </svg>
-                        </span>
-                        <div>
+                      <li key={`${item.title}-${item.organization}`} className="flex items-start gap-4">
+                        <LeadershipRoleIcon item={item} />
+                        <div className="min-w-0 flex-1 pt-0.5">
                           <p className="font-semibold leading-snug text-navy">{item.title}</p>
                           <p className="mt-1 text-sm leading-relaxed text-navy/60">{item.organization}</p>
                         </div>
@@ -157,9 +89,7 @@ export function AboutPageView({ metadata }: AboutPageViewProps) {
                     to={item.slug ? `/services/${item.slug}` : '/services'}
                     className="group flex h-full flex-col rounded-[1.25rem] border border-navy/8 bg-white p-5 shadow-soft transition-all hover:-translate-y-1 hover:shadow-elevated"
                   >
-                    <div
-                      className={serviceIconWrapperClass(item.slug, item.slug, 'card')}
-                    >
+                    <div className={serviceIconWrapperClass(item.slug, item.slug, 'card')}>
                       <ServiceIcon
                         slug={item.slug}
                         icon={item.slug}
@@ -179,7 +109,7 @@ export function AboutPageView({ metadata }: AboutPageViewProps) {
       )}
 
       {/* Mindanao closing */}
-      <section className="border-t border-navy/8 bg-cream/40 py-12 md:py-16">
+      <section className="border-t border-navy/8 bg-white py-12 md:py-16">
         <Container>
           <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,0.88fr)_minmax(0,1fr)_10.5rem] lg:items-center lg:gap-8 xl:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)_12rem] xl:gap-10">
             <FadeIn className="isolate min-w-0 lg:self-center">

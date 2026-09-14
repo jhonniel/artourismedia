@@ -100,8 +100,8 @@ function LandingHero({ content }: { content: HeroContent }) {
         <div className="hero-mobile-stack flex min-h-0 flex-1 flex-col">
           <div aria-hidden className="hero-mobile-photo">
             <HeroSlideshow
-              className="hero-mobile-slideshow absolute inset-0 z-0 size-full"
-              imageClassName="object-cover object-[center_28%]"
+              className="hero-mobile-slideshow absolute inset-0 z-0 size-full scale-105 translate-x-[10%]"
+              imageClassName="object-cover object-[70%_28%]"
             />
           </div>
 
@@ -117,8 +117,8 @@ function LandingHero({ content }: { content: HeroContent }) {
       <div className="hero-shell hero-landing-shell hidden min-h-0 flex-1 lg:block">
         <div className="hero-media hero-landing-media">
           <HeroSlideshow
-            className="hero-landing-slideshow absolute inset-0 z-0 h-full w-full"
-            imageClassName="object-cover object-[88%_center] lg:object-[93%_center] xl:object-[96%_center]"
+            className="hero-landing-slideshow absolute inset-0 z-0 h-full w-full scale-105 translate-x-[10%]"
+            imageClassName="object-cover object-[100%_center] lg:object-[100%_center] xl:object-[100%_center]"
           />
         </div>
 
