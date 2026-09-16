@@ -66,6 +66,11 @@ export function localFirstAssetUrl(path: string): string {
   return normalizeAssetPath(path)
 }
 
+/** Landing hero slides ship in `public/images/hero/` — load from site first, CDN as fallback. */
+function preferSameOriginFirst(relative: string): boolean {
+  return /^\/images\/hero\/hero-slideshow-\d{2}-/i.test(relative)
+}
+
 /** CDN first, then bundled same-origin copy, for resilient production loading. */
 export function buildAssetFallbackChain(path?: string | null): string[] {
   if (!path) return []
@@ -78,7 +83,7 @@ export function buildAssetFallbackChain(path?: string | null): string[] {
   }
 
   if (relative.startsWith('/')) {
-    if (import.meta.env.DEV) {
+    if (preferSameOriginFirst(relative) || import.meta.env.DEV) {
       chain.push(sameOriginAssetUrl(relative))
       chain.push(assetUrl(relative))
     } else {

@@ -9,12 +9,11 @@ import { HERO_SLIDESHOW_SOURCES } from './hero-slideshow-manifest.mjs'
 
 const rootDir = path.join(path.dirname(fileURLToPath(import.meta.url)), '..')
 const defaultSource = path.join(
-  process.env.APPDATA ?? '',
-  'Cursor',
-  'User',
-  'workspaceStorage',
-  '522fb57e74b2e8f90fbcf1d18fea5ecc',
-  'images',
+  process.env.USERPROFILE ?? process.env.HOME ?? '',
+  '.cursor',
+  'projects',
+  'c-Users-user-Documents-Projects-ART-WEBSITE',
+  'assets',
 )
 
 const sourceArg = process.argv.find((arg) => arg.startsWith('--source='))

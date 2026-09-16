@@ -62,9 +62,8 @@ function buildStatefulDomains(addresses) {
 }
 
 const sanctumStatefulDomains = buildStatefulDomains(lanAddresses)
-const assetsBaseUrl =
-  process.env.VITE_ASSETS_BASE_URL
-  ?? 'https://infosoft.sgp1.digitaloceanspaces.com/tingog/reports/static'
+/** Empty in local dev so `/images/*` on this machine wins; set VITE_ASSETS_BASE_URL to test CDN. */
+const assetsBaseUrl = process.env.VITE_ASSETS_BASE_URL ?? ''
 
 const children = []
 
