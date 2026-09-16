@@ -33,7 +33,7 @@ export function FeaturedProjects({ section, projects }: FeaturedProjectsProps) {
 
   return (
     <section className="relative bg-navy pt-0">
-      <NavySectionTopWave topFill="white" className="relative z-10 h-10 sm:h-12 md:h-14" />
+      <NavySectionTopWave topFill="white" className="relative z-10 -mt-px h-10 sm:h-12 md:h-14" />
 
       <Container className="pt-10 pb-10 md:pt-12 md:pb-12">
         <FadeIn>

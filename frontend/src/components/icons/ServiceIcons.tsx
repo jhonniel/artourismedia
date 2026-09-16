@@ -44,7 +44,7 @@ const IMAGE_ICON_LAYOUT: Record<ServiceIconLayout, { wrapper: string; image: str
 
 function ImageServiceIcon({ src, className }: ServiceIconProps & { src: string }) {
   const [useFallback, setUseFallback] = useState(false)
-  const resolvedSrc = useFallback ? sameOriginAssetUrl(src) : assetUrl(src)
+  const resolvedSrc = useFallback ? assetUrl(src) : sameOriginAssetUrl(src)
 
   return (
     <img

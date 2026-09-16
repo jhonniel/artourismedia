@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { Container } from '@/components/ui/Container'
 import { SocialIcon } from '@/components/ui/SocialIcon'
 import { BrandLogo } from '@/components/ui/BrandLogo'
@@ -31,6 +31,21 @@ function getSocialStyles(platform: string): { bg: string; text: string } {
   return { bg: 'bg-white/15', text: 'text-white' }
 }
 
+/** Match the wave cap to the page background above the footer. */
+function footerWaveTopFill(pathname: string): 'white' | 'cream' {
+  if (
+    pathname === '/'
+    || pathname === '/about'
+    || pathname === '/contact'
+    || pathname === '/projects'
+    || pathname.startsWith('/insights')
+  ) {
+    return 'cream'
+  }
+
+  return 'white'
+}
+
 function FooterContactIcon({ type }: { type: 'email' | 'phone' | 'location' }) {
   const paths = {
     email: 'M4 6h16a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2Zm0 2 8 5 8-5',
@@ -46,10 +61,12 @@ function FooterContactIcon({ type }: { type: 'email' | 'phone' | 'location' }) {
 }
 
 export function Footer({ footer, socialLinks, siteName, logoUrl }: FooterProps) {
+  const { pathname } = useLocation()
   const [email, setEmail] = useState('')
   const [submitted, setSubmitted] = useState(false)
   const newsletter = useNewsletterMutation()
   const sortedSocial = [...socialLinks].sort((a, b) => a.sort_order - b.sort_order)
+  const waveTopFill = footerWaveTopFill(pathname)
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
@@ -66,7 +83,10 @@ export function Footer({ footer, socialLinks, siteName, logoUrl }: FooterProps) 
 
   return (
     <footer className="relative -mt-px w-full overflow-hidden">
-      <NavySectionTopWave topFill="white" className="relative z-10 h-12 sm:h-16 md:h-20 lg:h-24" />
+      <NavySectionTopWave
+        topFill={waveTopFill}
+        className="relative z-10 -mt-px h-12 sm:h-16 md:h-20 lg:h-24"
+      />
 
       <div className="relative bg-navy pb-[max(0.5rem,env(safe-area-inset-bottom,0px))] text-white">
         <Container className="relative z-10 pt-10 pb-2 sm:pt-12 sm:pb-3 lg:py-16">

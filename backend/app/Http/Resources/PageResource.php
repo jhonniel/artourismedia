@@ -38,6 +38,6 @@ class PageResource extends JsonResource
             $metadata['career_body'] = Assets::rewriteContentHtml($metadata['career_body']);
         }
 
-        return $metadata;
+        return Assets::transformPublicValue($metadata);
     }
 }

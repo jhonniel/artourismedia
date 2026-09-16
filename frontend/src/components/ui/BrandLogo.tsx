@@ -32,7 +32,12 @@ export function BrandLogo({
 }: BrandLogoProps) {
   const defaultPath = variant === 'onDark' ? SITE_LOGO_ON_DARK_PATH : SITE_LOGO_PATH
   const primaryPath = logoForVariant(logoUrl, variant)
-  const fallbacks = [assetUrl(primaryPath), sameOriginAssetUrl(defaultPath)]
+  const fallbacks = [
+    sameOriginAssetUrl(primaryPath),
+    assetUrl(primaryPath),
+    sameOriginAssetUrl(defaultPath),
+    assetUrl(defaultPath),
+  ]
   const [fallbackIndex, setFallbackIndex] = useState(0)
   const src = fallbacks[Math.min(fallbackIndex, fallbacks.length - 1)]
 

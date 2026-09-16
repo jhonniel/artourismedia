@@ -67,7 +67,7 @@ export function AboutHero({ metadata }: AboutHeroProps) {
   const portraitAlt = metadata.signature_name ?? 'Art Boncato'
 
   return (
-    <section className="about-hero relative bg-white pb-10 pt-8 sm:pb-12 sm:pt-10 md:pb-14 md:pt-12 lg:pt-14">
+    <section className="about-hero relative bg-cream pb-10 pt-8 sm:pb-12 sm:pt-10 md:pb-14 md:pt-12 lg:pt-14">
       <Container className="relative">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)] md:items-center md:gap-8 lg:gap-12">
           <div className="min-w-0">

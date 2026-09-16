@@ -10,7 +10,7 @@ class AboutPageMetadata
             'eyebrow' => 'About Art Boncato',
             'headline' => 'A Career Built Around Tourism',
             'intro' => 'Art Boncato, Jr. is a tourism and hospitality executive who continues to build on a career spanning 30 years.',
-            'portrait_url' => '/images/about/art-boncato-portrait-card.png?v=2',
+            'portrait_url' => '/images/about/art-boncato-portrait-card.png?v=3',
             'landscape_url' => '/images/hero/hero-slideshow-19-mountain-valley.jpg',
             'signature_name' => 'Art Boncato',
             'signature_title' => 'Tourism & Hospitality Executive',

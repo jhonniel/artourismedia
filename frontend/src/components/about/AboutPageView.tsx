@@ -19,11 +19,11 @@ interface AboutPageViewProps {
 
 export function AboutPageView({ metadata }: AboutPageViewProps) {
   return (
-    <div className="bg-white">
+    <div className="min-h-full bg-cream">
       <AboutHero metadata={metadata} />
 
       {/* Career + Leadership */}
-      <section className="bg-white py-12 md:py-16 lg:py-20">
+      <section className="bg-cream py-12 md:py-16 lg:py-20">
         <Container>
           <div className="grid gap-10 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)] lg:gap-12">
             <FadeIn>
@@ -69,7 +69,7 @@ export function AboutPageView({ metadata }: AboutPageViewProps) {
 
       {/* Expertise */}
       {metadata.expertise && metadata.expertise.length > 0 && (
-        <section className="bg-white py-12 md:py-16 lg:py-20">
+        <section className="bg-cream py-12 md:py-16 lg:py-20">
           <Container>
             <FadeIn>
               <div className="max-w-2xl">
@@ -109,7 +109,7 @@ export function AboutPageView({ metadata }: AboutPageViewProps) {
       )}
 
       {/* Mindanao closing */}
-      <section className="border-t border-navy/8 bg-white py-12 md:py-16">
+      <section className="border-t border-navy/8 bg-cream py-12 md:py-16">
         <Container>
           <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,0.88fr)_minmax(0,1fr)_10.5rem] lg:items-center lg:gap-8 xl:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)_12rem] xl:gap-10">
             <FadeIn className="isolate min-w-0 lg:self-center">
