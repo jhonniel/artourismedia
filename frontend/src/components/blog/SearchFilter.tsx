@@ -10,6 +10,8 @@ interface SearchFilterProps {
   onSubmit: () => void
   onClear?: () => void
   hasActiveFilters?: boolean
+  resultCount?: number
+  showingCount?: number
 }
 
 export function SearchFilter({
@@ -21,6 +23,8 @@ export function SearchFilter({
   onSubmit,
   onClear,
   hasActiveFilters = false,
+  resultCount,
+  showingCount,
 }: SearchFilterProps) {
   const handleCategorySelect = (slug: string) => {
     onCategoryChange(slug)
@@ -94,16 +98,30 @@ export function SearchFilter({
         </div>
       </form>
 
-      {hasActiveFilters && onClear && (
-        <div className="mt-4 flex items-center justify-between gap-4 border-t border-navy/8 pt-4">
-          <p className="text-sm text-navy/55">Filters applied</p>
-          <button
-            type="button"
-            onClick={onClear}
-            className="text-sm font-semibold text-teal transition-colors hover:text-teal/80"
-          >
-            Clear all
-          </button>
+      {(hasActiveFilters || resultCount != null) && (
+        <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-navy/8 pt-4">
+          <p className="text-sm text-navy/55">
+            {hasActiveFilters && showingCount != null && resultCount != null ? (
+              <>
+                Showing {showingCount} of {resultCount} {resultCount === 1 ? 'article' : 'articles'}
+              </>
+            ) : resultCount != null ? (
+              <>
+                {resultCount} {resultCount === 1 ? 'article' : 'articles'}
+              </>
+            ) : (
+              'Filters applied'
+            )}
+          </p>
+          {hasActiveFilters && onClear && (
+            <button
+              type="button"
+              onClick={onClear}
+              className="text-sm font-semibold text-teal transition-colors hover:text-teal/80"
+            >
+              Clear all
+            </button>
+          )}
         </div>
       )}
     </div>

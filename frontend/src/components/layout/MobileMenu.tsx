@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { cn } from '@/lib/utils'
 import { SocialIcon } from '@/components/ui/SocialIcon'
@@ -40,6 +40,8 @@ export function MobileMenu({
   const location = useLocation()
   const [mounted, setMounted] = useState(open)
   const [visible, setVisible] = useState(open)
+  const openedScrollYRef = useRef(0)
+  const openedPathRef = useRef(location.pathname)
   const regularItems = navigation.filter((item) => !item.is_cta)
   const ctaItem = navigation.find((item) => item.is_cta)
   const sortedSocial = [...socialLinks].sort((a, b) => a.sort_order - b.sort_order)
@@ -61,7 +63,9 @@ export function MobileMenu({
   useEffect(() => {
     if (!mounted) return
 
-    const scrollY = window.scrollY
+    openedScrollYRef.current = window.scrollY
+    openedPathRef.current = location.pathname
+
     const previousOverflow = document.body.style.overflow
     const previousPosition = document.body.style.position
     const previousTop = document.body.style.top
@@ -69,7 +73,7 @@ export function MobileMenu({
 
     document.body.style.overflow = 'hidden'
     document.body.style.position = 'fixed'
-    document.body.style.top = `-${scrollY}px`
+    document.body.style.top = `-${openedScrollYRef.current}px`
     document.body.style.width = '100%'
     document.documentElement.classList.add('mobile-menu-open')
 
@@ -87,10 +91,14 @@ export function MobileMenu({
       document.body.style.top = previousTop
       document.body.style.width = previousWidth
       document.documentElement.classList.remove('mobile-menu-open')
-      window.scrollTo(0, scrollY)
+      if (openedPathRef.current === location.pathname) {
+        window.scrollTo(0, openedScrollYRef.current)
+      } else {
+        window.scrollTo(0, 0)
+      }
       window.removeEventListener('keydown', onKeyDown)
     }
-  }, [mounted, onClose])
+  }, [location.pathname, mounted, onClose])
 
   if (!mounted) {
     return null

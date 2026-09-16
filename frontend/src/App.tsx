@@ -1,6 +1,7 @@
 import { lazy, Suspense } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { Layout } from '@/components/layout/Layout'
+import { ScrollToTop } from '@/components/layout/ScrollToTop'
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner'
 
 const Home = lazy(() => import('@/pages/Home'))
@@ -30,6 +31,7 @@ function PageLoader() {
 export default function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Routes>
         <Route element={<Layout />}>
           <Route

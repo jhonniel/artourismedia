@@ -40,34 +40,33 @@ export function PostDetailView({ post, related = [], previous = null, next = nul
 
   return (
     <article>
-      {/* Hero */}
-      <div className="relative overflow-hidden bg-navy text-white">
-        {post.featured_image_url && (
-          <div className="absolute inset-0">
-            <LazyImage
-              src={post.featured_image_url}
-              alt=""
-              wrapperClassName="h-full min-h-[18rem] md:min-h-[22rem]"
-              className="opacity-40"
-            />
-            <div className="absolute inset-0 bg-navy/55" />
-            <div className="absolute inset-0 bg-gradient-to-t from-navy via-navy/90 to-navy/75" />
-          </div>
-        )}
-
-        <Container className="relative z-[1] py-16 md:py-24">
+      <header className="border-b border-navy/10 bg-cream">
+        <Container className="py-10 md:py-14">
           <FadeIn>
+            {post.featured_image_url && (
+              <div className="mx-auto mb-8 max-w-4xl overflow-hidden rounded-2xl bg-navy/5 shadow-[0_8px_30px_rgb(11_36_71/0.08)] ring-1 ring-navy/10 md:mb-10 md:rounded-3xl">
+                <LazyImage
+                  src={post.featured_image_url}
+                  alt={post.title}
+                  priority
+                  fill
+                  wrapperClassName="aspect-[16/10] sm:aspect-[16/9]"
+                  className="object-cover"
+                />
+              </div>
+            )}
+
             <div className="mx-auto max-w-3xl text-center">
               {post.category && (
                 <Badge variant="orange" className="mb-4">{post.category.name}</Badge>
               )}
-              <h1 className="text-balance font-serif text-3xl font-normal leading-tight text-white drop-shadow-[0_2px_12px_rgb(11_36_71/0.45)] md:text-5xl">
+              <h1 className="text-balance font-serif text-3xl font-normal leading-tight text-navy md:text-5xl">
                 {post.title}
               </h1>
               {post.excerpt && (
-                <p className="mt-4 text-lg leading-relaxed text-white/85">{post.excerpt}</p>
+                <p className="mt-4 text-lg leading-relaxed text-navy/70">{post.excerpt}</p>
               )}
-              <div className="mt-6 flex flex-wrap items-center justify-center gap-4 text-sm text-white/75">
+              <div className="mt-6 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-sm text-navy/55">
                 {post.published_at && (
                   <time dateTime={post.published_at}>{formatDate(post.published_at)}</time>
                 )}
@@ -77,7 +76,7 @@ export function PostDetailView({ post, related = [], previous = null, next = nul
             </div>
           </FadeIn>
         </Container>
-      </div>
+      </header>
 
       {/* Content */}
       <Container className="py-12 md:py-16">

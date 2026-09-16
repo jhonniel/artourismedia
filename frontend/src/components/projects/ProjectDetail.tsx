@@ -5,8 +5,7 @@ import { LazyImage } from '@/components/ui/LazyImage'
 import { ProjectCard } from '@/components/projects/ProjectCard'
 import { FadeIn } from '@/components/ui/FadeIn'
 import { RichContent } from '@/components/ui/RichContent'
-import { ProjectDetailLeafAccent } from '@/components/ui/Decorative'
-import { COVER_OBJECT_POSITION } from '@/lib/projectDisplay'
+import { COVER_OBJECT_POSITION, LOGO_COVER_SLUGS } from '@/lib/projectDisplay'
 import { cn } from '@/lib/utils'
 import type { Project } from '@/types'
 
@@ -18,26 +17,34 @@ interface ProjectDetailViewProps {
 export function ProjectDetailView({ project, related = [] }: ProjectDetailViewProps) {
   const categoryName = project.category_label ?? project.category?.name
   const objectPosition = COVER_OBJECT_POSITION[project.slug] ?? 'object-center'
+  const isLogoCover = LOGO_COVER_SLUGS.has(project.slug)
 
   return (
     <article>
-      <section className="project-detail relative overflow-hidden bg-cream">
-        <ProjectDetailLeafAccent className="project-detail__leaf project-detail__leaf--top" />
-        <ProjectDetailLeafAccent className="project-detail__leaf project-detail__leaf--bottom" />
-
-        <Container className="relative z-[1] py-10 md:py-14 lg:py-16 xl:py-20">
+      <section className="project-detail bg-cream">
+        <Container className="py-10 md:py-14 lg:py-16 xl:py-20">
           <FadeIn>
             <div className="grid items-start gap-8 lg:grid-cols-2 lg:gap-10 xl:gap-14">
               {project.cover_image_url && (
                 <div className="project-detail__media">
-                  <LazyImage
-                    src={project.cover_image_url}
-                    alt={project.title}
-                    priority
-                    fill
-                    wrapperClassName="project-detail__image-wrap aspect-[4/5] sm:aspect-[5/6] lg:aspect-[4/5] xl:min-h-[32rem] xl:aspect-auto"
-                    className={cn('!object-cover', objectPosition)}
-                  />
+                  {isLogoCover ? (
+                    <LazyImage
+                      src={project.cover_image_url}
+                      alt={project.title}
+                      priority
+                      wrapperClassName="project-detail__image-wrap project-detail__image-wrap--logo"
+                      className="!h-auto !w-full object-contain"
+                    />
+                  ) : (
+                    <LazyImage
+                      src={project.cover_image_url}
+                      alt={project.title}
+                      priority
+                      fill
+                      wrapperClassName="project-detail__image-wrap aspect-[4/5] sm:aspect-[5/6] lg:aspect-[4/5] xl:min-h-[32rem] xl:aspect-auto"
+                      className={cn('!object-cover', objectPosition)}
+                    />
+                  )}
                 </div>
               )}
 

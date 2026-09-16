@@ -54,23 +54,33 @@ export function PostList({
 
   const useLead = layout === 'magazine' && showLead && posts.length > 0
   const leadPost = useLead ? posts[0] : null
-  const listPosts = useLead ? posts.slice(1) : posts
+  const gridPosts = useLead ? posts.slice(1) : posts
 
   return (
-    <div className="space-y-8 md:space-y-10">
+    <div className="space-y-10 md:space-y-12">
       {leadPost && (
         <FadeIn>
+          <p className="mb-4 text-[11px] font-bold uppercase tracking-[0.18em] text-teal sm:text-xs">
+            Featured
+          </p>
           <PostCard post={leadPost} variant="lead" priority />
         </FadeIn>
       )}
 
-      {listPosts.length > 0 && (
-        <div className="overflow-hidden rounded-[1.5rem] border border-navy/8 bg-white shadow-soft divide-y divide-navy/[0.06]">
-          {listPosts.map((post, index) => (
-            <FadeIn key={post.uuid} delay={useLead ? (index + 1) * 60 : index * 60}>
-              <PostCard post={post} variant="list" index={index} />
-            </FadeIn>
-          ))}
+      {gridPosts.length > 0 && (
+        <div>
+          {useLead && (
+            <p className="mb-5 text-[11px] font-bold uppercase tracking-[0.18em] text-teal sm:mb-6 sm:text-xs">
+              More articles
+            </p>
+          )}
+          <div className="grid gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
+            {gridPosts.map((post, index) => (
+              <FadeIn key={post.uuid} delay={useLead ? (index + 1) * 50 : index * 50}>
+                <PostCard post={post} variant="grid" index={index} />
+              </FadeIn>
+            ))}
+          </div>
         </div>
       )}
     </div>
