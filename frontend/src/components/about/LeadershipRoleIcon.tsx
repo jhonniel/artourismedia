@@ -48,7 +48,7 @@ function resolveLeadershipIconKey(item: AboutLeadershipItem): LeadershipIconKey 
     return item.icon
   }
 
-  const org = item.organization.toLowerCase()
+  const org = (item.organization ?? '').toLowerCase()
 
   if (/megaworld|hotels and resorts/.test(org)) return 'hotel'
   if (/world trade center|wtc/.test(org)) return 'convention-center'

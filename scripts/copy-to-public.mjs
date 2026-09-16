@@ -7,6 +7,7 @@ const publicDir = path.join(rootDir, 'backend', 'public')
 const frontendDist = path.join(rootDir, 'frontend', 'dist')
 const adminDist = path.join(rootDir, 'admin', 'dist')
 const frontendImagesDir = path.join(rootDir, 'frontend', 'public', 'images')
+const frontendDocumentsDir = path.join(rootDir, 'frontend', 'public', 'documents')
 
 const preserved = new Set([
   '.htaccess',
@@ -34,6 +35,20 @@ export function copySiteImagesToPublic() {
   }
 
   fs.cpSync(frontendImagesDir, targetDir, { recursive: true })
+}
+
+/** Copy PDFs and other downloadable files for same-origin production fallback. */
+export function copySiteDocumentsToPublic() {
+  if (!fs.existsSync(frontendDocumentsDir)) {
+    return
+  }
+
+  const targetDir = path.join(publicDir, 'documents')
+  fs.mkdirSync(path.dirname(targetDir), { recursive: true })
+  if (fs.existsSync(targetDir)) {
+    fs.rmSync(targetDir, { recursive: true, force: true })
+  }
+  fs.cpSync(frontendDocumentsDir, targetDir, { recursive: true })
 }
 
 /** @deprecated Use copySiteImagesToPublic */
@@ -70,6 +85,7 @@ export function copyBuildsToPublic() {
   fs.cpSync(adminDist, path.join(publicDir, 'admin'), { recursive: true })
 
   copySiteImagesToPublic()
+  copySiteDocumentsToPublic()
 
   console.log('\nUnified web root ready:')
   console.log(`- ${publicDir}`)
@@ -77,4 +93,5 @@ export function copyBuildsToPublic() {
   console.log('  /admin/     admin panel')
   console.log('  /api/       Laravel API')
   console.log('  /images/    full static image bundle')
+  console.log('  /documents/ downloadable files (PDFs)')
 }

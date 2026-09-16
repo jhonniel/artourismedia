@@ -3,6 +3,7 @@ export interface ServiceHeroOverrides {
   imageClassName?: string
   blobClassName?: string
   mobileBlobClassName?: string
+  fit?: 'cover' | 'contain'
 }
 
 const SERVICE_HERO_OVERRIDES: Record<string, ServiceHeroOverrides> = {
@@ -17,9 +18,10 @@ const SERVICE_HERO_OVERRIDES: Record<string, ServiceHeroOverrides> = {
     imageClassName: 'scale-[1.08] object-cover object-[56%_42%]',
   },
   'mindanao-connect': {
-    blobClassName: 'service-detail-hero__image-blob--soft',
-    mobileBlobClassName: 'service-detail-hero__image-mobile--soft',
-    imageClassName: 'scale-[1.06] object-cover object-[62%_38%]',
+    blobClassName: 'service-detail-hero__image-blob--full',
+    mobileBlobClassName: 'service-detail-hero__image-mobile--full',
+    fit: 'contain',
+    imageClassName: 'object-contain object-right',
   },
   'thought-leadership-learning-development': {
     blobClassName: 'service-detail-hero__image-blob--soft',

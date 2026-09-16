@@ -48,8 +48,8 @@ function shouldSkip(relPath) {
     return true
   }
 
-  // Include the full static image bundle for same-origin fallback in production.
-  if (parts.includes('public') && parts.includes('images')) {
+  // Include static bundles for same-origin fallback in production.
+  if (parts.includes('public') && (parts.includes('images') || parts.includes('documents'))) {
     return false
   }
 
@@ -104,6 +104,8 @@ function run(label, command, cwd, env = process.env) {
 }
 
 console.log('Building full deploy package (dynamic API + UI)...')
+
+run('verify static asset references', 'node scripts/verify-static-assets.mjs', rootDir)
 
 for (const app of ['frontend', 'admin']) {
   const appDir = path.join(rootDir, app)

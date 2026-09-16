@@ -92,21 +92,38 @@ function HeroLinkButton({
   )
 }
 
+const HERO_PHOTO_CREDIT = 'Photo by: JC Molina'
+
+function HeroPhotoCredit({ className }: { className?: string }) {
+  return (
+    <p
+      className={cn(
+        'hero-photo-credit pointer-events-none z-20',
+        className,
+      )}
+      aria-label={`Photography credit: ${HERO_PHOTO_CREDIT}`}
+    >
+      {HERO_PHOTO_CREDIT}
+    </p>
+  )
+}
+
 function LandingHero({ content }: { content: HeroContent }) {
   return (
-    <section className="hero-offset-full relative flex min-h-[100dvh] w-full flex-col overflow-x-clip bg-cream">
+    <section className="hero-offset-full relative flex min-h-[100dvh] w-full max-w-full flex-col overflow-x-clip bg-cream">
       {/* Mobile — image + bottom fade behind copy (no seam line) */}
       <div className="hero-landing-mobile lg:hidden flex min-h-0 flex-1 flex-col">
         <div className="hero-mobile-stack flex min-h-0 flex-1 flex-col">
           <div aria-hidden className="hero-mobile-photo">
             <HeroSlideshow
-              className="hero-mobile-slideshow absolute inset-0 z-0 size-full scale-105 translate-x-[10%]"
-              imageClassName="object-cover object-[70%_28%]"
+              className="hero-mobile-slideshow absolute inset-0 z-0 size-full"
+              imageClassName="object-cover object-center"
             />
+            <HeroPhotoCredit className="hero-photo-credit--mobile absolute bottom-3 right-4" />
           </div>
 
-          <Container className="hero-mobile-copy-wrap pb-[max(1.25rem,env(safe-area-inset-bottom))]">
-            <FadeIn className="hero-copy">
+          <Container className="hero-mobile-copy-wrap min-w-0 max-w-full pb-[max(1.25rem,env(safe-area-inset-bottom))]">
+            <FadeIn className="hero-copy min-w-0 max-w-full">
               <HeroContentBlock content={content} variant="landing" />
             </FadeIn>
           </Container>
@@ -126,6 +143,8 @@ function LandingHero({ content }: { content: HeroContent }) {
           <HeroContentBlock content={content} variant="landing" />
         </FadeIn>
       </div>
+
+      <HeroPhotoCredit className="absolute bottom-6 right-8 hidden lg:block xl:right-10" />
     </section>
   )
 }

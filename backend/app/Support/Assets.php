@@ -40,7 +40,7 @@ class Assets
         }
 
         $html = preg_replace_callback(
-            '/(\s(?:src|href)=["\'])(\/images\/[^"\']+)(["\'])/i',
+            '/(\s(?:src|href)=["\'])(\/(?:images|documents)\/[^"\']+)(["\'])/i',
             fn (array $matches): string => $matches[1].self::url($matches[2]).$matches[3],
             $html
         );

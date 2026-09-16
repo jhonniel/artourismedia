@@ -25,4 +25,12 @@ test.describe('Public website', () => {
     await expect(page.getByLabel(/email/i)).toBeVisible()
     await expect(page.getByRole('button', { name: /send message/i })).toBeVisible()
   })
+
+  test('about page loads career hero', async ({ page }) => {
+    await page.goto(`${FRONTEND_URL}/about`)
+
+    await expect(page.getByText('Something went wrong loading this page.')).not.toBeVisible()
+    await expect(page.getByRole('heading', { level: 1 })).toContainText(/Tourism/i)
+    await expect(page.getByText('Megaworld Hotels and Resorts')).toBeVisible()
+  })
 })

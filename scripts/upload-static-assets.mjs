@@ -9,6 +9,7 @@ import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3'
 
 const rootDir = path.join(path.dirname(fileURLToPath(import.meta.url)), '..')
 const imagesDir = path.join(rootDir, 'frontend', 'public', 'images')
+const documentsDir = path.join(rootDir, 'frontend', 'public', 'documents')
 const dryRun = process.argv.includes('--dry-run')
 
 function loadEnv(filePath) {
@@ -55,6 +56,7 @@ function guessMime(ext) {
     case '.jpg':
     case '.jpeg': return 'image/jpeg'
     case '.webp': return 'image/webp'
+    case '.pdf': return 'application/pdf'
     default: return 'application/octet-stream'
   }
 }
@@ -90,37 +92,47 @@ const client = new S3Client({
   forcePathStyle: false,
 })
 
-const files = walkFiles(imagesDir)
 let uploaded = 0
 let skipped = 0
 
-for (const relative of files.sort()) {
-  const normalized = relative.replace(/\\/g, '/')
-  if (shouldSkip(normalized)) {
-    skipped++
-    continue
+async function uploadTree(baseDir, remoteFolder) {
+  if (!fs.existsSync(baseDir)) {
+    return
   }
 
-  const key = root ? `${root}/${prefix}/images/${normalized}` : `${prefix}/images/${normalized}`
-  const localPath = path.join(imagesDir, relative)
+  for (const relative of walkFiles(baseDir).sort()) {
+    const normalized = relative.replace(/\\/g, '/')
+    if (remoteFolder === 'images' && shouldSkip(normalized)) {
+      skipped++
+      continue
+    }
 
-  if (dryRun) {
-    console.log(`  would upload: ${normalized} → ${key}`)
+    const key = root
+      ? `${root}/${prefix}/${remoteFolder}/${normalized}`
+      : `${prefix}/${remoteFolder}/${normalized}`
+    const localPath = path.join(baseDir, relative)
+
+    if (dryRun) {
+      console.log(`  would upload: ${remoteFolder}/${normalized} → ${key}`)
+      uploaded++
+      continue
+    }
+
+    await client.send(new PutObjectCommand({
+      Bucket: env.DIGITALOCEAN_SPACES_BUCKET,
+      Key: key,
+      Body: fs.readFileSync(localPath),
+      ACL: 'public-read',
+      ContentType: guessMime(path.extname(relative)),
+    }))
+
+    console.log(`  uploaded: ${remoteFolder}/${normalized}`)
     uploaded++
-    continue
   }
-
-  await client.send(new PutObjectCommand({
-    Bucket: env.DIGITALOCEAN_SPACES_BUCKET,
-    Key: key,
-    Body: fs.readFileSync(localPath),
-    ACL: 'public-read',
-    ContentType: guessMime(path.extname(relative)),
-  }))
-
-  console.log(`  uploaded: ${normalized}`)
-  uploaded++
 }
+
+await uploadTree(imagesDir, 'images')
+await uploadTree(documentsDir, 'documents')
 
 for (const faviconName of ['favicon.png', 'favicon-192.png', 'apple-touch-icon.png']) {
   const favicon = path.join(rootDir, 'frontend', 'public', faviconName)

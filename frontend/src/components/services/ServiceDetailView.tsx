@@ -4,6 +4,7 @@ import { Container } from '@/components/ui/Container'
 import { ServiceDetailHero } from '@/components/services/ServiceDetailHero'
 import { ServiceExperienceSection } from '@/components/services/ServiceExperienceSection'
 import { ServiceVideoGallery } from '@/components/services/ServiceVideoGallery'
+import { ServiceResourceDownload } from '@/components/services/ServiceResourceDownload'
 import { parseServiceContent } from '@/lib/parseServiceContent'
 import type { Service } from '@/types'
 
@@ -33,9 +34,12 @@ export function ServiceDetailView({ service }: ServiceDetailViewProps) {
         )
       )}
 
-      {service.videos && service.videos.length > 0 && (
-        <Container className="pb-16 md:pb-24">
-          <ServiceVideoGallery videos={service.videos} title="Mindanao CONNECT Videos" />
+      {(service.resource_download || (service.videos && service.videos.length > 0)) && (
+        <Container className="space-y-12 pt-10 pb-16 sm:pt-12 md:pt-14 md:pb-24">
+          {service.resource_download && <ServiceResourceDownload resource={service.resource_download} />}
+          {service.videos && service.videos.length > 0 && (
+            <ServiceVideoGallery videos={service.videos} title="Mindanao CONNECT Videos" />
+          )}
         </Container>
       )}
     </article>

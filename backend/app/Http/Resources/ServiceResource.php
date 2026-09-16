@@ -12,6 +12,8 @@ class ServiceResource extends JsonResource
     public function toArray(Request $request): array
     {
         $videos = $this->resolvedVideos($request);
+        $isDetailRequest = $request->route('slug') === $this->slug
+            || $request->is('api/admin/*');
 
         return [
             'uuid' => $this->uuid,
@@ -41,6 +43,17 @@ class ServiceResource extends JsonResource
                     $videos->sortByDesc('view_count')->take(1)->values()
                 )
             ),
+            'resource_download' => $this->when(
+                $this->slug === 'mindanao-connect' && $isDetailRequest,
+                fn () => [
+                    'title' => 'Mindanao Fun 101',
+                    'subtitle' => 'July 2015',
+                    'description' => 'Digital edition of the Mindanao Fun 101 magazine.',
+                    'url' => Assets::url('/documents/mindanao-fun-101-july-2015.pdf'),
+                    'thumbnail_url' => Assets::imageUrl('/images/documents/mindanao-fun-101-cover.jpg'),
+                    'file_type' => 'pdf',
+                ]
+            ),
             'is_active' => $this->when($request->is('api/admin/*'), $this->is_active),
             'sort_order' => $this->when($request->is('api/admin/*'), $this->sort_order),
         ];
@@ -52,10 +65,7 @@ class ServiceResource extends JsonResource
             return $this->videos;
         }
 
-        $isDetailRequest = $request->route('slug') === $this->slug
-            || $request->is('api/admin/*');
-
-        if ($this->slug === 'mindanao-connect' && $isDetailRequest) {
+        if ($this->slug === 'mindanao-connect' && ($request->route('slug') === $this->slug || $request->is('api/admin/*'))) {
             return $this->videos()
                 ->where('is_active', true)
                 ->orderByDesc('published_at')

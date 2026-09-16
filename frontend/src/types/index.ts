@@ -148,6 +148,16 @@ export interface Service {
   sort_order: number
   videos?: ServiceVideo[]
   featured_videos?: ServiceVideo[]
+  resource_download?: ServiceResourceDownload
+}
+
+export interface ServiceResourceDownload {
+  title: string
+  subtitle?: string
+  description?: string
+  url: string
+  thumbnail_url?: string
+  file_type?: string
 }
 
 export interface ServiceVideo {

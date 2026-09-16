@@ -101,7 +101,7 @@ export function rewriteContentAssetUrls(html: string): string {
 
   return html
     .replace(
-      /(\s(?:src|href)=["'])(\/images\/[^"']+)(["'])/gi,
+      /(\s(?:src|href)=["'])(\/(?:images|documents)\/[^"']+)(["'])/gi,
       (_, prefix, assetPath, suffix) => `${prefix}${assetUrl(assetPath)}${suffix}`,
     )
     .replace(

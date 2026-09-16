@@ -1,4 +1,4 @@
-import type { AboutPageMetadata } from '@/types'
+import type { AboutLeadershipItem, AboutPageMetadata } from '@/types'
 
 export const DEFAULT_ABOUT_METADATA: AboutPageMetadata = {
   eyebrow: 'About Art Boncato',
@@ -79,12 +79,31 @@ export const DEFAULT_ABOUT_METADATA: AboutPageMetadata = {
   closing_image_url: '/images/hero/hero-slideshow-20-siargao-lagoon.jpg',
 }
 
+function normalizeLeadership(items?: AboutLeadershipItem[] | null): AboutLeadershipItem[] {
+  const defaults = DEFAULT_ABOUT_METADATA.leadership ?? []
+  if (!items?.length) return defaults
+
+  const normalized = items
+    .filter((item) => item && (item.title?.trim() || item.organization?.trim()))
+    .map((item, index) => {
+      const fallback = defaults[index]
+      return {
+        title: item.title?.trim() || fallback?.title || 'Role',
+        organization: item.organization?.trim() || fallback?.organization || '',
+        icon: item.icon ?? fallback?.icon,
+      }
+    })
+    .filter((item) => item.organization)
+
+  return normalized.length ? normalized : defaults
+}
+
 export function mergeAboutMetadata(metadata?: AboutPageMetadata | null, content?: string): AboutPageMetadata {
   return {
     ...DEFAULT_ABOUT_METADATA,
     ...metadata,
     career_body: metadata?.career_body ?? content ?? DEFAULT_ABOUT_METADATA.career_body,
-    leadership: metadata?.leadership?.length ? metadata.leadership : DEFAULT_ABOUT_METADATA.leadership,
+    leadership: normalizeLeadership(metadata?.leadership),
     expertise: metadata?.expertise?.length ? metadata.expertise : DEFAULT_ABOUT_METADATA.expertise,
   }
 }

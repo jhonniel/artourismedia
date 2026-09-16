@@ -32,6 +32,7 @@ export function ServiceDetailHero({ service, introHtml }: ServiceDetailHeroProps
                 alt={service.title}
                 surface="white"
                 hideGradient
+                fit={heroOverrides.fit}
                 imageWrapperClassName={heroOverrides.imageWrapperClassName}
                 imageClassName={heroOverrides.imageClassName}
               />
@@ -88,6 +89,7 @@ export function ServiceDetailHero({ service, introHtml }: ServiceDetailHeroProps
                 alt={service.title}
                 surface="white"
                 hideGradient
+                fit={heroOverrides.fit}
                 imageClassName={heroOverrides.imageClassName}
               />
             </div>

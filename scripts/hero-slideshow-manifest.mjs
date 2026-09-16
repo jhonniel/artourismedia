@@ -1,124 +1,124 @@
-/** Source files → landing-page hero slideshow filenames (01–24). */
+/** Source files (Cursor workspace storage) → hero slideshow filenames. */
 export const HERO_SLIDESHOW_SOURCES = [
   {
     slug: 'hero-slideshow-01-pamulak-float',
     source:
-      'c__Users_user_AppData_Roaming_Cursor_User_workspaceStorage_522fb57e74b2e8f90fbcf1d18fea5ecc_images_1-d3c881ba-da03-4cd5-8d80-54b3535aee29.jpg',
+      '788848737_28404503025854568_752442233545290317_n-83c86e82-d687-45b2-9d55-0230a335e567.jpg',
   },
   {
     slug: 'hero-slideshow-02-sandbar-aerial',
     source:
-      'c__Users_user_AppData_Roaming_Cursor_User_workspaceStorage_522fb57e74b2e8f90fbcf1d18fea5ecc_images_2-45346c14-eeac-442c-b5a5-b04a07e77a4f.jpg',
+      '788859807_854190811113129_5121149711407538612_n-27d77d44-7c06-431e-bb27-30ff21403a03.jpg',
   },
   {
     slug: 'hero-slideshow-03-bay-coastline',
     source:
-      'c__Users_user_AppData_Roaming_Cursor_User_workspaceStorage_522fb57e74b2e8f90fbcf1d18fea5ecc_images_3-7c579cdd-7d5b-4446-8514-a68f3c9951ae.jpg',
+      '788877294_1603659391162217_5703020394702205152_n-fa6f4753-a62c-45f8-b89c-5449e5977cea.jpg',
   },
   {
     slug: 'hero-slideshow-04-traditional-feast',
     source:
-      'c__Users_user_AppData_Roaming_Cursor_User_workspaceStorage_522fb57e74b2e8f90fbcf1d18fea5ecc_images_4-0564736f-2cd7-4307-8215-c2cb6096b975.jpg',
+      '789060125_1792782181871669_4392710842615898725_n-3f453a5d-30cf-43c4-85d1-0d094b7ac3b9.jpg',
   },
   {
     slug: 'hero-slideshow-05-landmark-building',
     source:
-      'c__Users_user_AppData_Roaming_Cursor_User_workspaceStorage_522fb57e74b2e8f90fbcf1d18fea5ecc_images_5-50f7618b-82c6-4082-adf4-ba6dfc59e060.jpg',
+      '789706207_1768281177630425_8896175206271333012_n-f2e72df0-7023-4091-8172-aabd7c8650b0.jpg',
   },
   {
     slug: 'hero-slideshow-06-waterfalls',
     source:
-      'c__Users_user_AppData_Roaming_Cursor_User_workspaceStorage_522fb57e74b2e8f90fbcf1d18fea5ecc_images_6-74fb811d-438c-4a50-9e00-68948d5602c0.jpg',
+      '789299036_1387867800133842_5898543034639015431_n-899ebe76-4bb0-4f9d-afb8-2f62a897ec35.jpg',
   },
   {
     slug: 'hero-slideshow-07-durian',
     source:
-      'c__Users_user_AppData_Roaming_Cursor_User_workspaceStorage_522fb57e74b2e8f90fbcf1d18fea5ecc_images_7-d8ce6530-3546-4981-875f-62c68be18efb.jpg',
+      '790111404_3716358678517523_8300749120759644526_n-7785a81b-f959-473b-905c-812fba107543.jpg',
   },
   {
     slug: 'hero-slideshow-08-beach-aerial',
     source:
-      'c__Users_user_AppData_Roaming_Cursor_User_workspaceStorage_522fb57e74b2e8f90fbcf1d18fea5ecc_images_8-71dacd68-ad06-48ea-9379-da7a23f62c9c.jpg',
+      '790424366_1415609927162378_7688068628516493038_n-d8d395c7-782e-43de-a1ac-15e66121313b.jpg',
   },
   {
     slug: 'hero-slideshow-09-rock-pools',
     source:
-      'c__Users_user_AppData_Roaming_Cursor_User_workspaceStorage_522fb57e74b2e8f90fbcf1d18fea5ecc_images_9-dce26e90-2406-4924-9a78-d666b27844d7.jpg',
+      '790993144_2906196463111991_7416679269080413666_n-40acf544-24a8-43de-9bf5-a4ad83c9538a.jpg',
   },
   {
     slug: 'hero-slideshow-10-kudyapi-music',
     source:
-      'c__Users_user_AppData_Roaming_Cursor_User_workspaceStorage_522fb57e74b2e8f90fbcf1d18fea5ecc_images_10-74ac4d3d-a3ff-4b2f-b8fc-50b2db18d994.jpg',
+      '791599416_4623788727947332_367666455873855409_n-d36a6aff-227d-49b5-a70e-468bdb34ecf5.jpg',
   },
   {
     slug: 'hero-slideshow-11-maranao-royal-house',
     source:
-      'c__Users_user_AppData_Roaming_Cursor_User_workspaceStorage_522fb57e74b2e8f90fbcf1d18fea5ecc_images_11-bfa92353-350a-405b-8682-1598780ed7d7.jpg',
+      '791142629_1608614137601243_1327048168051862828_n-f71029b2-f0f0-4bec-b6b1-c184bdd544e9.jpg',
   },
   {
     slug: 'hero-slideshow-12-tribal-portrait',
     source:
-      'c__Users_user_AppData_Roaming_Cursor_User_workspaceStorage_522fb57e74b2e8f90fbcf1d18fea5ecc_images_12-7de06c0f-ed27-49c1-8f89-74e11c657ffc.jpg',
+      '791888819_1397414542482746_756683488084399269_n-cd381188-f024-4f89-909d-251814906c3a.jpg',
   },
   {
     slug: 'hero-slideshow-13-coconut-coast',
     source:
-      'c__Users_user_AppData_Roaming_Cursor_User_workspaceStorage_522fb57e74b2e8f90fbcf1d18fea5ecc_images_13-cf176b1a-1b05-4438-b587-fb2ec0f9fb69.jpg',
+      '791974045_1708904637002684_4601462690158270567_n-282aad01-bef7-4c93-b34e-d4c73b90e743.jpg',
   },
   {
     slug: 'hero-slideshow-14-traditional-snacks',
     source:
-      'c__Users_user_AppData_Roaming_Cursor_User_workspaceStorage_522fb57e74b2e8f90fbcf1d18fea5ecc_images_14-1f34b919-ab34-4881-b81c-0fd798fccc1f.jpg',
+      '792403109_1386264442926065_6409781089574666395_n-c0d24798-67b8-4402-9080-6ff24c485495.jpg',
   },
   {
     slug: 'hero-slideshow-15-maranao-dance',
     source:
-      'c__Users_user_AppData_Roaming_Cursor_User_workspaceStorage_522fb57e74b2e8f90fbcf1d18fea5ecc_images_15-4b2fee67-3cb4-400a-8d0a-7abbd6654454.jpg',
+      '792820351_4375811319340479_765712944546077575_n-709975a6-54ee-4dd1-943f-2edcb87297dd.jpg',
   },
   {
     slug: 'hero-slideshow-16-durian-harvest',
     source:
-      'c__Users_user_AppData_Roaming_Cursor_User_workspaceStorage_522fb57e74b2e8f90fbcf1d18fea5ecc_images_16-913d99f2-4425-4399-8c11-35e43590a3a8.jpg',
+      '787999633_1948852932751980_3563856549296507274_n-3cafd602-dffb-46e0-8a2b-51fd6bbaba91.jpg',
   },
   {
     slug: 'hero-slideshow-17-sunken-cemetery',
     source:
-      'c__Users_user_AppData_Roaming_Cursor_User_workspaceStorage_522fb57e74b2e8f90fbcf1d18fea5ecc_images_17-ecdb801e-fd6a-4139-ac97-4c91c4027ea5.jpg',
+      '792458708_2384430442095357_8518591894149588570_n-7740873d-8d90-42cb-af79-f9110b9ed44c.jpg',
   },
   {
     slug: 'hero-slideshow-18-island-sandbar',
     source:
-      'c__Users_user_AppData_Roaming_Cursor_User_workspaceStorage_522fb57e74b2e8f90fbcf1d18fea5ecc_images_18-3653d17f-4fc3-4445-8fef-e8cf5a170d66.jpg',
+      '788337659_1104560028918205_2976788111324169727_n-b2cf55e2-eeef-440f-894b-6ae67e04bcd6.jpg',
   },
   {
     slug: 'hero-slideshow-19-mountain-valley',
     source:
-      'c__Users_user_AppData_Roaming_Cursor_User_workspaceStorage_522fb57e74b2e8f90fbcf1d18fea5ecc_images_19-1f508a61-0dfa-4627-9519-f1e670a528a2.jpg',
+      '788493655_2340390356712661_8725141707382054318_n-67de86c4-619e-47cd-b38f-87e7e158a4e3.jpg',
   },
   {
     slug: 'hero-slideshow-20-siargao-lagoon',
     source:
-      'c__Users_user_AppData_Roaming_Cursor_User_workspaceStorage_522fb57e74b2e8f90fbcf1d18fea5ecc_images_20-12e22686-4ac0-4e92-8ff3-0c9deb6644d1.jpg',
+      '788591424_4045630395731296_6485138676219004059_n-d6cc718e-403c-4580-b3a6-5a6a5b2b151f.jpg',
   },
   {
     slug: 'hero-slideshow-21-cold-spring',
     source:
-      'c__Users_user_AppData_Roaming_Cursor_User_workspaceStorage_522fb57e74b2e8f90fbcf1d18fea5ecc_images_21-aa32bc54-ecc3-4485-8c33-6571736c5eb6.jpg',
+      '792863274_1373134031576016_5699463656692826789_n-9bd03d62-b6cc-4d14-baa0-82b645e96cb7.jpg',
   },
   {
     slug: 'hero-slideshow-22-beach-topdown',
     source:
-      'c__Users_user_AppData_Roaming_Cursor_User_workspaceStorage_522fb57e74b2e8f90fbcf1d18fea5ecc_images_22-18b523e0-3b36-4181-8ac0-a8fbafce718f.jpg',
+      '788665717_2144352126499240_3896585496738733172_n-506190f7-5d38-46ed-8fa6-105877a49da3.jpg',
   },
   {
     slug: 'hero-slideshow-23-grand-mosque',
     source:
-      'c__Users_user_AppData_Roaming_Cursor_User_workspaceStorage_522fb57e74b2e8f90fbcf1d18fea5ecc_images_23-12fe87d9-2a01-4cda-addd-11e3842f058e.jpg',
+      '789059655_1598837151910529_8112023695892393084_n-801e35cd-489a-4efa-b1e7-9f84baf24ad3.jpg',
   },
   {
     slug: 'hero-slideshow-24-mountain-pond',
     source:
-      'c__Users_user_AppData_Roaming_Cursor_User_workspaceStorage_522fb57e74b2e8f90fbcf1d18fea5ecc_images_24-84058d5d-5912-4dbf-bf93-267d8f7c45cb.jpg',
+      '791453394_1448602797110650_6147786108834328529_n-f55df941-1087-4125-8936-0c2050f235be.jpg',
   },
 ]
 
