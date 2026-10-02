@@ -5,7 +5,7 @@ export const DEFAULT_ABOUT_METADATA: AboutPageMetadata = {
   headline: 'A Career Built Around Tourism',
   intro:
     'Art Boncato, Jr. is a tourism and hospitality executive who continues to build on a career spanning 30 years.',
-  portrait_url: '/images/about/art-boncato-portrait-card.png?v=3',
+  portrait_url: '/images/about/art-boncato-portrait-card.png?v=5',
   landscape_url: '/images/hero/hero-slideshow-19-mountain-valley.jpg',
   signature_name: 'Art Boncato',
   signature_title: 'Tourism & Hospitality Executive',
@@ -79,17 +79,22 @@ export const DEFAULT_ABOUT_METADATA: AboutPageMetadata = {
   closing_image_url: '/images/hero/hero-slideshow-20-siargao-lagoon.jpg',
 }
 
+function asTrimmedString(value: unknown): string {
+  if (value === null || value === undefined) return ''
+  return String(value).trim()
+}
+
 function normalizeLeadership(items?: AboutLeadershipItem[] | null): AboutLeadershipItem[] {
   const defaults = DEFAULT_ABOUT_METADATA.leadership ?? []
-  if (!items?.length) return defaults
+  if (!Array.isArray(items) || items.length === 0) return defaults
 
   const normalized = items
-    .filter((item) => item && (item.title?.trim() || item.organization?.trim()))
+    .filter((item) => item && (asTrimmedString(item.title) || asTrimmedString(item.organization)))
     .map((item, index) => {
       const fallback = defaults[index]
       return {
-        title: item.title?.trim() || fallback?.title || 'Role',
-        organization: item.organization?.trim() || fallback?.organization || '',
+        title: asTrimmedString(item.title) || fallback?.title || 'Role',
+        organization: asTrimmedString(item.organization) || fallback?.organization || '',
         icon: item.icon ?? fallback?.icon,
       }
     })
@@ -104,6 +109,9 @@ export function mergeAboutMetadata(metadata?: AboutPageMetadata | null, content?
     ...metadata,
     career_body: metadata?.career_body ?? content ?? DEFAULT_ABOUT_METADATA.career_body,
     leadership: normalizeLeadership(metadata?.leadership),
-    expertise: metadata?.expertise?.length ? metadata.expertise : DEFAULT_ABOUT_METADATA.expertise,
+    expertise:
+      Array.isArray(metadata?.expertise) && metadata.expertise.length
+        ? metadata.expertise
+        : DEFAULT_ABOUT_METADATA.expertise,
   }
 }

@@ -30,6 +30,47 @@ function getSocialStyles(platform: string): { bg: string; text: string } {
   return { bg: 'bg-teal', text: 'text-white' }
 }
 
+function AboutPortrait({ src, alt }: { src: string; alt: string }) {
+  return (
+    <div className="home-about__figure">
+      <div className="home-about__shapes" aria-hidden="true">
+        <span className="home-about__circle home-about__circle--gold" />
+        <span className="home-about__circle home-about__circle--orange" />
+        <svg className="home-about__dots" viewBox="0 0 100 78" aria-hidden="true">
+          {Array.from({ length: 4 }).map((_, row) =>
+            Array.from({ length: 5 }).map((__, col) => (
+              <circle key={`${row}-${col}`} cx={8 + col * 20} cy={8 + row * 18} r="2.1" fill="#f08a2a" />
+            )),
+          )}
+        </svg>
+      </div>
+      <LazyImage
+        src={src}
+        alt={alt}
+        priority
+        wrapperClassName="home-about__photo !overflow-visible !bg-transparent"
+        className="!h-auto !w-full !object-contain !object-bottom"
+      />
+    </div>
+  )
+}
+
+function AboutHeadline({ title, accent }: { title?: string; accent?: string }) {
+  const full = [title, accent].filter(Boolean).join(' ').trim()
+  const match = full.match(/^(.*?\bBuilt)\s+(.+)$/i)
+
+  if (!match) {
+    return <h2 className="home-about__title">{full}</h2>
+  }
+
+  return (
+    <h2 className="home-about__title">
+      <span className="block">{match[1]}</span>
+      <span className="home-about__title-accent block">{match[2]}</span>
+    </h2>
+  )
+}
+
 export function About({ section, socialLinks = [] }: AboutProps) {
   const content = parseContent<AboutContent>(section.content)
   const sortedSocial = [...socialLinks].sort((a, b) => a.sort_order - b.sort_order)
@@ -40,49 +81,37 @@ export function About({ section, socialLinks = [] }: AboutProps) {
       <Container className="relative">
         <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,0.85fr)_1.15fr] lg:gap-8 xl:gap-10">
           <FadeIn className="lg:flex lg:justify-end">
-            {content.image_url && (
-              <LazyImage
-                src={content.image_url}
-                alt={content.image_alt ?? ''}
-                wrapperClassName="mx-auto w-full max-w-[18.25rem] bg-transparent sm:max-w-[20.75rem] lg:ml-auto lg:mr-0 lg:max-w-[18rem]"
-                className="!h-auto !w-full !object-contain !object-bottom"
-              />
-            )}
+            {content.image_url && <AboutPortrait src={content.image_url} alt={content.image_alt ?? ''} />}
           </FadeIn>
 
           <FadeIn delay={80}>
-            <div className="max-w-xl lg:max-w-none">
+            <div className="home-about__copy max-w-xl lg:max-w-none">
               {content.eyebrow && (
-                <p className="mb-3 text-xs font-bold uppercase tracking-[0.16em] text-teal md:text-sm">
+                <p className="home-about__eyebrow">
                   {content.eyebrow}
+                  <span className="home-about__eyebrow-rule" aria-hidden="true" />
                 </p>
               )}
 
-              {headline && (
-                <h2 className="break-words font-serif text-[1.5rem] font-normal leading-relaxed text-navy sm:text-[1.65rem] lg:text-[1.85rem] xl:text-[2rem]">
-                  {headline}
-                </h2>
-              )}
+              {headline && <AboutHeadline title={content.title} accent={content.title_accent} />}
 
               {content.body && (
-                <RichContent
-                  html={content.body}
-                  className="prose-content mt-4 text-base leading-[1.6] text-navy/75 md:text-[1.0625rem]"
-                />
+                <RichContent html={content.body} className="prose-content home-about__body" />
               )}
 
               {sortedSocial.length > 0 && (
-                <ul className="mt-5 flex flex-wrap gap-x-4 gap-y-2.5">
-                  {sortedSocial.map((link) => {
+                <ul className="home-about__social">
+                  {sortedSocial.map((link, index) => {
                     const styles = getSocialStyles(link.platform)
 
                     return (
-                      <li key={link.uuid}>
+                      <li key={link.uuid} className="home-about__social-item">
+                        {index > 0 && <span className="home-about__social-rule" aria-hidden="true" />}
                         <a
                           href={link.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="group flex items-center gap-2 text-navy/85 transition-colors hover:text-teal"
+                          className="group flex items-center gap-2 text-navy transition-colors hover:text-orange"
                           title={link.username}
                         >
                           <span
@@ -106,13 +135,13 @@ export function About({ section, socialLinks = [] }: AboutProps) {
                 <div className="mt-7">
                   {content.cta_url.startsWith('http') ? (
                     <a href={content.cta_url}>
-                      <Button size="sm" className="w-full px-5 py-2.5 text-[10px] uppercase tracking-[0.1em] sm:w-auto">
+                      <Button variant="orange" size="sm" className="home-about__cta w-full px-7 py-3 text-xs font-bold uppercase tracking-[0.12em] sm:w-auto">
                         {content.cta_text} →
                       </Button>
                     </a>
                   ) : (
                     <Link to={content.cta_url}>
-                      <Button size="sm" className="w-full px-5 py-2.5 text-[10px] uppercase tracking-[0.1em] sm:w-auto">
+                      <Button variant="orange" size="sm" className="home-about__cta w-full px-7 py-3 text-xs font-bold uppercase tracking-[0.12em] sm:w-auto">
                         {content.cta_text} →
                       </Button>
                     </Link>

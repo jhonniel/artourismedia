@@ -37,6 +37,9 @@ const metadata = ref<PageMetadata>({
   team: [],
 })
 
+/** Full About page metadata from API — merged on save so CMS fields are not wiped. */
+const aboutMetadataBaseline = ref<Record<string, unknown>>({})
+
 const isEdit = computed(() => !!route.params.uuid)
 const pageTitle = computed(() => (isEdit.value ? 'Edit Page' : 'New Page'))
 const showMetadataEditor = computed(() => form.value.slug === 'about')
@@ -63,6 +66,10 @@ async function loadData(): Promise<void> {
         seo_title: page.seo_title || '',
         seo_description: page.seo_description || '',
       }
+      aboutMetadataBaseline.value =
+        page.slug === 'about' && page.metadata && typeof page.metadata === 'object'
+          ? { ...(page.metadata as Record<string, unknown>) }
+          : {}
       metadata.value = {
         values: page.metadata?.values ?? [],
         timeline: page.metadata?.timeline ?? [],
@@ -83,7 +90,9 @@ async function save(publish = false): Promise<void> {
     const payload: Partial<Page> = {
       ...form.value,
       is_published: publish ? true : form.value.is_published,
-      metadata: showMetadataEditor.value ? metadata.value : undefined,
+      metadata: showMetadataEditor.value
+        ? { ...aboutMetadataBaseline.value, ...metadata.value }
+        : undefined,
     }
 
     if (isEdit.value) {

@@ -1,0 +1,838 @@
+use this as the reference for the code 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Art Tourism Media</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&family=Caveat:wght@600&display=swap"
+    rel="stylesheet"
+  >
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  >
+
+  <style>
+    :root {
+      --navy: #0b2f67;
+      --navy-soft: #36598c;
+      --orange: #ff5418;
+      --orange-light: #ffb277;
+      --cream: #fff8f3;
+      --blue-soft: #eaf7f8;
+      --border: #e6e8ec;
+      --white: #ffffff;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "DM Sans", sans-serif;
+      background: #fff;
+      color: var(--navy);
+      overflow-x: hidden;
+    }
+
+    /* =========================
+       HEADER
+    ========================= */
+
+    .header {
+      height: 98px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 78px;
+      background: rgba(255,255,255,0.97);
+      position: relative;
+      z-index: 50;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      font-size: 22px;
+      color: #111;
+    }
+
+    .logo-mark {
+      width: 46px;
+      height: 58px;
+      position: relative;
+      border: 7px solid #050505;
+      border-radius: 8px;
+    }
+
+    .logo-mark::before {
+      content: "";
+      position: absolute;
+      width: 22px;
+      height: 31px;
+      left: 5px;
+      top: 11px;
+      border: 6px solid #050505;
+      border-top: none;
+    }
+
+    .logo-mark::after {
+      content: "";
+      position: absolute;
+      width: 4px;
+      height: 20px;
+      background: #38bebf;
+      left: -7px;
+      top: 10px;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 48px;
+    }
+
+    .nav a {
+      text-decoration: none;
+      color: #0f2c5d;
+      font-size: 20px;
+      position: relative;
+      padding: 36px 0 27px;
+    }
+
+    .nav a.active {
+      color: #0da0aa;
+    }
+
+    .nav a.active::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 20px;
+      height: 4px;
+      border-radius: 10px;
+      background: var(--orange);
+    }
+
+    .consult-btn {
+      text-decoration: none;
+      background: var(--orange);
+      color: #fff;
+      padding: 16px 30px;
+      border-radius: 999px;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: .5px;
+    }
+
+    /* =========================
+       HERO
+    ========================= */
+
+    .hero {
+      min-height: 600px;
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 62% 28%, rgba(255, 211, 182, 0.25), transparent 22%),
+        linear-gradient(90deg, #fff 0%, #fffefa 58%, #fff 100%);
+    }
+
+    .hero-inner {
+      width: min(1450px, calc(100% - 100px));
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 47% 53%;
+      min-height: 600px;
+      position: relative;
+      z-index: 10;
+    }
+
+    /* =========================
+       LEFT COPY
+    ========================= */
+
+    .hero-copy {
+      padding-top: 83px;
+      position: relative;
+      z-index: 5;
+    }
+
+    .eyebrow {
+      color: var(--orange);
+      font-weight: 700;
+      letter-spacing: 5px;
+      font-size: 17px;
+      margin-bottom: 24px;
+    }
+
+    .hero-title {
+      font-family: "Inter", sans-serif;
+      font-size: clamp(62px, 5.2vw, 82px);
+      line-height: 0.97;
+      font-weight: 700;
+      letter-spacing: -4px;
+      color: var(--navy);
+      max-width: 680px;
+    }
+
+    .hero-title .orange {
+      color: var(--orange);
+      position: relative;
+      display: inline-block;
+    }
+
+    .hero-title .orange::after {
+      content: "";
+      position: absolute;
+      left: 4%;
+      right: 0;
+      bottom: -15px;
+      height: 8px;
+      border-radius: 100%;
+      border-top: 5px solid var(--orange);
+      transform: rotate(-1.5deg);
+    }
+
+    .intro {
+      margin-top: 44px;
+      max-width: 680px;
+      font-size: 22px;
+      line-height: 1.6;
+      color: #4a668e;
+    }
+
+    /* =========================
+       RIGHT VISUAL
+    ========================= */
+
+    .hero-visual {
+      position: relative;
+      min-height: 600px;
+    }
+
+    .portrait-bg {
+      position: absolute;
+      width: 455px;
+      height: 455px;
+      border-radius: 50%;
+      left: 50px;
+      top: 40px;
+      background: linear-gradient(
+        145deg,
+        #ffe5d6 0%,
+        #ffe7dc 50%,
+        #ffd5bb 100%
+      );
+    }
+
+    .orange-shape {
+      position: absolute;
+      width: 520px;
+      height: 205px;
+      left: -55px;
+      bottom: 24px;
+      background: rgba(255, 194, 146, 0.46);
+      border-radius: 55% 45% 45% 55% / 74% 65% 35% 26%;
+      transform: rotate(-10deg);
+      z-index: 1;
+    }
+
+    .portrait {
+      position: absolute;
+      left: 95px;
+      bottom: 12px;
+      width: 430px;
+      z-index: 5;
+      object-fit: contain;
+    }
+
+    .orange-rays {
+      position: absolute;
+      left: 72px;
+      top: 190px;
+      width: 80px;
+      height: 92px;
+      z-index: 7;
+    }
+
+    .orange-rays span {
+      position: absolute;
+      display: block;
+      width: 12px;
+      height: 38px;
+      background: var(--orange);
+      border-radius: 20px;
+    }
+
+    .orange-rays span:nth-child(1) {
+      left: 5px;
+      top: 40px;
+      transform: rotate(-78deg);
+    }
+
+    .orange-rays span:nth-child(2) {
+      left: 25px;
+      top: 12px;
+      transform: rotate(-46deg);
+    }
+
+    .orange-rays span:nth-child(3) {
+      left: 55px;
+      top: 0;
+      transform: rotate(-18deg);
+    }
+
+    /* =========================
+       SIGNATURE AREA
+    ========================= */
+
+    .signature {
+      position: absolute;
+      right: 55px;
+      top: 86px;
+      z-index: 9;
+    }
+
+    .signature-name {
+      font-family: "Caveat", cursive;
+      font-size: 56px;
+      color: #0a2d65;
+      line-height: 1;
+    }
+
+    .signature-role {
+      font-size: 15px;
+      letter-spacing: 4px;
+      font-weight: 700;
+      color: #60779a;
+      margin-top: 13px;
+    }
+
+    /* =========================
+       DOTS
+    ========================= */
+
+    .dots {
+      position: absolute;
+      top: 80px;
+      right: -30px;
+      width: 115px;
+      height: 110px;
+      background-image: radial-gradient(
+        circle,
+        rgba(50, 181, 193, 0.45) 4px,
+        transparent 4.5px
+      );
+      background-size: 22px 22px;
+      z-index: 3;
+    }
+
+    /* =========================
+       QUOTE CARD
+    ========================= */
+
+    .quote-card {
+      position: absolute;
+      right: 28px;
+      top: 184px;
+      width: 320px;
+      min-height: 255px;
+      border: 1px solid #e3e7ec;
+      background: rgba(255,255,255,0.95);
+      border-radius: 26px;
+      padding: 58px 34px 28px;
+      box-shadow: 0 12px 32px rgba(15, 42, 79, 0.04);
+      z-index: 12;
+    }
+
+    .quote-mark {
+      position: absolute;
+      top: 22px;
+      left: 31px;
+      font-size: 74px;
+      line-height: 1;
+      color: #c7eef2;
+      font-family: Georgia, serif;
+      font-weight: 700;
+    }
+
+    .quote-text {
+      font-size: 20px;
+      line-height: 1.42;
+      color: #385884;
+      max-width: 250px;
+    }
+
+    .quote-line {
+      width: 54px;
+      height: 5px;
+      border-radius: 20px;
+      background: var(--orange);
+      margin-top: 20px;
+    }
+
+    /* =========================
+       PALM DECOR
+    ========================= */
+
+    .palm {
+      position: absolute;
+      width: 300px;
+      left: -90px;
+      bottom: -55px;
+      opacity: .16;
+      z-index: 1;
+    }
+
+    /* =========================
+       HERO WAVES
+    ========================= */
+
+    .waves {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -2px;
+      height: 180px;
+      z-index: 8;
+      pointer-events: none;
+    }
+
+    .wave {
+      position: absolute;
+      width: 120%;
+      left: -10%;
+      border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+    }
+
+    .wave.blue {
+      height: 130px;
+      bottom: 0;
+      background: #e7f5f6;
+      transform: rotate(-2deg);
+    }
+
+    .wave.orange {
+      width: 70%;
+      height: 105px;
+      left: 55%;
+      bottom: -22px;
+      background: #ffba84;
+      transform: rotate(-7deg);
+    }
+
+    .wave.white {
+      width: 115%;
+      height: 110px;
+      left: -5%;
+      bottom: -50px;
+      background: #fff;
+      transform: rotate(2deg);
+    }
+
+    /* =========================
+       LOWER SECTION
+    ========================= */
+
+    .details {
+      position: relative;
+      z-index: 20;
+      background: #fff;
+      padding: 60px 0 80px;
+    }
+
+    .details-inner {
+      width: min(1450px, calc(100% - 100px));
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 58% 42%;
+      gap: 60px;
+      align-items: start;
+    }
+
+    .bio-text {
+      font-size: 20px;
+      line-height: 1.55;
+      color: #4a6794;
+      padding-top: 20px;
+      max-width: 860px;
+    }
+
+    .experience-card {
+      border: 1px solid #ffcdb8;
+      border-radius: 24px;
+      background: linear-gradient(145deg, #fff8f4, #fff);
+      padding: 36px 30px;
+      min-height: 190px;
+    }
+
+    .experience-card h3 {
+      font-size: 22px;
+      margin-bottom: 28px;
+      color: var(--navy);
+    }
+
+    .experience-item {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      font-size: 19px;
+      color: #173c72;
+    }
+
+    .experience-icon {
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      background: #fff;
+      display: grid;
+      place-items: center;
+      box-shadow: 0 5px 18px rgba(12, 44, 87, 0.05);
+    }
+
+    .experience-icon i {
+      font-size: 22px;
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================= */
+
+    @media (max-width: 1250px) {
+      .header {
+        padding: 0 35px;
+      }
+
+      .nav {
+        gap: 28px;
+      }
+
+      .hero-inner,
+      .details-inner {
+        width: calc(100% - 60px);
+      }
+
+      .hero-title {
+        font-size: 64px;
+      }
+
+      .signature {
+        right: 15px;
+      }
+
+      .quote-card {
+        right: 0;
+        width: 300px;
+      }
+
+      .portrait {
+        width: 395px;
+      }
+
+      .portrait-bg {
+        width: 420px;
+        height: 420px;
+      }
+    }
+
+    @media (max-width: 1000px) {
+      .nav {
+        display: none;
+      }
+
+      .hero-inner {
+        grid-template-columns: 1fr;
+        min-height: 1050px;
+      }
+
+      .hero-copy {
+        padding-top: 70px;
+      }
+
+      .hero-visual {
+        min-height: 600px;
+      }
+
+      .portrait-bg {
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      .portrait {
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      .signature {
+        right: 8%;
+      }
+
+      .quote-card {
+        right: 4%;
+      }
+
+      .details-inner {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .header {
+        padding: 0 20px;
+        height: 78px;
+      }
+
+      .logo {
+        font-size: 16px;
+      }
+
+      .logo-mark {
+        width: 36px;
+        height: 46px;
+      }
+
+      .consult-btn {
+        font-size: 12px;
+        padding: 13px 17px;
+      }
+
+      .hero-inner {
+        width: calc(100% - 34px);
+        min-height: 980px;
+      }
+
+      .eyebrow {
+        font-size: 13px;
+        letter-spacing: 3px;
+      }
+
+      .hero-title {
+        font-size: 48px;
+        letter-spacing: -2px;
+      }
+
+      .intro {
+        font-size: 17px;
+      }
+
+      .portrait-bg {
+        width: 330px;
+        height: 330px;
+        top: 60px;
+      }
+
+      .portrait {
+        width: 320px;
+        bottom: 40px;
+      }
+
+      .signature {
+        top: 20px;
+        right: 10px;
+      }
+
+      .signature-name {
+        font-size: 42px;
+      }
+
+      .signature-role {
+        font-size: 10px;
+      }
+
+      .quote-card {
+        width: 255px;
+        min-height: 205px;
+        top: 150px;
+        right: 0;
+        padding: 52px 25px 24px;
+      }
+
+      .quote-text {
+        font-size: 16px;
+      }
+
+      .details-inner {
+        width: calc(100% - 34px);
+      }
+
+      .bio-text {
+        font-size: 17px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- =========================
+       HEADER
+  ========================== -->
+  <header class="header">
+
+    <div class="logo">
+      <div class="logo-mark"></div>
+      <span>ArtTourismMedia</span>
+    </div>
+
+    <nav class="nav">
+      <a href="#">Home</a>
+      <a href="#" class="active">About</a>
+      <a href="#">Services</a>
+      <a href="#">Projects</a>
+      <a href="#">Insights</a>
+    </nav>
+
+    <a href="#" class="consult-btn">
+      SCHEDULE A CONSULTATION →
+    </a>
+
+  </header>
+
+  <!-- =========================
+       HERO
+  ========================== -->
+  <section class="hero">
+
+    <img
+      src="assets/palm-leaves.png"
+      class="palm"
+      alt=""
+    >
+
+    <div class="hero-inner">
+
+      <!-- LEFT -->
+      <div class="hero-copy">
+
+        <div class="eyebrow">
+          ABOUT ART BONCATO
+        </div>
+
+        <h1 class="hero-title">
+          A Career Built<br>
+          Around <span class="orange">Tourism</span>
+        </h1>
+
+        <p class="intro">
+          Art Boncato, Jr. is a tourism and hospitality executive who
+          continues to build on a career spanning 30 years.
+        </p>
+
+      </div>
+
+      <!-- RIGHT -->
+      <div class="hero-visual">
+
+        <div class="portrait-bg"></div>
+
+        <div class="orange-shape"></div>
+
+        <div class="orange-rays">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+
+        <img
+          src="assets/art-boncato.png"
+          class="portrait"
+          alt="Art Boncato"
+        >
+
+        <div class="signature">
+          <div class="signature-name">
+            Art Boncato
+          </div>
+
+          <div class="signature-role">
+            TOURISM & HOSPITALITY EXECUTIVE
+          </div>
+        </div>
+
+        <div class="dots"></div>
+
+        <div class="quote-card">
+
+          <div class="quote-mark">
+            “
+          </div>
+
+          <div class="quote-text">
+            Sustainable tourism is the
+            name of our game in the
+            strategic of our Philippine
+            destination
+          </div>
+
+          <div class="quote-line"></div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- WAVES -->
+    <div class="waves">
+      <div class="wave blue"></div>
+      <div class="wave orange"></div>
+      <div class="wave white"></div>
+    </div>
+
+  </section>
+
+  <!-- =========================
+       DETAILS
+  ========================== -->
+  <section class="details">
+
+    <div class="details-inner">
+
+      <div class="bio-text">
+        Art spent the past 10 years in several senior leadership roles as the
+        Group General Manager of Megaworld Hotels and Resorts; Executive Vice
+        President and Chief Operating Officer of the World Trade Center Metro
+        Manila; Executive Director for the Joint Secretary of Undersecretary of
+        Department of Tourism; and vice president for commercial of Philseven
+        Group.
+      </div>
+
+      <div class="experience-card">
+
+        <h3>
+          Leadership experience in the past decades
+        </h3>
+
+        <div class="experience-item">
+
+          <div class="experience-icon">
+            <i class="fa-regular fa-user"></i>
+          </div>
+
+          <span>
+            Group General Manager
+          </span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+</body>
+</html>

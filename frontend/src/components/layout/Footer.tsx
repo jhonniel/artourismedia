@@ -37,7 +37,8 @@ function footerWaveTopFill(pathname: string): 'white' | 'cream' {
     pathname === '/'
     || pathname === '/about'
     || pathname === '/contact'
-    || pathname === '/projects'
+    ||     pathname === '/projects'
+    || pathname === '/services'
     || pathname.startsWith('/insights')
   ) {
     return 'cream'

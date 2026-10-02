@@ -23,48 +23,44 @@ export function AboutPageView({ metadata }: AboutPageViewProps) {
       <AboutHero metadata={metadata} />
 
       {/* Career + Leadership */}
-      <section className="bg-cream py-12 md:py-16 lg:py-20">
-        <Container>
-          <div className="grid gap-10 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)] lg:gap-12">
-            <FadeIn>
-              <div>
-                {metadata.career_heading && (
-                  <h2 className="text-2xl font-bold text-navy sm:text-3xl">{metadata.career_heading}</h2>
-                )}
-                {metadata.career_body && (
-                  <RichContent
-                    html={metadata.career_body}
-                    className="prose-content mt-6 space-y-4 text-base leading-relaxed text-navy/75 sm:text-lg"
-                  />
-                )}
+      <section className="about-details">
+        <div className="about-details__inner">
+          <FadeIn>
+            <div>
+              {metadata.career_heading && (
+                <h2 className="sr-only">{metadata.career_heading}</h2>
+              )}
+              {metadata.career_body && (
+                <RichContent html={metadata.career_body} className="about-details__bio prose-content" />
+              )}
+            </div>
+          </FadeIn>
+
+          {metadata.leadership && metadata.leadership.length > 0 && (
+            <FadeIn delay={80}>
+              <div className="about-details__experience-card">
+                <h3>Leadership experience in the past decade</h3>
+                <ul className="about-details__experience-list">
+                  {metadata.leadership.map((item) => (
+                    <li key={`${item.title}-${item.organization}`} className="about-details__experience-item">
+                      <LeadershipRoleIcon item={item} />
+                      <div className="min-w-0">
+                        <span>{item.title}</span>
+                        <p className="mt-1 text-sm text-[#36598c]">{item.organization}</p>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
               </div>
             </FadeIn>
+          )}
+        </div>
 
-            {metadata.leadership && metadata.leadership.length > 0 && (
-              <FadeIn delay={80}>
-                <div className="rounded-[1.25rem] border-2 border-orange/30 bg-orange/[0.16] p-6 shadow-card sm:rounded-[1.5rem] sm:p-7 lg:shadow-elevated">
-                  <div>
-                    <h3 className="text-lg font-bold text-navy sm:text-xl">
-                      Leadership experience in the past decades
-                    </h3>
-                    <div className="mt-3 h-1 w-12 rounded-full bg-orange" aria-hidden="true" />
-                  </div>
-                  <ul className="mt-6 space-y-5">
-                    {metadata.leadership.map((item) => (
-                      <li key={`${item.title}-${item.organization}`} className="flex items-start gap-4">
-                        <LeadershipRoleIcon item={item} />
-                        <div className="min-w-0 flex-1 pt-0.5">
-                          <p className="font-semibold leading-snug text-navy">{item.title}</p>
-                          <p className="mt-1 text-sm leading-relaxed text-navy/60">{item.organization}</p>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </FadeIn>
-            )}
-          </div>
-        </Container>
+        <div className="about-details__waves" aria-hidden="true">
+          <div className="about-details__wave about-details__wave--teal" />
+          <div className="about-details__wave about-details__wave--peach" />
+          <div className="about-details__wave about-details__wave--cream" />
+        </div>
       </section>
 
       {/* Expertise */}

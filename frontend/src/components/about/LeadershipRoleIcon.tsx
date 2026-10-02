@@ -60,7 +60,11 @@ function resolveLeadershipIconKey(item: AboutLeadershipItem): LeadershipIconKey 
 }
 
 export function LeadershipRoleIcon({ item }: { item: AboutLeadershipItem }) {
-  const iconKey = resolveLeadershipIconKey(item)
+  const iconKey = resolveLeadershipIconKey({
+    ...item,
+    title: item.title ?? '',
+    organization: item.organization ?? '',
+  })
   const { Icon, wrapper, iconClass } = ICON_CONFIG[iconKey]
 
   return (

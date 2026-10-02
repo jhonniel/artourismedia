@@ -7,13 +7,14 @@ interface ErrorBoundaryProps {
 
 interface ErrorBoundaryState {
   hasError: boolean
+  errorMessage?: string
 }
 
 export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   state: ErrorBoundaryState = { hasError: false }
 
-  static getDerivedStateFromError(): ErrorBoundaryState {
-    return { hasError: true }
+  static getDerivedStateFromError(error: Error): ErrorBoundaryState {
+    return { hasError: true, errorMessage: error.message }
   }
 
   componentDidCatch(error: Error, info: ErrorInfo) {
@@ -22,10 +23,15 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
 
   render() {
     if (this.state.hasError) {
+      const detail =
+        import.meta.env.DEV && this.state.errorMessage
+          ? ` (${this.state.errorMessage})`
+          : ''
+
       return (
         <div className="flex min-h-screen items-center justify-center p-6">
           <ErrorMessage
-            message="Something went wrong loading this page."
+            message={`Something went wrong loading this page.${detail}`}
             onRetry={() => window.location.reload()}
           />
         </div>
