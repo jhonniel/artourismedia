@@ -150,8 +150,10 @@ function NavLink({ item }: { item: NavigationItem }) {
   const isExternal = item.url.startsWith('http')
 
   const className = cn(
-    'whitespace-nowrap font-semibold capitalize transition-colors lg:text-[15px] xl:text-base 2xl:text-lg',
-    isActive ? 'text-teal' : 'text-navy/80 hover:text-teal',
+    'relative whitespace-nowrap font-semibold capitalize transition-colors lg:text-[15px] xl:text-base 2xl:text-lg',
+    isActive
+      ? 'text-orange after:absolute after:-bottom-2 after:left-1/2 after:h-0.5 after:w-6 after:-translate-x-1/2 after:rounded-full after:bg-orange'
+      : 'text-navy/80 hover:text-orange',
   )
 
   if (isExternal) {

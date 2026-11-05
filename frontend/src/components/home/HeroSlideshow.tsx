@@ -1,7 +1,16 @@
-import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
+import {
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+  useRef,
+  useState,
+  type CSSProperties,
+  type Ref,
+} from 'react'
 import { buildAssetFallbackChain } from '@/lib/assets'
 import { cn } from '@/lib/utils'
-import { HERO_SLIDESHOW_PATHS } from '@/data/heroSlideshow'
+import { HERO_SLIDESHOW_PATHS, heroSlideFocus } from '@/data/heroSlideshow'
 
 export const HERO_SLIDESHOW_IMAGES = [...HERO_SLIDESHOW_PATHS]
 
@@ -9,10 +18,19 @@ const FADE_MS = 1800
 const HOLD_MS = 5200
 const FADE_EASING = 'cubic-bezier(0.45, 0.05, 0.55, 0.95)'
 
+export const HERO_SLIDE_INTERVAL_MS = HOLD_MS + FADE_MS
+
+export interface HeroSlideshowHandle {
+  next: () => void
+  prev: () => void
+}
+
 interface HeroSlideshowProps {
   images?: readonly string[]
   className?: string
   imageClassName?: string
+  controlRef?: Ref<HeroSlideshowHandle>
+  onIndexChange?: (index: number) => void
 }
 
 interface SlideshowLayerImageProps {
@@ -88,6 +106,8 @@ export function HeroSlideshow({
   images = HERO_SLIDESHOW_PATHS,
   className,
   imageClassName,
+  controlRef,
+  onIndexChange,
 }: HeroSlideshowProps) {
   const resolvedPaths = useMemo(
     () => images.map((src) => (src.startsWith('/') ? src : src)),
@@ -103,6 +123,7 @@ export function HeroSlideshow({
   ])
   const [isFading, setIsFading] = useState(false)
   const [revealed, setRevealed] = useState(false)
+  const [autoplayCycle, setAutoplayCycle] = useState(0)
 
   const currentIndexRef = useRef(0)
   const topLayerRef = useRef<0 | 1>(0)
@@ -151,12 +172,24 @@ export function HeroSlideshow({
     }
   }, [])
 
-  const advanceSlide = useCallback(async () => {
-    if (isTransitioningRef.current || resolvedPaths.length <= 1 || reduceMotion) return
+  const transitionTo = useCallback(async (nextIndex: number) => {
+    if (isTransitioningRef.current || resolvedPaths.length <= 1) return
+    if (nextIndex === currentIndexRef.current) return
 
-    const nextIndex = (currentIndexRef.current + 1) % resolvedPaths.length
-    const incomingLayer: 0 | 1 = topLayerRef.current === 0 ? 1 : 0
     const nextPath = resolvedPaths[nextIndex]!
+
+    if (reduceMotion) {
+      const layer = topLayerRef.current
+      setLayerPaths((prev) => {
+        const next: [string, string] = [...prev]
+        next[layer] = nextPath
+        return next
+      })
+      setCurrentIndex(nextIndex)
+      return
+    }
+
+    const incomingLayer: 0 | 1 = topLayerRef.current === 0 ? 1 : 0
 
     isTransitioningRef.current = true
     await preloadImage(nextPath)
@@ -186,16 +219,41 @@ export function HeroSlideshow({
     }, FADE_MS)
   }, [reduceMotion, resolvedPaths])
 
+  const advanceSlide = useCallback(() => {
+    void transitionTo((currentIndexRef.current + 1) % resolvedPaths.length)
+  }, [resolvedPaths.length, transitionTo])
+
+  const stepManually = useCallback(
+    (step: 1 | -1) => {
+      if (isTransitioningRef.current || resolvedPaths.length <= 1) return
+      const total = resolvedPaths.length
+      void transitionTo((currentIndexRef.current + step + total) % total)
+      setAutoplayCycle((cycle) => cycle + 1)
+    },
+    [resolvedPaths.length, transitionTo],
+  )
+
+  useImperativeHandle(
+    controlRef,
+    () => ({
+      next: () => stepManually(1),
+      prev: () => stepManually(-1),
+    }),
+    [stepManually],
+  )
+
+  useEffect(() => {
+    onIndexChange?.(currentIndex)
+  }, [currentIndex, onIndexChange])
+
   useEffect(() => {
     if (resolvedPaths.length <= 1 || reduceMotion) return
 
-    const interval = window.setInterval(advanceSlide, HOLD_MS + FADE_MS)
+    const interval = window.setInterval(advanceSlide, HERO_SLIDE_INTERVAL_MS)
     return () => {
       window.clearInterval(interval)
-      clearFadeTimers()
-      isTransitioningRef.current = false
     }
-  }, [advanceSlide, clearFadeTimers, reduceMotion, resolvedPaths.length])
+  }, [advanceSlide, autoplayCycle, reduceMotion, resolvedPaths.length])
 
   useEffect(() => () => clearFadeTimers(), [clearFadeTimers])
 
@@ -235,6 +293,7 @@ export function HeroSlideshow({
             style={{
               opacity,
               zIndex: isFading ? (layer === incomingLayer ? 2 : 1) : (isTop ? 1 : 0),
+              ['--hero-focus' as string]: heroSlideFocus(path),
               transitionDuration: isFading && !reduceMotion ? `${FADE_MS}ms` : undefined,
               transitionTimingFunction: isFading && !reduceMotion ? FADE_EASING : undefined,
             }}

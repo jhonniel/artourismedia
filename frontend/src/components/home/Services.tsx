@@ -3,6 +3,7 @@ import { Container } from '@/components/ui/Container'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { FadeIn } from '@/components/ui/FadeIn'
 import { ServiceIcon, serviceIconImageClass, serviceIconWrapperClass } from '@/components/icons/ServiceIcons'
+import { ServicesScenery } from '@/components/home/HomeScenery'
 import type { HomepageSection, Service } from '@/types'
 import { cn } from '@/lib/utils'
 
@@ -19,8 +20,9 @@ export function ServicesSection({ section, services }: ServicesSectionProps) {
   if (sorted.length === 0) return null
 
   return (
-    <section className="bg-white py-16 md:py-24">
-      <Container>
+    <section className="home-services relative overflow-hidden pt-14 md:pt-20">
+      <ServicesScenery />
+      <Container className="relative z-10">
         <FadeIn>
           <SectionHeading
             eyebrow={(section.content.eyebrow as string) ?? 'Our Services'}
@@ -29,17 +31,23 @@ export function ServicesSection({ section, services }: ServicesSectionProps) {
             description={description}
             align="center"
             tone="landing"
+            accentUnderline="squiggle"
+            eyebrowClassName="!text-navy"
           />
         </FadeIn>
 
-        <div className="grid gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 xl:grid-cols-5">
+        <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
           {sorted.map((service, index) => (
-            <FadeIn key={service.uuid} delay={index * 100} className="h-full">
+            <FadeIn
+              key={service.uuid}
+              delay={index * 100}
+              className="w-full sm:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1rem)] xl:w-[calc(20%-1.2rem)]"
+            >
               <Link to={`/services/${service.slug}`} className="group block h-full">
-                <article className="flex h-full min-h-[12.5rem] flex-col rounded-[1.25rem] border border-navy/5 bg-white p-5 shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-elevated sm:min-h-[13.5rem] sm:rounded-[1.5rem] sm:p-6 lg:rounded-[1.75rem]">
+                <article className="home-services__card flex h-full flex-col rounded-[1.25rem] p-5 transition-all duration-300 hover:-translate-y-1 sm:min-h-[13.5rem] sm:rounded-[1.5rem] sm:p-6">
                   <div
                     className={cn(
-                      'mb-4 flex h-14 shrink-0 items-center justify-center sm:mb-5 sm:h-16',
+                      'mb-3 flex h-14 shrink-0 items-center justify-center sm:mb-5 sm:h-16',
                       serviceIconWrapperClass(service.slug, service.icon, 'home'),
                     )}
                   >
@@ -49,12 +57,12 @@ export function ServicesSection({ section, services }: ServicesSectionProps) {
                       className={serviceIconImageClass(service.slug, service.icon, 'home')}
                     />
                   </div>
-                  <h3 className="min-h-[4.125rem] break-words text-base font-bold leading-snug text-navy transition-colors group-hover:text-teal sm:min-h-[4.75rem] sm:text-lg">
+                  <h3 className="break-words text-base font-bold leading-snug text-navy transition-colors group-hover:text-teal sm:min-h-[4.75rem] sm:text-lg">
                     {service.title}
                   </h3>
-                  <span className="mt-auto inline-flex items-center gap-1 pt-4 text-xs font-semibold uppercase tracking-[0.04em] text-orange sm:pt-5">
-                    Projects & Experience
-                    <span aria-hidden className="shrink-0">→</span>
+                  <span className="mt-auto inline-flex items-center gap-1 pt-4 text-xs font-bold uppercase tracking-[0.06em] text-orange sm:pt-5">
+                    View this service
+                    <span aria-hidden className="shrink-0 transition-transform group-hover:translate-x-0.5">→</span>
                   </span>
                 </article>
               </Link>

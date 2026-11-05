@@ -29,7 +29,7 @@ export function Layout() {
   const settings = data.settings
 
   return (
-    <div className="flex min-h-screen w-full flex-col overflow-x-clip">
+    <div className="flex min-h-screen w-full flex-col">
       <SiteHead
         siteName={settings.site_name ?? 'Destination Studio'}
         faviconUrl={settings.favicon_url}

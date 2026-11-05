@@ -5,6 +5,7 @@ import { FadeIn } from '@/components/ui/FadeIn'
 import { RichContent } from '@/components/ui/RichContent'
 import { SocialIcon } from '@/components/ui/SocialIcon'
 import { Button } from '@/components/ui/Button'
+import { AboutScenery } from '@/components/home/HomeScenery'
 import { parseContent } from '@/lib/utils'
 import { cn } from '@/lib/utils'
 import type { AboutContent, HomepageSection, SocialLink } from '@/types'
@@ -36,13 +37,6 @@ function AboutPortrait({ src, alt }: { src: string; alt: string }) {
       <div className="home-about__shapes" aria-hidden="true">
         <span className="home-about__circle home-about__circle--gold" />
         <span className="home-about__circle home-about__circle--orange" />
-        <svg className="home-about__dots" viewBox="0 0 100 78" aria-hidden="true">
-          {Array.from({ length: 4 }).map((_, row) =>
-            Array.from({ length: 5 }).map((__, col) => (
-              <circle key={`${row}-${col}`} cx={8 + col * 20} cy={8 + row * 18} r="2.1" fill="#f08a2a" />
-            )),
-          )}
-        </svg>
       </div>
       <LazyImage
         src={src}
@@ -77,8 +71,9 @@ export function About({ section, socialLinks = [] }: AboutProps) {
   const headline = [content.title, content.title_accent].filter(Boolean).join(' ')
 
   return (
-    <section className="relative overflow-hidden bg-white py-16 md:py-20 lg:py-24">
-      <Container className="relative">
+    <section className="home-about relative overflow-hidden pt-16 md:pt-20 lg:pt-24">
+      <AboutScenery />
+      <Container className="relative z-10">
         <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,0.85fr)_1.15fr] lg:gap-8 xl:gap-10">
           <FadeIn className="lg:flex lg:justify-end">
             {content.image_url && <AboutPortrait src={content.image_url} alt={content.image_alt ?? ''} />}
@@ -87,10 +82,7 @@ export function About({ section, socialLinks = [] }: AboutProps) {
           <FadeIn delay={80}>
             <div className="home-about__copy max-w-xl lg:max-w-none">
               {content.eyebrow && (
-                <p className="home-about__eyebrow">
-                  {content.eyebrow}
-                  <span className="home-about__eyebrow-rule" aria-hidden="true" />
-                </p>
+                <p className="home-about__eyebrow">{content.eyebrow}</p>
               )}
 
               {headline && <AboutHeadline title={content.title} accent={content.title_accent} />}
@@ -101,12 +93,11 @@ export function About({ section, socialLinks = [] }: AboutProps) {
 
               {sortedSocial.length > 0 && (
                 <ul className="home-about__social">
-                  {sortedSocial.map((link, index) => {
+                  {sortedSocial.map((link) => {
                     const styles = getSocialStyles(link.platform)
 
                     return (
                       <li key={link.uuid} className="home-about__social-item">
-                        {index > 0 && <span className="home-about__social-rule" aria-hidden="true" />}
                         <a
                           href={link.url}
                           target="_blank"

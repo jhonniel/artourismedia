@@ -1,3 +1,4 @@
+import { useId } from 'react'
 import { cn } from '@/lib/utils'
 
 interface DecorativeProps {
@@ -208,6 +209,118 @@ function NavyWaveShape({ topFill = 'cream' }: { topFill?: 'white' | 'cream' }) {
       <rect width="1440" height="100" fill={WAVE_TOP_FILL[topFill]} />
       <path d={`${NAVY_TO_WHITE_WAVE} L1440,102 L0,102 Z`} fill="#0B2447" />
     </>
+  )
+}
+
+const RIBBON_WAVE_WIDTH = 1440
+const RIBBON_WAVE_HEIGHT = 180
+
+/** Navy crest height at x: three rolling swells with a smaller ripple on top. */
+function ribbonCrest(x: number): number {
+  const t = x / RIBBON_WAVE_WIDTH
+  return 104 + 20 * Math.sin(2 * Math.PI * (t * 2.6 + 0.12)) + 8 * Math.sin(2 * Math.PI * (t * 5.3 + 0.45))
+}
+
+/** Smooth path through the sampled crest (Catmull-Rom converted to cubic Béziers). */
+function smoothCrest(sample: (x: number) => number, steps = 36): string {
+  const points = Array.from({ length: steps + 1 }, (_, i) => {
+    const x = (RIBBON_WAVE_WIDTH * i) / steps
+    return [x, Math.max(0, sample(x))] as const
+  })
+  const r = (n: number) => Math.round(n * 10) / 10
+  let d = `M${r(points[0][0])},${r(points[0][1])}`
+  for (let i = 0; i < points.length - 1; i += 1) {
+    const p0 = points[Math.max(0, i - 1)]
+    const p1 = points[i]
+    const p2 = points[i + 1]
+    const p3 = points[Math.min(points.length - 1, i + 2)]
+    const c1 = [p1[0] + (p2[0] - p0[0]) / 6, p1[1] + (p2[1] - p0[1]) / 6]
+    const c2 = [p2[0] - (p3[0] - p1[0]) / 6, p2[1] - (p3[1] - p1[1]) / 6]
+    d += ` C${r(c1[0])},${r(c1[1])} ${r(c2[0])},${r(c2[1])} ${r(p2[0])},${r(p2[1])}`
+  }
+  return `${d} L${RIBBON_WAVE_WIDTH},${RIBBON_WAVE_HEIGHT + 1} L0,${RIBBON_WAVE_HEIGHT + 1} Z`
+}
+
+/**
+ * Ribbon layers from back to front. `gap` lifts the band above the navy crest (wider toward the
+ * edges), `shift` slides it sideways so the ribbons drift apart instead of running parallel.
+ */
+const RIBBON_WAVE_LAYERS = [
+  { key: 'mist', gap: 40, shift: -12, fill: 'mist' },
+  { key: 'light', gap: 30, shift: -8, fill: 'light' },
+  { key: 'sky', gap: 21, shift: -4, fill: 'sky' },
+  { key: 'blue', gap: 13, shift: 2, fill: 'blue' },
+  { key: 'navyLight', gap: 6, shift: 4, fill: '#173f6c' },
+  { key: 'navy', gap: 0, shift: 0, fill: '#0B2447' },
+] as const
+
+const RIBBON_WAVE_PATHS = RIBBON_WAVE_LAYERS.map(({ key, gap, shift, fill }) => ({
+  key,
+  fill,
+  d: smoothCrest((x) => {
+    const edge = Math.abs((2 * x) / RIBBON_WAVE_WIDTH - 1) ** 2
+    return ribbonCrest(x + shift) - gap * (0.7 + 0.8 * edge)
+  }),
+}))
+
+/** Cream (or white) paper-cut that closes a navy section — no ribbon stripes, no overflow box. */
+export function NavyBottomWave({ className, topFill = 'cream' }: WaveDividerProps) {
+  const crest = 'M0,28 C200,28 360,50 580,34 C820,16 1040,48 1240,30 C1340,22 1392,28 1440,30'
+
+  return (
+    <svg
+      className={cn('block w-full leading-none', className)}
+      viewBox="0 0 1440 80"
+      preserveAspectRatio="none"
+      aria-hidden="true"
+    >
+      <path d={`${crest} L1440,81 L0,81 Z`} fill={WAVE_TOP_FILL[topFill]} />
+    </svg>
+  )
+}
+
+interface NavyRibbonWaveProps extends WaveDividerProps {
+  /** Mirror vertically: navy on top, ribbons hanging below — closes a `bg-navy` section. */
+  flip?: boolean
+}
+
+/**
+ * Rolling navy waves with layered blue ribbon bands along the crests. Transparent above the waves
+ * unless `topFill` is set; the front layer is solid navy to meet a `bg-navy` section.
+ * With `flip`, `topFill` colours the area below the waves instead.
+ */
+export function NavyRibbonWave({ className, topFill, flip = false }: NavyRibbonWaveProps) {
+  const id = `ribbon-${useId().replace(/[^a-zA-Z0-9]/g, '')}`
+  const gradients: Record<string, [string, string, string]> = {
+    mist: ['#e4f2f9', '#eef6fa', '#dcedf7'],
+    light: ['#c6e3f3', '#d9edf7', '#b3d9ee'],
+    sky: ['#8cc4e4', '#a6d1ea', '#7fbde2'],
+    blue: ['#3f88c2', '#2c6aa2', '#4b97cf'],
+  }
+
+  return (
+    <svg
+      className={cn('ribbon-wave', className)}
+      viewBox={`0 0 ${RIBBON_WAVE_WIDTH} ${RIBBON_WAVE_HEIGHT}`}
+      preserveAspectRatio="none"
+      aria-hidden="true"
+    >
+      <defs>
+        {Object.entries(gradients).map(([name, [start, middle, end]]) => (
+          <linearGradient key={name} id={`${id}-${name}`} x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stopColor={start} />
+            <stop offset="50%" stopColor={middle} />
+            <stop offset="100%" stopColor={end} />
+          </linearGradient>
+        ))}
+      </defs>
+      {topFill && <rect width={RIBBON_WAVE_WIDTH} height={RIBBON_WAVE_HEIGHT} fill={WAVE_TOP_FILL[topFill]} />}
+      <g transform={flip ? `translate(0, ${RIBBON_WAVE_HEIGHT}) scale(1, -1)` : undefined}>
+        {RIBBON_WAVE_PATHS.map(({ key, fill, d }) => (
+          <path key={key} d={d} fill={fill.startsWith('#') ? fill : `url(#${id}-${fill})`} />
+        ))}
+      </g>
+    </svg>
   )
 }
 

@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { Container } from '@/components/ui/Container'
 import { SocialIcon } from '@/components/ui/SocialIcon'
 import { BrandLogo } from '@/components/ui/BrandLogo'
-import { NavySectionTopWave } from '@/components/ui/Decorative'
+import { NavyRibbonWave } from '@/components/ui/Decorative'
 import { useNewsletterMutation } from '@/hooks/useMutations'
 import type { FooterData, SocialLink } from '@/types'
 import { cn, formatFooterCopyright } from '@/lib/utils'
@@ -84,9 +84,9 @@ export function Footer({ footer, socialLinks, siteName, logoUrl }: FooterProps) 
 
   return (
     <footer className="relative -mt-px w-full overflow-hidden">
-      <NavySectionTopWave
+      <NavyRibbonWave
         topFill={waveTopFill}
-        className="relative z-10 -mt-px h-12 sm:h-16 md:h-20 lg:h-24"
+        className="relative z-10 -mt-px -mb-px block h-16 w-full sm:h-20 md:h-24 lg:h-28"
       />
 
       <div className="relative bg-navy pb-[max(0.5rem,env(safe-area-inset-bottom,0px))] text-white">

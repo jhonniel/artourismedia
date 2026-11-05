@@ -1,9 +1,15 @@
 import { Link } from 'react-router-dom'
-import type { ReactNode } from 'react'
+import { useRef, useState, type ReactNode, type RefObject } from 'react'
 import { Container } from '@/components/ui/Container'
 import { Button } from '@/components/ui/Button'
 import { FadeIn } from '@/components/ui/FadeIn'
-import { HeroSlideshow } from '@/components/home/HeroSlideshow'
+import {
+  HERO_SLIDE_INTERVAL_MS,
+  HERO_SLIDESHOW_IMAGES,
+  HeroSlideshow,
+  type HeroSlideshowHandle,
+} from '@/components/home/HeroSlideshow'
+import { HeroBottomWaves, HeroScenery } from '@/components/home/HomeScenery'
 import {
   SparkleIcon,
   HeartOutlineIcon,
@@ -31,9 +37,8 @@ function HeroHeadline({
 
       return (
         <h1 className="hero-headline-landing break-words font-serif font-normal tracking-[-0.02em] text-balance">
-          <span className="block text-navy">
-            {content.headline_prefix} {content.headline_highlight}
-          </span>
+          {content.headline_prefix && <span className="block text-navy">{content.headline_prefix}</span>}
+          {content.headline_highlight && <span className="block text-navy">{content.headline_highlight}</span>}
           <span className="mt-1 block text-orange sm:mt-1.5">
             {content.headline_middle ? `${content.headline_middle} ` : ''}
             {accentText}
@@ -108,43 +113,133 @@ function HeroPhotoCredit({ className }: { className?: string }) {
   )
 }
 
-function LandingHero({ content }: { content: HeroContent }) {
+const HERO_SLIDE_TOTAL = HERO_SLIDESHOW_IMAGES.length
+
+function formatSlideNumber(value: number): string {
+  return String(value).padStart(2, '0')
+}
+
+function ArrowIcon({ direction }: { direction: 'left' | 'right' }) {
   return (
-    <section className="hero-offset-full relative flex min-h-[100dvh] w-full max-w-full flex-col overflow-x-clip bg-cream">
-      {/* Mobile — image + bottom fade behind copy (no seam line) */}
-      <div className="hero-landing-mobile lg:hidden flex min-h-0 flex-1 flex-col">
+    <svg
+      viewBox="0 0 20 20"
+      className={cn('h-3.5 w-3.5', direction === 'left' && 'rotate-180')}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M4 10h12M11 5l5 5-5 5" />
+    </svg>
+  )
+}
+
+function HeroSlideControls({
+  index,
+  controlRef,
+}: {
+  index: number
+  controlRef: RefObject<HeroSlideshowHandle | null>
+}) {
+  if (HERO_SLIDE_TOTAL <= 1) return null
+
+  return (
+    <div className="hero-slide-controls" aria-label="Hero slideshow controls">
+      <p className="hero-slide-controls__count" aria-live="polite">
+        <span className="text-navy">{formatSlideNumber(index + 1)}</span>
+        <span className="text-navy/40"> / {formatSlideNumber(HERO_SLIDE_TOTAL)}</span>
+      </p>
+      <span className="hero-slide-controls__track" aria-hidden="true">
+        <span
+          key={index}
+          className="hero-slide-controls__fill"
+          style={{ animationDuration: `${HERO_SLIDE_INTERVAL_MS}ms` }}
+        />
+      </span>
+      <div className="flex items-center gap-1.5">
+        <button
+          type="button"
+          className="hero-slide-controls__button"
+          onClick={() => controlRef.current?.prev()}
+          aria-label="Previous photo"
+        >
+          <ArrowIcon direction="left" />
+        </button>
+        <button
+          type="button"
+          className="hero-slide-controls__button"
+          onClick={() => controlRef.current?.next()}
+          aria-label="Next photo"
+        >
+          <ArrowIcon direction="right" />
+        </button>
+      </div>
+    </div>
+  )
+}
+
+function LandingHero({ content }: { content: HeroContent }) {
+  const mobileSlides = useRef<HeroSlideshowHandle>(null)
+  const desktopSlides = useRef<HeroSlideshowHandle>(null)
+  const [mobileIndex, setMobileIndex] = useState(0)
+  const [desktopIndex, setDesktopIndex] = useState(0)
+
+  return (
+    <section className="hero-offset-full hero-landing relative flex min-h-[100dvh] w-full max-w-full flex-col overflow-x-clip">
+      {/* Mobile — photo with a wave edge, copy below */}
+      <div className="hero-landing-mobile lg:hidden relative flex min-h-0 flex-1 flex-col">
         <div className="hero-mobile-stack flex min-h-0 flex-1 flex-col">
           <div aria-hidden className="hero-mobile-photo">
             <HeroSlideshow
               className="hero-mobile-slideshow absolute inset-0 z-0 size-full"
-              imageClassName="object-cover object-center"
+              imageClassName="object-cover"
+              controlRef={mobileSlides}
+              onIndexChange={setMobileIndex}
             />
-            <HeroPhotoCredit className="hero-photo-credit--mobile absolute bottom-3 right-4" />
+            <HeroPhotoCredit className="hero-photo-credit--mobile absolute bottom-5 right-4" />
           </div>
 
-          <Container className="hero-mobile-copy-wrap min-w-0 max-w-full pb-[max(1.25rem,env(safe-area-inset-bottom))]">
+          <Container className="hero-mobile-copy-wrap min-w-0 max-w-full">
             <FadeIn className="hero-copy min-w-0 max-w-full">
-              <HeroContentBlock content={content} variant="landing" />
+              <HeroContentBlock
+                content={content}
+                variant="landing"
+                controls={<HeroSlideControls index={mobileIndex} controlRef={mobileSlides} />}
+              />
             </FadeIn>
           </Container>
         </div>
+        <HeroBottomWaves className="hero-waves--mobile" />
       </div>
 
-      {/* Desktop — full-bleed image with soft left fade (no hard 50/50 column split) */}
+      {/* Desktop — photo in an organic wave frame beside the copy */}
       <div className="hero-shell hero-landing-shell hidden min-h-0 flex-1 lg:block">
-        <div className="hero-media hero-landing-media">
-          <HeroSlideshow
-            className="hero-landing-slideshow absolute inset-0 z-0 h-full w-full scale-105 translate-x-[10%]"
-            imageClassName="object-cover object-[100%_center] lg:object-[100%_center] xl:object-[100%_center]"
-          />
+        <HeroScenery />
+
+        <div className="hero-stage">
+          <div className="hero-frame">
+            <HeroSlideshow
+              className="hero-frame__slideshow absolute inset-0 z-0 h-full w-full"
+              imageClassName="object-cover"
+              controlRef={desktopSlides}
+              onIndexChange={setDesktopIndex}
+            />
+            <HeroPhotoCredit className="hero-frame__credit" />
+          </div>
         </div>
 
-        <FadeIn className="hero-copy hero-landing-copy hero-landing-readable relative z-10 flex flex-col justify-center py-10 lg:py-0 xl:py-0">
-          <HeroContentBlock content={content} variant="landing" />
+        <HeroBottomWaves />
+
+        <FadeIn className="hero-copy hero-landing-copy relative z-10 flex flex-col justify-center">
+          <HeroContentBlock
+            content={content}
+            variant="landing"
+            controls={<HeroSlideControls index={desktopIndex} controlRef={desktopSlides} />}
+          />
         </FadeIn>
       </div>
-
-      <HeroPhotoCredit className="absolute bottom-6 right-8 hidden lg:block xl:right-10" />
     </section>
   )
 }
@@ -153,10 +248,12 @@ function HeroContentBlock({
   content,
   variant = 'default',
   showDecorations = false,
+  controls,
 }: {
   content: HeroContent
   variant?: 'default' | 'landing'
   showDecorations?: boolean
+  controls?: ReactNode
 }) {
   const isLanding = variant === 'landing'
   const landingButtonClass =
@@ -165,18 +262,20 @@ function HeroContentBlock({
     isLanding ? landingButtonClass : 'px-7 uppercase tracking-[0.12em] sm:px-8 lg:px-9 lg:py-4 text-[10px] sm:text-[11px] md:text-xs',
   )
 
+  const eyebrow = isLanding ? content.eyebrow ?? content.badge_text : content.eyebrow
+
   return (
     <>
-      {content.eyebrow && !isLanding && (
+      {eyebrow && (
         <p
           className={cn(
-            'mb-3 font-bold uppercase tracking-[0.2em] text-teal',
+            'font-bold uppercase text-teal',
             isLanding
-              ? 'hero-eyebrow-landing'
-              : 'text-[10px] sm:text-[11px]',
+              ? 'hero-eyebrow-landing mb-3 sm:mb-4'
+              : 'mb-3 text-[10px] tracking-[0.2em] sm:text-[11px]',
           )}
         >
-          {content.eyebrow}
+          {eyebrow}
         </p>
       )}
 
@@ -201,8 +300,8 @@ function HeroContentBlock({
       {(content.cta_text || content.secondary_cta_text) && (
         <div
           className={cn(
-            'relative flex w-full flex-col items-start gap-2.5 sm:flex-row sm:flex-wrap sm:items-center',
-            isLanding ? 'mt-5 sm:mt-6 lg:mt-7' : 'mt-6 sm:mt-7 md:mt-8',
+            'relative flex w-full flex-row flex-wrap items-center gap-2.5',
+            isLanding ? 'hero-landing-actions mt-5 sm:mt-6 lg:mt-7' : 'mt-6 sm:mt-7 md:mt-8',
           )}
         >
           {content.cta_text && content.cta_url && (
@@ -223,27 +322,30 @@ function HeroContentBlock({
               external={content.secondary_cta_url.startsWith('http')}
               className="inline-flex w-fit max-w-full"
             >
-              <Button
-                variant="outline"
-                size="sm"
-                className={cn(
-                  isLanding
-                    ? 'hero-btn-landing gap-1.5 border px-3.5 py-1.5 text-[0.625rem] uppercase tracking-[0.08em]'
-                    : buttonClass,
-                  'font-bold',
-                )}
-              >
-                {content.secondary_cta_text}
-                <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-navy/15 bg-white">
-                  <svg viewBox="0 0 24 24" className="ml-px h-2 w-2 fill-current" aria-hidden="true">
-                    <path d="M8 5v14l11-7z" />
-                  </svg>
-                </span>
-              </Button>
+              {isLanding ? (
+                <Button
+                  variant="outline"
+                  size="md"
+                  className={cn(landingButtonClass, 'hero-btn-outline font-bold')}
+                >
+                  {content.secondary_cta_text}
+                </Button>
+              ) : (
+                <Button variant="outline" size="sm" className={cn(buttonClass, 'font-bold')}>
+                  {content.secondary_cta_text}
+                  <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-navy/15 bg-white">
+                    <svg viewBox="0 0 24 24" className="ml-px h-2 w-2 fill-current" aria-hidden="true">
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
+                  </span>
+                </Button>
+              )}
             </HeroLinkButton>
           )}
         </div>
       )}
+
+      {controls}
     </>
   )
 }
