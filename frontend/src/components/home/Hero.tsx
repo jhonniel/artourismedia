@@ -9,7 +9,16 @@ import {
   HeroSlideshow,
   type HeroSlideshowHandle,
 } from '@/components/home/HeroSlideshow'
-import { HeroBottomWaves, HeroFrameEdge, HeroScenery } from '@/components/home/HomeScenery'
+import {
+  HERO_FRAME_MASK,
+  HERO_MOBILE_MASK,
+  HeroBottomWaves,
+  HeroFrameEdge,
+  HeroFrameShadow,
+  HeroMobileEdge,
+  HeroMobileShadow,
+  HeroScenery,
+} from '@/components/home/HomeScenery'
 import {
   SparkleIcon,
   HeartOutlineIcon,
@@ -192,13 +201,19 @@ function LandingHero({ content }: { content: HeroContent }) {
       <div className="hero-landing-mobile lg:hidden relative flex min-h-0 flex-1 flex-col">
         <div className="hero-mobile-stack flex min-h-0 flex-1 flex-col">
           <div className="hero-mobile-photo-wrap">
-            <div aria-hidden className="hero-mobile-photo">
+            <HeroMobileShadow />
+            <div
+              aria-hidden
+              className="hero-mobile-photo"
+              style={{ WebkitMaskImage: HERO_MOBILE_MASK, maskImage: HERO_MOBILE_MASK }}
+            >
               <HeroSlideshow
                 className="hero-mobile-slideshow absolute inset-0 z-0 size-full"
                 imageClassName="object-cover"
                 controlRef={mobileSlides}
                 onIndexChange={setMobileIndex}
               />
+              <HeroMobileEdge />
             </div>
             <HeroPhotoCredit className="hero-photo-credit--mobile" />
           </div>
@@ -221,7 +236,8 @@ function LandingHero({ content }: { content: HeroContent }) {
         <HeroScenery />
 
         <div className="hero-stage">
-          <div className="hero-frame">
+          <HeroFrameShadow />
+          <div className="hero-frame" style={{ WebkitMaskImage: HERO_FRAME_MASK, maskImage: HERO_FRAME_MASK }}>
             <HeroSlideshow
               className="hero-frame__slideshow absolute inset-0 z-0 h-full w-full"
               imageClassName="object-cover"
@@ -233,7 +249,7 @@ function LandingHero({ content }: { content: HeroContent }) {
           </div>
         </div>
 
-        <HeroBottomWaves />
+        <HeroBottomWaves variant="ribbon" />
 
         <FadeIn className="hero-copy hero-landing-copy relative z-10 flex flex-col justify-center">
           <HeroContentBlock

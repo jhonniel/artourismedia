@@ -7,22 +7,20 @@ type Point = [number, number]
 type Segment = [Point, Point, Point, Point]
 
 /**
- * Outline of the desktop hero photo in frame units (0–100), clockwise from the top-right; must match
- * the `.hero-frame` mask. The frame box is the stage widened 60% to the left so the photo can sweep
- * down to the bottom-left corner; the bottom edge runs off-canvas and is covered by the hero waves.
- * Every joint shares a tangent so the edge reads as one continuous, smooth line.
+ * Left edge of the desktop hero photo in frame units (0–100), from above the top-right corner down
+ * to below the bottom-left. The frame box is the stage widened 60% to the left.
+ *
+ * Fitted to the reference as four tangent-continuous cubics: a diagonal in from the top, a flat
+ * shelf under the nav, one large rounded corner into the vertical, then a long sweep to the
+ * bottom-left corner. Curvature changes sign only twice on screen, so it reads as a single S.
+ *
+ * Single source of truth — the photo mask, the white rim and its shadow are all built from this.
  */
-/** Source of truth for the `.hero-frame` CSS mask — keep the two in lockstep. */
 export const FRAME_OUTLINE: Segment[] = [
-  [[104, -4], [98, -2], [91, -0.17], [86, 2]],
-  [[86, 2], [81, 4.17], [79.67, 6.67], [74, 9]],
-  [[74, 9], [68.33, 11.33], [57.27, 11.83], [52, 16]],
-  [[52, 16], [46.73, 20.17], [44.23, 28], [42.4, 34]],
-  [[42.4, 34], [40.57, 40], [41.48, 46.33], [41, 52]],
-  [[41, 52], [40.52, 57.67], [40.92, 63], [39.5, 68]],
-  [[39.5, 68], [38.08, 73], [35.5, 78], [32.5, 82]],
-  [[32.5, 82], [29.5, 86], [27.58, 88], [21.5, 92]],
-  [[21.5, 92], [15.42, 96], [4.5, 101.33], [-4, 106]],
+  [[87.1, -4.4], [82.68, -0.48], [74.53, 7.7], [70.22, 10.2]],
+  [[70.22, 10.2], [63, 14.38], [54.53, 9.65], [48.38, 19.4]],
+  [[48.38, 19.4], [35.52, 39.81], [47.46, 64.19], [31.9, 83]],
+  [[31.9, 83], [21.93, 95.05], [8.71, 98.79], [-3.24, 101.2]],
 ]
 
 function outlineToPath(segments: Segment[]): string {
@@ -36,21 +34,52 @@ function outlineToPath(segments: Segment[]): string {
 
 const FRAME_EDGE_PATH = outlineToPath(FRAME_OUTLINE)
 
-/** Thin white paper-cut rim on the photo S — same line as the zoomed reference edge. */
-export function HeroFrameEdge() {
+/**
+ * Bottom edge of the mobile hero photo in photo-box units (0–100), right to left: a shallow wave
+ * that sits a little higher on the right. Same role as FRAME_OUTLINE — mask, rim and shadow all
+ * follow it.
+ */
+const MOBILE_EDGE_PATH = 'M104,91 C74,96 40,94 -4,97'
+
+/** CSS `mask-image` value that keeps the side of `edge` closed off by `closing` (0–100 box units). */
+function maskFrom(edge: string, closing: string): string {
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="2000" height="2000" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="${edge} ${closing} Z"/></svg>`
+  return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`
+}
+
+/** Desktop photo: everything right of / below the S, closed off outside the frame box. */
+export const HERO_FRAME_MASK = maskFrom(FRAME_EDGE_PATH, 'L-8,108 L108,108 L108,-8')
+
+/** Mobile photo: everything above the wave. */
+export const HERO_MOBILE_MASK = maskFrom(MOBILE_EDGE_PATH, 'L-4,-4 L104,-4')
+
+/** One edge path stroked at a constant screen width, however the 100×100 box is stretched. */
+function EdgeStroke({ className, d }: { className: string; d: string }) {
   return (
-    <svg className="hero-frame__edge" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-      <path
-        d={FRAME_EDGE_PATH}
-        fill="none"
-        stroke="#ffffff"
-        strokeWidth="10"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        vectorEffect="non-scaling-stroke"
-      />
+    <svg className={className} viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+      <path d={d} fill="none" strokeLinecap="round" strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
     </svg>
   )
+}
+
+/** Soft shadow hugging the rim on the cream side. Sits behind the masked frame, in the same box. */
+export function HeroFrameShadow() {
+  return <EdgeStroke className="hero-frame__shadow" d={FRAME_EDGE_PATH} />
+}
+
+/** White paper rim along the photo edge. Lives inside the masked frame, so only its inner half shows. */
+export function HeroFrameEdge() {
+  return <EdgeStroke className="hero-frame__edge" d={FRAME_EDGE_PATH} />
+}
+
+/** Mobile counterpart of HeroFrameShadow — behind the masked photo, falling onto the cream below it. */
+export function HeroMobileShadow() {
+  return <EdgeStroke className="hero-mobile-photo__shadow" d={MOBILE_EDGE_PATH} />
+}
+
+/** Mobile counterpart of HeroFrameEdge — inside the masked photo, along its wave. */
+export function HeroMobileEdge() {
+  return <EdgeStroke className="hero-mobile-photo__edge" d={MOBILE_EDGE_PATH} />
 }
 
 /** Deterministic PRNG so procedural scenery is identical on every render and build. */
@@ -477,9 +506,34 @@ function SceneryPhoto({ path, className }: { path: string; className: string }) 
 }
 
 /**
- * Thin paper fade at the bottom of the photo — same treatment as the reference:
- * a pale cream swell in the 1440×200 box, almost flat under the copy, peaking in the
- * photo, handing off to About at #fdfefe. Soft white bloom, no outline, no drop-shadow.
+ * Desktop hero foot, as in the reference: the white rim carries on along the bottom of the photo,
+ * over a pale-blue strip that melts into the About section (#fdfefe). 1440×200 box; the crest
+ * starts low at the left, where the photo edge sweeps into the corner, and peaks under the photo.
+ */
+const RIBBON_CREST = 'M0,164 C150,162 300,152 518,120 C700,93 820,60 1037,57 C1180,55 1320,72 1440,100'
+
+function HeroRibbon() {
+  const id = useSvgId('ribbon')
+
+  return (
+    <svg className="hero-scenery__waves" viewBox="0 0 1440 200" preserveAspectRatio="none" aria-hidden="true">
+      <defs>
+        <linearGradient id={`${id}-water`} gradientUnits="userSpaceOnUse" x1="0" y1="96" x2="0" y2="200">
+          <stop offset="0%" stopColor="#b4d0df" />
+          <stop offset="48%" stopColor="#bfd7e4" />
+          <stop offset="100%" stopColor="#fdfefe" />
+        </linearGradient>
+      </defs>
+
+      <path d={`${RIBBON_CREST} L1440,201 L0,201 Z`} fill={`url(#${id}-water)`} />
+      <path className="hero-scenery__ribbon-crest" d={RIBBON_CREST} fill="none" vectorEffect="non-scaling-stroke" />
+    </svg>
+  )
+}
+
+/**
+ * Mobile hero foot: a pale cream swell in the 1440×200 box, almost flat under the copy, handing
+ * off to About at #fdfefe. Soft white bloom, no outline, no drop-shadow.
  */
 const WAVE_CREST = 'M0,176 C340,178 560,170 780,148 C1000,122 1140,108 1280,132 C1360,146 1410,160 1440,166'
 
@@ -517,10 +571,16 @@ export function HeroScenery({ className }: { className?: string }) {
   )
 }
 
-export function HeroBottomWaves({ className }: { className?: string }) {
+export function HeroBottomWaves({
+  className,
+  variant = 'paper',
+}: {
+  className?: string
+  variant?: 'paper' | 'ribbon'
+}) {
   return (
     <div className={cn('home-scenery hero-waves', className)} aria-hidden="true">
-      <HeroWaves />
+      {variant === 'ribbon' ? <HeroRibbon /> : <HeroWaves />}
     </div>
   )
 }

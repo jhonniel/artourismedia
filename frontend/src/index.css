@@ -324,6 +324,13 @@
         transparent 100%
       );
     }
+
+    /* Home: the nav sits on the cream panel, so the frosted veil has nothing to do there — and its
+       backdrop blur smeared the white rim and shadow where the photo edge sweeps under the header.
+       Project heroes keep the veil; their nav sits directly on a full-bleed photo. */
+    .header-hero-overlay:not(.header-project-overlay)::after {
+      content: none;
+    }
   }
 
   @media (max-width: 1023px) {
@@ -468,8 +475,7 @@
     z-index: 0;
     overflow: hidden;
     pointer-events: none;
-    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M-4,-4 L104,-4 L104,91 C74,96 40,94 -4,97 Z'/%3E%3C/svg%3E");
-    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M-4,-4 L104,-4 L104,91 C74,96 40,94 -4,97 Z'/%3E%3C/svg%3E");
+    /* mask-image is set inline from the same wave path the rim and shadow below are stroked along */
     -webkit-mask-size: 100% 100%;
     mask-size: 100% 100%;
     -webkit-mask-repeat: no-repeat;
@@ -478,6 +484,40 @@
 
   .hero-mobile-photo .hero-mobile-slideshow {
     height: 100%;
+  }
+
+  /* Same layered-paper edge as the desktop frame, scaled for a phone: a white band on the photo side
+     of the wave (the stroke is centred on the cut, so half of it shows) and a soft shadow on the
+     cream below. */
+  .hero-mobile-photo__edge,
+  .hero-mobile-photo__shadow {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  .hero-mobile-photo__edge {
+    z-index: 2;
+  }
+
+  .hero-mobile-photo__edge path {
+    stroke: #ffffff;
+    stroke-width: clamp(10px, 2.6vw, 16px);
+  }
+
+  .hero-mobile-photo__shadow {
+    z-index: 0;
+    overflow: visible;
+    opacity: 0.1;
+    filter: blur(clamp(4px, 1.1vw, 7px));
+  }
+
+  .hero-mobile-photo__shadow path {
+    stroke: #162030;
+    stroke-width: clamp(8px, 2vw, 13px);
   }
 
   .hero-mobile-copy-wrap {
@@ -525,8 +565,9 @@
       position: absolute;
       z-index: 2;
       right: 1rem;
-      /* Wave mask cuts the photo at ~9% from the bottom on the right. */
-      bottom: 3.75rem;
+      /* The wave cuts the photo ~9% up from the bottom on the right; sit just above its white rim
+         whatever the photo height (a fixed offset ran into the rim on tall tablets). */
+      bottom: calc(9% + 1.1rem);
       max-width: calc(100% - 2rem);
       color: rgb(255 255 255 / 0.95);
       font-size: 0.75rem;
@@ -626,16 +667,14 @@
     left: max(37%, calc(var(--site-band-inset) + var(--hero-copy-width) - var(--site-gutter)));
   }
 
-  /* Frame + edge share one box: the stage widened 60% left. Path is FRAME_OUTLINE ×10 in a 1000²
-     SVG so the S-curve stays sharp when the mask is stretched. No fade on this mask — that erased
-     the line at the lower hook. Bottom paper swell is HeroBottomWaves, not the photo mask. */
+  /* Photo frame: the stage widened 60% to the left. Its mask-image is set inline from FRAME_OUTLINE
+     (HomeScenery.tsx), the same path the rim and shadow below are stroked along, so the three can
+     never drift apart. The bottom of the photo is finished by the hero ribbon, not by this mask. */
   .hero-frame {
     position: absolute;
     inset: 0 0 0 -60%;
     z-index: 1;
     overflow: hidden;
-    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='2000' height='2000' viewBox='0 0 1000 1000' preserveAspectRatio='none'%3E%3Cpath d='M520,160 C572.7,118.3 683.3,113.3 740,90 C796.7,66.7 810,41.7 860,20 C910,-1.7 980,-20 1040,-40 L1040,1060 L-40,1060 C45,1013.3 154.2,960 215,920 C275.8,880 295,860 325,820 C355,780 380.8,730 395,680 C409.2,630 405.2,576.7 410,520 C414.8,463.3 405.7,400 424,340 C442.3,280 467.3,201.7 520,160 Z'/%3E%3C/svg%3E");
-    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='2000' height='2000' viewBox='0 0 1000 1000' preserveAspectRatio='none'%3E%3Cpath d='M520,160 C572.7,118.3 683.3,113.3 740,90 C796.7,66.7 810,41.7 860,20 C910,-1.7 980,-20 1040,-40 L1040,1060 L-40,1060 C45,1013.3 154.2,960 215,920 C275.8,880 295,860 325,820 C355,780 380.8,730 395,680 C409.2,630 405.2,576.7 410,520 C414.8,463.3 405.7,400 424,340 C442.3,280 467.3,201.7 520,160 Z'/%3E%3C/svg%3E");
     -webkit-mask-size: 100% 100%;
     mask-size: 100% 100%;
     -webkit-mask-repeat: no-repeat;
@@ -646,14 +685,42 @@
     object-position: var(--hero-focus, 10% 42%);
   }
 
-  .hero-frame__edge {
+  /* Layered-paper edge, as in the reference: a crisp white band on the photo side of the cut, and a
+     soft shadow falling onto the cream beside it. Stroke widths are in screen px (non-scaling
+     strokes) and track the viewport so the band keeps its proportion. The white stroke is centred
+     on the cut and clipped by the frame mask, so half its width is what shows. */
+  .hero-frame__edge,
+  .hero-frame__shadow {
     position: absolute;
-    inset: 0;
-    z-index: 2;
+    top: 0;
     display: block;
-    width: 100%;
     height: 100%;
     pointer-events: none;
+  }
+
+  .hero-frame__edge {
+    left: 0;
+    z-index: 2;
+    width: 100%;
+  }
+
+  .hero-frame__edge path {
+    stroke: #ffffff;
+    stroke-width: clamp(14px, 1.2vw, 22px);
+  }
+
+  .hero-frame__shadow {
+    left: -60%;
+    z-index: 0;
+    width: 160%;
+    overflow: visible;
+    opacity: 0.09;
+    filter: blur(clamp(5px, 0.5vw, 9px));
+  }
+
+  .hero-frame__shadow path {
+    stroke: #162030;
+    stroke-width: clamp(10px, 1vw, 18px);
   }
 
   .hero-mobile-photo img {
@@ -694,8 +761,14 @@
 
   .hero-shell {
     /* Kept slim so the slideshow photo shows through as far down as possible */
-    --hero-wave-height: clamp(2.25rem, min(4.5vw, 6vh), 3.75rem);
+    --hero-wave-height: clamp(2.75rem, 6vh, 4.25rem);
     --hero-wave-clearance: calc(var(--hero-wave-height) * 0.7 + 0.75rem);
+  }
+
+  /* White crest of the desktop ribbon — the photo rim carried along the bottom. */
+  .hero-scenery__ribbon-crest {
+    stroke: #ffffff;
+    stroke-width: clamp(9px, 1.35vh, 15px);
   }
 
   .home-scenery.hero-waves {
@@ -931,6 +1004,15 @@
 
     .hero-landing-mobile .hero-slide-controls__track {
       width: 3.25rem;
+    }
+  }
+
+  /* Narrowest phones (320px): tighten the CTAs so both still share one row */
+  @media (max-width: 359px) {
+    .hero-landing-mobile .hero-copy .hero-btn-landing {
+      padding: 0.7rem 0.75rem;
+      font-size: 0.625rem;
+      letter-spacing: 0.06em;
     }
   }
 
