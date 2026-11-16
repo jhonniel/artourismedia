@@ -9,7 +9,7 @@ import {
   HeroSlideshow,
   type HeroSlideshowHandle,
 } from '@/components/home/HeroSlideshow'
-import { HeroBottomWaves, HeroScenery } from '@/components/home/HomeScenery'
+import { HeroBottomWaves, HeroFrameEdge, HeroScenery } from '@/components/home/HomeScenery'
 import {
   SparkleIcon,
   HeartOutlineIcon,
@@ -191,14 +191,16 @@ function LandingHero({ content }: { content: HeroContent }) {
       {/* Mobile — photo with a wave edge, copy below */}
       <div className="hero-landing-mobile lg:hidden relative flex min-h-0 flex-1 flex-col">
         <div className="hero-mobile-stack flex min-h-0 flex-1 flex-col">
-          <div aria-hidden className="hero-mobile-photo">
-            <HeroSlideshow
-              className="hero-mobile-slideshow absolute inset-0 z-0 size-full"
-              imageClassName="object-cover"
-              controlRef={mobileSlides}
-              onIndexChange={setMobileIndex}
-            />
-            <HeroPhotoCredit className="hero-photo-credit--mobile absolute bottom-5 right-4" />
+          <div className="hero-mobile-photo-wrap">
+            <div aria-hidden className="hero-mobile-photo">
+              <HeroSlideshow
+                className="hero-mobile-slideshow absolute inset-0 z-0 size-full"
+                imageClassName="object-cover"
+                controlRef={mobileSlides}
+                onIndexChange={setMobileIndex}
+              />
+            </div>
+            <HeroPhotoCredit className="hero-photo-credit--mobile" />
           </div>
 
           <Container className="hero-mobile-copy-wrap min-w-0 max-w-full">
@@ -227,6 +229,7 @@ function LandingHero({ content }: { content: HeroContent }) {
               onIndexChange={setDesktopIndex}
             />
             <HeroPhotoCredit className="hero-frame__credit" />
+            <HeroFrameEdge />
           </div>
         </div>
 

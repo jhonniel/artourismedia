@@ -9,8 +9,15 @@ interface BrandLogoProps {
   variant?: 'default' | 'onDark'
 }
 
-export const SITE_LOGO_PATH = '/images/brand/artourismedia-logo.png?v=3'
-export const SITE_LOGO_ON_DARK_PATH = '/images/brand/artourismedia-logo-dark.png?v=3'
+export const SITE_LOGO_PATH = '/images/brand/artourismedia-logo.png?v=5'
+export const SITE_LOGO_ON_DARK_PATH = '/images/brand/artourismedia-logo-dark.png?v=5'
+const LOGO_CACHE = 'v=5'
+
+function withLogoCache(path: string): string {
+  const [base] = path.split('?')
+  if (!base.includes('artourismedia-logo')) return path
+  return `${base}?${LOGO_CACHE}`
+}
 
 function logoForVariant(logoUrl: string | undefined, variant: 'default' | 'onDark'): string {
   const defaultPath = variant === 'onDark' ? SITE_LOGO_ON_DARK_PATH : SITE_LOGO_PATH
@@ -18,10 +25,10 @@ function logoForVariant(logoUrl: string | undefined, variant: 'default' | 'onDar
   if (!logoUrl) return defaultPath
 
   if (variant === 'onDark' && logoUrl.includes('artourismedia-logo.png') && !logoUrl.includes('-dark')) {
-    return logoUrl.replace('artourismedia-logo.png', 'artourismedia-logo-dark.png')
+    return withLogoCache(logoUrl.replace('artourismedia-logo.png', 'artourismedia-logo-dark.png'))
   }
 
-  return logoUrl
+  return withLogoCache(logoUrl)
 }
 
 export function BrandLogo({

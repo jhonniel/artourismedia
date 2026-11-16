@@ -1,3 +1,4 @@
+import { useEffect, useRef, type RefObject } from 'react'
 import { Link } from 'react-router-dom'
 import { Container } from '@/components/ui/Container'
 import { Button } from '@/components/ui/Button'
@@ -14,82 +15,135 @@ interface ProjectDetailViewProps {
   related?: Project[]
 }
 
+function usePointerParallax(): RefObject<HTMLElement | null> {
+  const ref = useRef<HTMLElement>(null)
+
+  useEffect(() => {
+    const node = ref.current
+    if (!node) return
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)')
+    if (reduceMotion.matches || !finePointer.matches) return
+
+    const target = { x: 0, y: 0 }
+    const current = { x: 0, y: 0 }
+    let frame = 0
+    let active = true
+
+    const apply = () => {
+      node.style.setProperty('--px', current.x.toFixed(4))
+      node.style.setProperty('--py', current.y.toFixed(4))
+    }
+
+    const tick = () => {
+      if (!active) return
+      current.x += (target.x - current.x) * 0.08
+      current.y += (target.y - current.y) * 0.08
+      apply()
+      frame = requestAnimationFrame(tick)
+    }
+
+    const onMove = (event: PointerEvent) => {
+      const rect = node.getBoundingClientRect()
+      if (!rect.width || !rect.height) return
+      const x = ((event.clientX - rect.left) / rect.width) * 2 - 1
+      const y = ((event.clientY - rect.top) / rect.height) * 2 - 1
+      target.x = Math.max(-1, Math.min(1, x))
+      target.y = Math.max(-1, Math.min(1, y))
+    }
+
+    const onLeave = () => {
+      target.x = 0
+      target.y = 0
+    }
+
+    node.addEventListener('pointermove', onMove)
+    node.addEventListener('pointerleave', onLeave)
+    frame = requestAnimationFrame(tick)
+
+    return () => {
+      active = false
+      cancelAnimationFrame(frame)
+      node.removeEventListener('pointermove', onMove)
+      node.removeEventListener('pointerleave', onLeave)
+      node.style.removeProperty('--px')
+      node.style.removeProperty('--py')
+    }
+  }, [])
+
+  return ref
+}
+
 export function ProjectDetailView({ project, related = [] }: ProjectDetailViewProps) {
   const categoryName = project.category_label ?? project.category?.name
   const objectPosition = COVER_OBJECT_POSITION[project.slug] ?? 'object-center'
   const isLogoCover = LOGO_COVER_SLUGS.has(project.slug)
+  const stageRef = usePointerParallax()
 
   return (
     <article>
-      <section className="project-detail bg-cream">
-        <Container className="py-10 md:py-14 lg:py-16 xl:py-20">
-          <FadeIn>
-            <div className="grid items-start gap-8 lg:grid-cols-2 lg:gap-10 xl:gap-14">
-              {project.cover_image_url && (
-                <div className="project-detail__media">
-                  {isLogoCover ? (
-                    <LazyImage
-                      src={project.cover_image_url}
-                      alt={project.title}
-                      priority
-                      wrapperClassName="project-detail__image-wrap project-detail__image-wrap--logo"
-                      className="!h-auto !w-full object-contain"
-                    />
-                  ) : (
-                    <LazyImage
-                      src={project.cover_image_url}
-                      alt={project.title}
-                      priority
-                      fill
-                      wrapperClassName="project-detail__image-wrap aspect-[4/5] sm:aspect-[5/6] lg:aspect-[4/5] xl:min-h-[32rem] xl:aspect-auto"
-                      className={cn('!object-cover', objectPosition)}
-                    />
-                  )}
-                </div>
-              )}
+      <section
+        ref={stageRef}
+        className={cn('project-immersive', isLogoCover && 'project-immersive--logo')}
+      >
+        <div className="project-immersive__scene" aria-hidden="true">
+          {project.cover_image_url ? (
+            isLogoCover ? (
+              <LazyImage
+                src={project.cover_image_url}
+                alt=""
+                priority
+                wrapperClassName="project-immersive__logo-wrap"
+                className="!h-auto !w-full max-w-[28rem] object-contain"
+              />
+            ) : (
+              <LazyImage
+                src={project.cover_image_url}
+                alt=""
+                priority
+                fill
+                wrapperClassName="project-immersive__photo"
+                className={cn('!object-cover', objectPosition)}
+              />
+            )
+          ) : (
+            <div className="project-immersive__fallback" />
+          )}
+          <div className="project-immersive__shade" />
+          <div className="project-immersive__light" />
+        </div>
 
-              <div className="project-detail__content min-w-0 lg:pt-1 xl:pt-3">
-                {categoryName && (
-                  <span className="project-detail__category">{categoryName}</span>
-                )}
+        <Container className="project-immersive__stage">
+          <div className="project-immersive__glass">
+            {categoryName && <span className="project-immersive__badge">{categoryName}</span>}
 
-                <h1 className="project-detail__title mt-4 font-serif text-[1.65rem] font-bold leading-[1.18] text-navy sm:mt-5 sm:text-[1.85rem] md:text-[2rem] lg:text-[2.125rem] xl:text-[2.35rem]">
-                  {project.title}
-                </h1>
+            <h1 className="project-immersive__title">{project.title}</h1>
 
-                <div className="project-detail__accent mt-4 sm:mt-5" aria-hidden="true" />
+            {project.content ? (
+              <RichContent html={project.content} className="prose-content prose-content-project project-immersive__copy" />
+            ) : (
+              project.excerpt && <p className="project-immersive__copy">{project.excerpt}</p>
+            )}
 
-                {project.content ? (
-                  <RichContent
-                    html={project.content}
-                    className="prose-content prose-content-project mt-5 sm:mt-6"
-                  />
+            {project.cta_text && project.cta_url && (
+              <div className="project-immersive__cta">
+                {project.cta_url.startsWith('http') ? (
+                  <a href={project.cta_url} target="_blank" rel="noopener noreferrer">
+                    <Button variant="orange" size="lg">
+                      {project.cta_text}
+                    </Button>
+                  </a>
                 ) : (
-                  project.excerpt && (
-                    <p className="project-detail__body mt-5 sm:mt-6">{project.excerpt}</p>
-                  )
-                )}
-
-                {project.cta_text && project.cta_url && (
-                  <div className="mt-8 sm:mt-10">
-                    {project.cta_url.startsWith('http') ? (
-                      <a href={project.cta_url} target="_blank" rel="noopener noreferrer">
-                        <Button variant="orange" size="lg">
-                          {project.cta_text}
-                        </Button>
-                      </a>
-                    ) : (
-                      <Link to={project.cta_url}>
-                        <Button variant="orange" size="lg">
-                          {project.cta_text}
-                        </Button>
-                      </Link>
-                    )}
-                  </div>
+                  <Link to={project.cta_url}>
+                    <Button variant="orange" size="lg">
+                      {project.cta_text}
+                    </Button>
+                  </Link>
                 )}
               </div>
-            </div>
-          </FadeIn>
+            )}
+          </div>
         </Container>
       </section>
 
@@ -110,6 +164,21 @@ export function ProjectDetailView({ project, related = [] }: ProjectDetailViewPr
                 ← Back to all projects
               </Link>
             </div>
+          </Container>
+        </div>
+      )}
+
+      {related.length === 0 && (
+        <div className="bg-cream py-10">
+          <Container>
+            <FadeIn>
+              <Link
+                to="/projects"
+                className="font-semibold text-teal transition-colors hover:text-orange"
+              >
+                ← Back to all projects
+              </Link>
+            </FadeIn>
           </Container>
         </div>
       )}

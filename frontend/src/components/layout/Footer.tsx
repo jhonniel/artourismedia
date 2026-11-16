@@ -98,7 +98,7 @@ export function Footer({ footer, socialLinks, siteName, logoUrl }: FooterProps) 
                 logoUrl={logoUrl}
                 siteName={siteName}
                 variant="onDark"
-                className="h-[4.5rem] w-auto max-w-[20rem] sm:h-16 sm:max-w-[22rem] lg:h-16 lg:max-w-[18rem]"
+                className="h-[4.5rem] w-auto max-w-[12rem] sm:h-20 sm:max-w-[14rem] lg:h-24 lg:max-w-[16rem]"
               />
             </div>
               {footer.description && (

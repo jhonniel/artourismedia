@@ -15,6 +15,56 @@ const WAVE_TOP_FILL = {
   cream: '#F8F4EC',
 } as const
 
+/** Faint topographic grove lines used on the Services page cream backdrop. */
+export function GroveContourLines({ className }: DecorativeProps) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 1440 420"
+      preserveAspectRatio="xMinYMin slice"
+      fill="none"
+      aria-hidden="true"
+    >
+      <g stroke="#a3b39a" strokeLinecap="round" strokeLinejoin="round">
+        <path
+          d="M-80,22 C58,2 138,46 208,88 C275,126 348,148 430,140"
+          strokeWidth="1.4"
+          opacity="0.52"
+        />
+        <path
+          d="M-80,42 C58,22 138,66 208,108 C275,146 348,168 430,160"
+          strokeWidth="1.3"
+          opacity="0.44"
+        />
+        <path
+          d="M-80,62 C58,42 138,86 208,128 C275,166 348,188 430,180"
+          strokeWidth="1.25"
+          opacity="0.38"
+        />
+        <path
+          d="M-80,82 C58,62 138,106 208,148 C275,186 348,208 430,200"
+          strokeWidth="1.2"
+          opacity="0.32"
+        />
+      </g>
+      <g stroke="#8aada0" strokeLinecap="round" strokeLinejoin="round">
+        <path
+          d="M188,70 C300,42 410,92 530,66 C610,50 680,78 742,64"
+          strokeWidth="1.2"
+          strokeDasharray="5 9"
+          opacity="0.4"
+        />
+        <path
+          d="M230,168 C340,142 455,186 575,162"
+          strokeWidth="1.1"
+          strokeDasharray="4 10"
+          opacity="0.28"
+        />
+      </g>
+    </svg>
+  )
+}
+
 export function DestinationsArrow({ className }: DecorativeProps) {
   return (
     <svg className={className} viewBox="0 0 48 16" fill="none" aria-hidden="true">

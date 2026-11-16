@@ -18,7 +18,8 @@ const preserved = new Set([
   'admin',
 ])
 
-const removableRoots = ['index.html', 'assets', 'images', 'documents', 'favicon.svg', 'favicon.png']
+// Keep hashed /assets files so open tabs can still load previous chunks after a rebuild.
+const removableRoots = ['index.html', 'images', 'documents', 'favicon.svg', 'favicon.png', 'favicon.ico', 'favicon-192.png', 'apple-touch-icon.png']
 
 if (!fs.existsSync(frontendDist)) {
   console.error('Missing frontend/dist. Run npm run build in frontend/ first.')

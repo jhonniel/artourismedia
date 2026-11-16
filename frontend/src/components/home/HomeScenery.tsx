@@ -14,15 +14,44 @@ type Segment = [Point, Point, Point, Point]
  */
 /** Source of truth for the `.hero-frame` CSS mask — keep the two in lockstep. */
 export const FRAME_OUTLINE: Segment[] = [
-  [[104, -4], [93.75, -3], [87.5, -2], [81.25, 2]],
-  [[81.25, 2], [76.25, 5], [72.5, 9], [66.25, 10]],
-  [[66.25, 10], [60, 11], [53.75, 11], [48.75, 15]],
-  [[48.75, 15], [44.4, 19], [42.5, 27], [41.9, 36]],
-  [[41.9, 36], [40.6, 48], [41.5, 58], [41, 68]],
-  [[41, 68], [40.5, 76], [39.5, 82], [36.5, 87]],
-  [[36.5, 87], [33.5, 92], [27, 96.5], [19, 99.5]],
-  [[19, 99.5], [14, 101.5], [6, 104], [-4, 106]],
+  [[104, -4], [98, -2], [91, -0.17], [86, 2]],
+  [[86, 2], [81, 4.17], [79.67, 6.67], [74, 9]],
+  [[74, 9], [68.33, 11.33], [57.27, 11.83], [52, 16]],
+  [[52, 16], [46.73, 20.17], [44.23, 28], [42.4, 34]],
+  [[42.4, 34], [40.57, 40], [41.48, 46.33], [41, 52]],
+  [[41, 52], [40.52, 57.67], [40.92, 63], [39.5, 68]],
+  [[39.5, 68], [38.08, 73], [35.5, 78], [32.5, 82]],
+  [[32.5, 82], [29.5, 86], [27.58, 88], [21.5, 92]],
+  [[21.5, 92], [15.42, 96], [4.5, 101.33], [-4, 106]],
 ]
+
+function outlineToPath(segments: Segment[]): string {
+  const start = segments[0][0]
+  let d = `M${start[0]},${start[1]}`
+  for (const [, c1, c2, end] of segments) {
+    d += ` C${c1[0]},${c1[1]} ${c2[0]},${c2[1]} ${end[0]},${end[1]}`
+  }
+  return d
+}
+
+const FRAME_EDGE_PATH = outlineToPath(FRAME_OUTLINE)
+
+/** Thin white paper-cut rim on the photo S — same line as the zoomed reference edge. */
+export function HeroFrameEdge() {
+  return (
+    <svg className="hero-frame__edge" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+      <path
+        d={FRAME_EDGE_PATH}
+        fill="none"
+        stroke="#ffffff"
+        strokeWidth="10"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        vectorEffect="non-scaling-stroke"
+      />
+    </svg>
+  )
+}
 
 /** Deterministic PRNG so procedural scenery is identical on every render and build. */
 function seededRandom(seed: number) {
@@ -448,13 +477,11 @@ function SceneryPhoto({ path, className }: { path: string; className: string }) 
 }
 
 /**
- * Crests in a 1440×200 box. Left of x≈600 the paper stays below y=60 so the copy column only needs
- * `--hero-wave-clearance` of bottom padding to keep the slide controls clear.
- *
- * One paper-cut swell — same #fdfefe as the About handoff — with a soft navy bloom for lift.
- * No stacked ribbons, no wash stripe, no drawn outline.
+ * Thin paper fade at the bottom of the photo — same treatment as the reference:
+ * a pale cream swell in the 1440×200 box, almost flat under the copy, peaking in the
+ * photo, handing off to About at #fdfefe. Soft white bloom, no outline, no drop-shadow.
  */
-const WAVE_CREST = 'M0,158 C280,158 440,168 640,150 C880,128 1020,94 1200,108 C1320,118 1388,142 1440,148'
+const WAVE_CREST = 'M0,176 C340,178 560,170 780,148 C1000,122 1140,108 1280,132 C1360,146 1410,160 1440,166'
 
 function HeroWaves() {
   const id = useSvgId('wave')
@@ -463,17 +490,17 @@ function HeroWaves() {
   return (
     <svg className="hero-scenery__waves" viewBox="0 0 1440 200" preserveAspectRatio="none" aria-hidden="true">
       <defs>
-        <filter id={`${id}-bloom`} x="-4%" y="-30%" width="108%" height="160%">
-          <feGaussianBlur stdDeviation="2.2" />
+        <filter id={`${id}-bloom`} x="-8%" y="-80%" width="116%" height="220%">
+          <feGaussianBlur stdDeviation="6" />
         </filter>
         <linearGradient id={`${id}-paper`} x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%" stopColor="#ffffff" />
-          <stop offset="14%" stopColor="#fdfefe" />
+          <stop offset="22%" stopColor="#fdfefe" />
           <stop offset="100%" stopColor="#fdfefe" />
         </linearGradient>
       </defs>
 
-      <path d={paper} fill="#2a261c" opacity="0.045" filter={`url(#${id}-bloom)`} transform="translate(0 -4)" />
+      <path d={paper} fill="#ffffff" opacity="0.85" filter={`url(#${id}-bloom)`} transform="translate(0 -8)" />
       <path d={paper} fill={`url(#${id}-paper)`} />
     </svg>
   )

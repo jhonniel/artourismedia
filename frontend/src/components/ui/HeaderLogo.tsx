@@ -20,8 +20,8 @@ export function HeaderLogo({
       siteName={siteName}
       className={cn(
         compact
-          ? 'h-9 w-auto max-w-[11rem]'
-          : 'h-10 w-auto max-w-[12rem] sm:h-11 sm:max-w-[13rem] md:h-12 md:max-w-[14rem] lg:h-[3.25rem] lg:max-w-[15rem]',
+          ? 'h-12 w-auto max-w-[9rem]'
+          : 'h-12 w-auto max-w-[9.5rem] sm:h-14 sm:max-w-[11rem] md:h-16 md:max-w-[12.5rem] lg:h-[4.5rem] lg:max-w-[14rem]',
         className,
       )}
     />

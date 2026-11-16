@@ -12,6 +12,10 @@ interface HeaderProps {
   socialLinks?: SocialLink[]
 }
 
+function isImmersiveHeroPath(pathname: string): boolean {
+  return pathname === '/' || pathname.startsWith('/projects/')
+}
+
 export function Header({ navigation, settings, socialLinks = [] }: HeaderProps) {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -23,7 +27,7 @@ export function Header({ navigation, settings, socialLinks = [] }: HeaderProps) 
       const scrollY = window.scrollY
       setScrolled(scrollY > 20)
 
-      if (location.pathname === '/') {
+      if (isImmersiveHeroPath(location.pathname)) {
         const fadeEnd = 72
         const opacity = Math.max(0, 1 - scrollY / fadeEnd)
         document.documentElement.style.setProperty('--header-blur-opacity', opacity.toFixed(3))
@@ -65,7 +69,8 @@ export function Header({ navigation, settings, socialLinks = [] }: HeaderProps) 
   }, [mobileOpen, scrolled])
 
   const isHome = location.pathname === '/'
-  const heroOverlay = isHome && !mobileOpen
+  const isProjectHero = isImmersiveHeroPath(location.pathname) && !isHome
+  const heroOverlay = (isHome || isProjectHero) && !mobileOpen
   const overlay = heroOverlay && !scrolled
   const navItems = [...navigation].sort((a, b) => a.sort_order - b.sort_order)
   const ctaItem = navItems.find((item) => item.is_cta)
@@ -81,13 +86,14 @@ export function Header({ navigation, settings, socialLinks = [] }: HeaderProps) 
             ? 'z-[101] bg-white py-3 shadow-none transition-[background-color,box-shadow] lg:shadow-soft'
             : 'z-50 transition-[background-color,box-shadow,padding,backdrop-filter]',
           !mobileOpen && heroOverlay && 'header-hero-overlay',
+          !mobileOpen && heroOverlay && isProjectHero && 'header-project-overlay',
           !mobileOpen && overlay && 'header-at-hero-top py-4 lg:py-6 xl:py-7',
           !mobileOpen && !overlay && scrolled
             ? 'bg-white/95 py-3 shadow-soft backdrop-blur-sm lg:py-4 xl:py-5'
             : !mobileOpen && !overlay && 'bg-white py-4 md:py-5 lg:py-6 xl:py-7',
         )}
       >
-        <div className="relative z-10 mx-auto flex h-11 w-full max-w-[90rem] items-center justify-between gap-3 px-4 sm:h-auto sm:gap-4 sm:px-6 lg:grid lg:grid-cols-[1fr_auto_1fr] lg:items-center lg:gap-6 lg:px-8 xl:gap-8 xl:px-10 2xl:px-12">
+        <div className="relative z-10 mx-auto flex h-12 w-full max-w-[90rem] items-center justify-between gap-3 px-4 sm:h-auto sm:gap-4 sm:px-6 lg:grid lg:grid-cols-[1fr_auto_1fr] lg:items-center lg:gap-6 lg:px-8 xl:gap-8 xl:px-10 2xl:px-12">
           <div className="flex min-w-0 flex-1 justify-start lg:flex-none">
             <Link
               to="/"

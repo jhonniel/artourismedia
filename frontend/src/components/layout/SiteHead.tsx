@@ -23,7 +23,19 @@ export function SiteHead({
     <Helmet>
       <title>{defaultTitle || siteName}</title>
       {defaultDescription && <meta name="description" content={defaultDescription} />}
-      {faviconUrl && <link rel="icon" href={faviconUrl} />}
+      {faviconUrl && (
+        <link
+          rel="icon"
+          type="image/png"
+          href={
+            faviconUrl.includes('/favicon')
+              ? `${faviconUrl.split('?')[0]}?v=5`
+              : faviconUrl
+          }
+        />
+      )}
+      <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png?v=5" />
+      <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=5" />
       <meta name="theme-color" content={primaryColor} />
       <style>{`
         :root {

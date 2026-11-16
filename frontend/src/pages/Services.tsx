@@ -3,12 +3,115 @@ import { ServiceIcon, serviceIconImageClass, serviceIconWrapperClass } from '@/c
 import { cn } from '@/lib/utils'
 import { Container } from '@/components/ui/Container'
 import { SectionHeading } from '@/components/ui/SectionHeading'
-import { Card } from '@/components/ui/Card'
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner'
 import { ErrorMessage } from '@/components/ui/ErrorMessage'
 import { SEO } from '@/components/ui/SEO'
 import { FadeIn } from '@/components/ui/FadeIn'
+import { GroveContourLines } from '@/components/ui/Decorative'
 import { useServices } from '@/hooks'
+import type { Service } from '@/types'
+
+function pad(value: number): string {
+  return String(value).padStart(2, '0')
+}
+
+const CARD_WAVE_PALETTES = [
+  { back: '#efe6d4', front: '#d7eee4' },
+  { back: '#efe6d4', front: '#d9edf3' },
+  { back: '#f3eee4', front: '#d7eee4' },
+  { back: '#efe6d4', front: '#e3f0dc' },
+  { back: '#f3eee4', front: '#d9edf3' },
+]
+
+function CardWave({ index }: { index: number }) {
+  const palette = CARD_WAVE_PALETTES[index % CARD_WAVE_PALETTES.length]
+
+  return (
+    <svg
+      className="services-bento__wave"
+      viewBox="0 0 320 160"
+      preserveAspectRatio="xMaxYMax meet"
+      aria-hidden="true"
+    >
+      <ellipse cx="262" cy="136" rx="118" ry="102" fill={palette.back} />
+      <ellipse cx="148" cy="152" rx="108" ry="78" fill={palette.front} />
+    </svg>
+  )
+}
+
+function ServiceOfferCard({
+  service,
+  index,
+  total,
+}: {
+  service: Service
+  index: number
+  total: number
+}) {
+  const href = service.cta_url || `/services/${service.slug}`
+  const external = Boolean(service.cta_url?.startsWith('http'))
+  const compactCta = 'Projects and Experience'
+  const expandedCta = service.cta_text || 'Explore Projects'
+  const count = `${pad(index + 1)} / ${pad(total)}`
+
+  const body = (
+    <article className="services-bento__card">
+      <p className="services-bento__eyebrow">Our expertise</p>
+
+      <div className="services-bento__top">
+        <div className="services-bento__icon-col">
+          <div
+            className={cn(
+              'services-bento__icon flex items-center justify-center',
+              serviceIconWrapperClass(service.slug, service.icon, 'card', 'bg-teal/10 text-teal'),
+            )}
+          >
+            <ServiceIcon
+              slug={service.slug}
+              icon={service.icon}
+              className={cn(
+                'services-bento__icon-img',
+                serviceIconImageClass(service.slug, service.icon, 'card'),
+              )}
+            />
+          </div>
+          <span className="services-bento__count">{count}</span>
+        </div>
+
+        <div className="services-bento__copy">
+          <h2 className="services-bento__title">{service.title}</h2>
+          {service.description && <p className="services-bento__body">{service.description}</p>}
+          <span className="services-bento__link">
+            {compactCta}
+            <span aria-hidden>→</span>
+          </span>
+          <span className="services-bento__button">
+            {expandedCta}
+            <span aria-hidden>→</span>
+          </span>
+        </div>
+      </div>
+
+      <CardWave index={index} />
+    </article>
+  )
+
+  const className = 'services-bento__hit'
+
+  if (external) {
+    return (
+      <a href={href} className={className}>
+        {body}
+      </a>
+    )
+  }
+
+  return (
+    <Link to={href} className={className}>
+      {body}
+    </Link>
+  )
+}
 
 export default function Services() {
   const { data, isLoading, isError, refetch } = useServices()
@@ -34,55 +137,28 @@ export default function Services() {
   return (
     <>
       <SEO title="Services" description="Explore our tourism consultancy services." />
-      <Container className="py-16 md:py-24">
-        <FadeIn>
-          <SectionHeading
-            eyebrow="What we offer"
-            title="Our"
-            accent="Services"
-            description="Comprehensive tourism development and destination strategy solutions."
-            align="center"
-          />
-        </FadeIn>
+      <section className="services-page">
+        <GroveContourLines className="services-page__grove" />
+        <Container className="relative z-10 py-16 md:py-24">
+          <FadeIn>
+            <SectionHeading
+              eyebrow="What we offer"
+              title="Our"
+              accent="Services"
+              description="Comprehensive tourism development and destination strategy solutions."
+              align="center"
+            />
+          </FadeIn>
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {services.map((service, index) => (
-            <FadeIn key={service.uuid} delay={index * 80}>
-              <Link to={`/services/${service.slug}`} className="block h-full group">
-                <Card hover className="h-full">
-                  <div
-                    className={cn(
-                      'mb-4 flex items-center justify-center transition-colors',
-                      serviceIconWrapperClass(
-                        service.slug,
-                        service.icon,
-                        'card',
-                        'bg-teal text-white group-hover:bg-teal/90',
-                      ),
-                    )}
-                  >
-                    <ServiceIcon
-                      slug={service.slug}
-                      icon={service.icon}
-                      className={serviceIconImageClass(service.slug, service.icon, 'card')}
-                    />
-                  </div>
-                  <h2 className="text-xl font-bold group-hover:text-teal transition-colors">{service.title}</h2>
-                  {service.description && (
-                    <p className="mt-3 text-navy/60 leading-relaxed line-clamp-3">{service.description}</p>
-                  )}
-                  <span className="mt-4 inline-flex items-center gap-1 text-base font-semibold text-orange md:text-lg">
-                    Projects and Experience
-                    <svg className="h-4 w-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                    </svg>
-                  </span>
-                </Card>
-              </Link>
-            </FadeIn>
-          ))}
-        </div>
-      </Container>
+          <div className="services-bento">
+            {services.map((service, index) => (
+              <FadeIn key={service.uuid} delay={index * 80} className="services-bento__cell">
+                <ServiceOfferCard service={service} index={index} total={services.length} />
+              </FadeIn>
+            ))}
+          </div>
+        </Container>
+      </section>
     </>
   )
 }
