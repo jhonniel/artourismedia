@@ -10,7 +10,7 @@ import {
 } from 'react'
 import { buildAssetFallbackChain } from '@/lib/assets'
 import { cn } from '@/lib/utils'
-import { HERO_SLIDESHOW_PATHS, heroSlideFocus } from '@/data/heroSlideshow'
+import { HERO_SLIDESHOW_PATHS, heroSlideFocus, heroSlideShift } from '@/data/heroSlideshow'
 
 export const HERO_SLIDESHOW_IMAGES = [...HERO_SLIDESHOW_PATHS]
 
@@ -294,6 +294,7 @@ export function HeroSlideshow({
               opacity,
               zIndex: isFading ? (layer === incomingLayer ? 2 : 1) : (isTop ? 1 : 0),
               ['--hero-focus' as string]: heroSlideFocus(path),
+              ['--hero-shift' as string]: heroSlideShift(path),
               transitionDuration: isFading && !reduceMotion ? `${FADE_MS}ms` : undefined,
               transitionTimingFunction: isFading && !reduceMotion ? FADE_EASING : undefined,
             }}

@@ -4,6 +4,7 @@ import { Input } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
 import { SEO } from '@/components/ui/SEO'
 import { FadeIn } from '@/components/ui/FadeIn'
+import { ContactBusinessCard } from '@/components/contact/ContactBusinessCard'
 import { ContactSidebar } from '@/components/contact/ContactSidebar'
 import { canonicalUrl, contactPageJsonLd } from '@/lib/structuredData'
 import { useContactMutation } from '@/hooks/useMutations'
@@ -105,8 +106,10 @@ export default function Contact() {
 
       <section className="bg-cream py-10 md:py-14 lg:py-16">
         <Container>
-          <div className="grid items-start gap-8 lg:grid-cols-12 lg:gap-x-10 xl:gap-x-12">
-            <div className="lg:col-span-5">
+          {/* Desktop: two columns. Left = intro, then the business card panel stretching down to the
+              form's bottom edge; right = the form. Mobile: source order — intro, form, card panel. */}
+          <div className="grid gap-8 lg:grid-cols-12 lg:grid-rows-[auto_1fr] lg:gap-x-10 xl:gap-x-12">
+            <div className="lg:col-span-5 lg:col-start-1 lg:row-start-1">
               <FadeIn>
                 <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-teal sm:text-xs">
                   Schedule a Consultation
@@ -121,17 +124,9 @@ export default function Contact() {
                   Tell us about your destination or tourism project — we&apos;ll review your request and get back to you.
                 </p>
               </FadeIn>
-
-              <FadeIn delay={80} className="mt-8">
-                <ContactSidebar
-                  contactEmail={contactEmail}
-                  contactAddress={contactAddress}
-                  socialLinks={site?.social_links ?? []}
-                />
-              </FadeIn>
             </div>
 
-            <div className="lg:col-span-7">
+            <div className="lg:col-span-7 lg:col-start-6 lg:row-span-2 lg:row-start-1">
               <FadeIn delay={120}>
                 <div className="mb-5 flex justify-center">
                   <p
@@ -286,7 +281,22 @@ export default function Contact() {
                 )}
               </FadeIn>
             </div>
+
+            <div className="lg:col-span-5 lg:col-start-1 lg:row-start-2">
+              <FadeIn delay={80} className="h-full">
+                <ContactBusinessCard className="h-full" />
+              </FadeIn>
+            </div>
           </div>
+
+          {/* Contact details and "what to expect", side by side below, on the same two columns */}
+          <FadeIn delay={160} className="mt-8 lg:mt-10 xl:mt-12">
+            <ContactSidebar
+              contactEmail={contactEmail}
+              contactAddress={contactAddress}
+              socialLinks={site?.social_links ?? []}
+            />
+          </FadeIn>
         </Container>
       </section>
     </>

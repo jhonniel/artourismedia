@@ -9,6 +9,8 @@ interface SectionHeadingProps {
   align?: 'left' | 'center'
   tone?: 'default' | 'landing'
   accentUnderline?: 'bar' | 'squiggle'
+  /** Typeface of the accent word in the default tone (replaces the handwritten default). */
+  accentClassName?: string
   eyebrowClassName?: string
   className?: string
   children?: ReactNode
@@ -75,6 +77,7 @@ export function SectionHeading({
   align = 'left',
   tone = 'default',
   accentUnderline = 'bar',
+  accentClassName,
   eyebrowClassName,
   className,
   children,
@@ -134,7 +137,7 @@ export function SectionHeading({
           {accent && (
             <>
               {' '}
-              <span className="font-display font-normal text-teal">{accent}</span>
+              <span className={cn(accentClassName ?? 'font-display font-normal', 'text-teal')}>{accent}</span>
             </>
           )}
         </h2>

@@ -72,9 +72,10 @@ export function ContactSidebar({
 }: ContactSidebarProps) {
   const sortedSocial = [...socialLinks].sort((a, b) => a.sort_order - b.sort_order)
 
+  // From lg up the two cards share the 5 / 7 column split of the intro and form above them
   return (
-    <div className="space-y-4">
-      <div className="contact-info-card relative overflow-hidden rounded-[1.25rem] bg-navy p-5 text-white shadow-elevated sm:rounded-[1.5rem] sm:p-6">
+    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-12 lg:gap-x-10 xl:gap-x-12">
+      <div className="contact-info-card relative overflow-hidden rounded-[1.25rem] bg-navy p-5 text-white shadow-elevated sm:rounded-[1.5rem] sm:p-6 lg:col-span-5">
         <p className="relative z-[1] text-[11px] font-bold uppercase tracking-[0.18em] text-teal sm:text-xs">
           Contact
         </p>
@@ -144,7 +145,7 @@ export function ContactSidebar({
         )}
       </div>
 
-      <div className="rounded-[1.25rem] border border-navy/8 bg-white p-5 shadow-soft sm:rounded-[1.5rem] sm:p-6">
+      <div className="rounded-[1.25rem] border border-navy/8 bg-white p-5 shadow-soft sm:rounded-[1.5rem] sm:p-6 lg:col-span-7">
         <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-teal sm:text-xs">
           What to Expect
         </p>
