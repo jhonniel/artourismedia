@@ -9,9 +9,10 @@ interface BrandLogoProps {
   variant?: 'default' | 'onDark'
 }
 
-export const SITE_LOGO_PATH = '/images/brand/artourismedia-logo.png?v=5'
-export const SITE_LOGO_ON_DARK_PATH = '/images/brand/artourismedia-logo-dark.png?v=5'
-const LOGO_CACHE = 'v=5'
+/** Bump when the logo files change: the file names stay the same, so this is what makes browsers refetch. */
+const LOGO_CACHE = 'v=6'
+export const SITE_LOGO_PATH = `/images/brand/artourismedia-logo.png?${LOGO_CACHE}`
+export const SITE_LOGO_ON_DARK_PATH = `/images/brand/artourismedia-logo-dark.png?${LOGO_CACHE}`
 
 function withLogoCache(path: string): string {
   const [base] = path.split('?')
@@ -39,10 +40,11 @@ export function BrandLogo({
 }: BrandLogoProps) {
   const defaultPath = variant === 'onDark' ? SITE_LOGO_ON_DARK_PATH : SITE_LOGO_PATH
   const primaryPath = logoForVariant(logoUrl, variant)
+  // sameOriginAssetUrl drops the query, so the version is put back on the bundled copies
   const fallbacks = [
-    sameOriginAssetUrl(primaryPath),
+    withLogoCache(sameOriginAssetUrl(primaryPath)),
     assetUrl(primaryPath),
-    sameOriginAssetUrl(defaultPath),
+    withLogoCache(sameOriginAssetUrl(defaultPath)),
     assetUrl(defaultPath),
   ]
   const [fallbackIndex, setFallbackIndex] = useState(0)

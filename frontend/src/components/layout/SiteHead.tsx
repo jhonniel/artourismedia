@@ -1,4 +1,8 @@
 import { Helmet } from 'react-helmet-async'
+import { sameOriginAssetUrl } from '@/lib/assets'
+
+/** Bump when the favicon files change (also in index.html) so browsers refetch them. */
+const FAVICON_CACHE = 'v=6'
 
 interface SiteHeadProps {
   siteName?: string
@@ -19,23 +23,20 @@ export function SiteHead({
   defaultTitle,
   defaultDescription,
 }: SiteHeadProps) {
+  // The site's own /favicon.* ships with every deploy, so use that copy rather than the CDN's.
+  // Anything else (a favicon uploaded in the admin) is used exactly as the API sends it.
+  const bundledFavicon = faviconUrl ? sameOriginAssetUrl(faviconUrl).split('?')[0] : ''
+  const faviconHref = /^\/favicon[^/]*$/.test(bundledFavicon)
+    ? `${bundledFavicon}?${FAVICON_CACHE}`
+    : faviconUrl
+
   return (
     <Helmet>
       <title>{defaultTitle || siteName}</title>
       {defaultDescription && <meta name="description" content={defaultDescription} />}
-      {faviconUrl && (
-        <link
-          rel="icon"
-          type="image/png"
-          href={
-            faviconUrl.includes('/favicon')
-              ? `${faviconUrl.split('?')[0]}?v=5`
-              : faviconUrl
-          }
-        />
-      )}
-      <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png?v=5" />
-      <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=5" />
+      {faviconHref && <link rel="icon" type="image/png" href={faviconHref} />}
+      <link rel="icon" type="image/png" sizes="192x192" href={`/favicon-192.png?${FAVICON_CACHE}`} />
+      <link rel="apple-touch-icon" href={`/apple-touch-icon.png?${FAVICON_CACHE}`} />
       <meta name="theme-color" content={primaryColor} />
       <style>{`
         :root {
